@@ -1,0 +1,4 @@
+docs/
+.gitignore
+.DS_Store
+*.log
