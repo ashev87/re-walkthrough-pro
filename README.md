@@ -80,7 +80,7 @@ Restart Claude Code after installing, then run `/re-walkthrough-pro`.
 
 Two MCP servers connected in Claude Code, plus ffmpeg:
 
-- **[Higgsfield MCP](https://higgsfield.ai/mcp?utm_source=ig&utm_medium=social&utm_category=gr&utm_campaign=Higgsfield_MCP_-_IG&utm_creator=charlieautomates&utm_content_type=rl&utm_post=dBaWAw&invite_code=higgsfield-mcp-ig-charlieautomates-dBaWAw)** — required. Animates each room (Seedance 2.0 / Kling 3.0 image-to-video) and reframes for social. Every image + video model in one credit pool. *(My affiliate link.)*
+- **[Higgsfield MCP](https://higgsfield.ai/s/higgsfield-mcp-v3-earning-series-charlieautomates-ptQTLe)** — required. Animates each room (Seedance 2.0 / Kling 3.0 image-to-video) and reframes for social. Every image + video model in one credit pool. *(My affiliate link.)*
 - **[Apify account](https://www.apify.com?fpr=charles)** — required for the listing scrape. The Zillow detail scraper pulls photos + address + specs in one call. *(My referral link.)* Grab the [Apify MCP server](https://github.com/apify/actors-mcp-server) (`@apify/actors-mcp-server`) and your token at [console.apify.com](https://console.apify.com/settings/integrations).
 - **ffmpeg** — required for stitching (`brew install ffmpeg`).
 
