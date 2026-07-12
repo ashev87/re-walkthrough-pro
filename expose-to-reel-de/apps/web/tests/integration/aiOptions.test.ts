@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { prisma } from "@e2r/shared";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { POST as createProjectRoute } from "@/app/api/projects/route";
@@ -114,5 +115,61 @@ describe("Generierungs-Optionen", () => {
       params({ id: projectId })
     );
     expect(response.status).toBe(422);
+  });
+
+  test("Voiceover-Option mit Szenentexten ohne gespeichertes Skript → kein Skript-422", async () => {
+    process.env.OPENAI_API_KEY = "test-key";
+    try {
+      // Eigenes Projekt ohne gespeichertes Voiceover-Skript, aber mit einem
+      // ausgewählten Shot samt Szenentext.
+      const createResponse = await createProjectRoute(
+        jsonRequest("/api/projects", "POST", ctx, {
+          title: "Szenentext-Voiceover-Test",
+        })
+      );
+      const narrationProjectId = (await createResponse.json()).data
+        .id as string;
+      const asset = await prisma.mediaAsset.create({
+        data: {
+          projectId: narrationProjectId,
+          kind: "SOURCE_IMAGE",
+          storageKey: `test/${randomUUID()}.jpg`,
+          filename: "kueche.jpg",
+          mimeType: "image/jpeg",
+          sizeBytes: 1024,
+          sha256: randomUUID(),
+        },
+      });
+      await prisma.shot.create({
+        data: {
+          projectId: narrationProjectId,
+          mediaAssetId: asset.id,
+          roomLabel: "KUECHE",
+          sortIndex: 0,
+          selected: true,
+          cameraMove: "pan_lr",
+          prompt: "Testszene",
+          narration: "Die offene Küche mit Kochinsel.",
+        },
+      });
+
+      const response = await generateRoute(
+        jsonRequest(
+          `/api/projects/${narrationProjectId}/generate`,
+          "POST",
+          ctx,
+          { options: { withVoiceover: true } }
+        ),
+        params({ id: narrationProjectId })
+      );
+      // Die Voiceover-Prüfung muss passieren — der Start scheitert erst
+      // danach am Statuswechsel (DRAFT → GENERATING = 409), nicht mehr mit
+      // dem Skript-422.
+      const body = await response.json();
+      expect(String(body.error ?? "")).not.toContain("Voiceover");
+      expect(response.status).toBe(409);
+    } finally {
+      delete process.env.OPENAI_API_KEY;
+    }
   });
 });

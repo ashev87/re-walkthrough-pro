@@ -50,12 +50,20 @@ export async function startGeneration(
     if (!capabilities.tts) {
       throw new ApiError(422, "Voiceover-Option: TTS ist nicht konfiguriert (OPENAI_API_KEY).");
     }
+    // Freigeschaltet durch ein gespeichertes Skript ODER mindestens einen
+    // ausgewählten Shot mit Szenentext (per-Szene-Voiceover).
     const texts = project.marketingTexts as { voiceoverScript?: string } | null;
-    if (!texts?.voiceoverScript?.trim()) {
-      throw new ApiError(
-        422,
-        "Voiceover-Option: bitte zuerst ein Voiceover-Skript erstellen und speichern (Abschnitt Texte)."
-      );
+    const hasScript = Boolean(texts?.voiceoverScript?.trim());
+    if (!hasScript) {
+      const narratedShots = await prisma.shot.count({
+        where: { projectId, selected: true, NOT: { narration: null } },
+      });
+      if (narratedShots === 0) {
+        throw new ApiError(
+          422,
+          "Voiceover-Option: bitte zuerst Szenentexte generieren (Abschnitt Shotliste/Texte) oder ein Voiceover-Skript speichern."
+        );
+      }
     }
   }
 
