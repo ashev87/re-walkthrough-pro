@@ -32,16 +32,74 @@ export async function normalizeImage(image: Buffer): Promise<Buffer> {
   return stdout;
 }
 
-/** Clips (gleicher Codec/Auflösung/fps) verlustfrei zusammenfügen. */
+export interface ClipInput {
+  path: string;
+  durationSec: number;
+}
+
+/**
+ * Gesamtdauer einer Clip-Folge mit Überblendungen: jede Blende überlappt
+ * zwei Szenen, die Summe schrumpft um (n−1)·crossfade.
+ */
+export function totalDurationWithCrossfade(
+  durations: readonly number[],
+  crossfadeSec: number
+): number {
+  const sum = durations.reduce((acc, d) => acc + d, 0);
+  return sum - Math.max(0, durations.length - 1) * crossfadeSec;
+}
+
+/**
+ * Clips (gleicher Codec/Auflösung/fps) zusammenfügen. Mit crossfadeSec > 0
+ * werden kurze Überblendungen (xfade) zwischen den Szenen gerendert;
+ * andernfalls verlustfreies Concat (Streamcopy).
+ */
 export async function concatClips(
-  clipPaths: string[],
-  outputPath: string
+  clips: readonly ClipInput[],
+  outputPath: string,
+  crossfadeSec = 0
 ): Promise<void> {
-  const listPath = path.join(path.dirname(outputPath), `concat-${path.basename(outputPath)}.txt`);
-  const list = clipPaths
-    .map((clip) => `file '${clip.replace(/\\/g, "/").replace(/'/g, "'\\''")}'`)
-    .join("\n");
   await mkdir(path.dirname(outputPath), { recursive: true });
+
+  if (crossfadeSec > 0 && clips.length > 1) {
+    const inputs = clips.flatMap((clip) => ["-i", clip.path]);
+    const steps: string[] = [];
+    let previousLabel = "[0:v]";
+    let offset = 0;
+    for (let i = 1; i < clips.length; i++) {
+      offset += clips[i - 1]!.durationSec - crossfadeSec;
+      const outLabel = i === clips.length - 1 ? "[vout]" : `[v${i}]`;
+      steps.push(
+        `${previousLabel}[${i}:v]xfade=transition=fade:duration=${crossfadeSec}:offset=${offset.toFixed(3)}${outLabel}`
+      );
+      previousLabel = outLabel;
+    }
+    await runFfmpeg([
+      ...inputs,
+      "-filter_complex",
+      steps.join(";"),
+      "-map",
+      "[vout]",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "veryfast",
+      "-crf",
+      "20",
+      "-pix_fmt",
+      "yuv420p",
+      "-movflags",
+      "+faststart",
+      "-an",
+      outputPath,
+    ]);
+    return;
+  }
+
+  const listPath = path.join(path.dirname(outputPath), `concat-${path.basename(outputPath)}.txt`);
+  const list = clips
+    .map((clip) => `file '${clip.path.replace(/\\/g, "/").replace(/'/g, "'\\''")}'`)
+    .join("\n");
   await writeFile(listPath, list, "utf8");
   await runFfmpeg([
     "-f",
@@ -93,14 +151,22 @@ export interface CaptionCue {
   durationSec: number;
 }
 
-/** SRT-Untertitel aus Szenenfolge (nur freigegebene Fakten/Labels). */
-export function buildSrt(cues: CaptionCue[]): string {
-  let cursor = 0;
+/**
+ * SRT-Untertitel aus Szenenfolge (nur freigegebene Fakten/Labels).
+ * crossfadeSec verschiebt die Cue-Starts entsprechend der Überblendungen,
+ * damit die Untertitel synchron zum tatsächlichen Szenenwechsel bleiben.
+ */
+export function buildSrt(cues: CaptionCue[], crossfadeSec = 0): string {
+  let sceneStart = 0;
   return cues
     .map((cue, index) => {
-      const start = srtTimestamp(cursor);
-      cursor += cue.durationSec;
-      const end = srtTimestamp(Math.max(cursor - 0.1, 0));
+      const isLast = index === cues.length - 1;
+      const visibleEnd = isLast
+        ? sceneStart + cue.durationSec
+        : sceneStart + cue.durationSec - crossfadeSec;
+      const start = srtTimestamp(sceneStart);
+      const end = srtTimestamp(Math.max(visibleEnd - 0.1, sceneStart));
+      sceneStart = visibleEnd;
       return `${index + 1}\n${start} --> ${end}\n${cue.text}\n`;
     })
     .join("\n");

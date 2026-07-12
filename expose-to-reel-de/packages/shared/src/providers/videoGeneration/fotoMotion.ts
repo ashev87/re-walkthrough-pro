@@ -12,10 +12,13 @@ import type {
 } from "./types";
 
 /**
- * Entwicklungs-Provider: erzeugt aus einem Foto einen funktionsfähigen
- * Ken-Burns-Clip (H.264/yuv420p) und brennt ein deutlich sichtbares
- * MOCK-Label ein. Es wird nichts generiert, was nicht im Quellbild steckt —
- * nur ein virtueller Kameraschwenk über das Original.
+ * Foto-Motion-Provider: erzeugt aus einem Foto einen kinoreif anmutenden
+ * Ken-Burns-Clip (H.264/yuv420p) — geglättete Kamerafahrt (Ease-in/out),
+ * dezentes Farb-Grading und Vignette. Es entsteht nichts, was nicht im
+ * Quellbild steckt: nur eine virtuelle Kamerabewegung über das Original.
+ *
+ * Mit `watermarkLabel` (VIDEO_PROVIDER=mock) wird ein deutlich sichtbares
+ * Label eingebrannt — für Demos/Previews, nie für finales Material.
  */
 
 const FONT_CANDIDATES = [
@@ -38,18 +41,44 @@ function escapeFilterValue(value: string): string {
   return value.replace(/\\/g, "/").replace(/:/g, "\\:").replace(/'/g, "\\'");
 }
 
-function panExpression(direction: -1 | 0 | 1, axis: "x" | "y", frames: number): string {
-  const range = axis === "x" ? "(iw-iw/zoom)" : "(ih-ih/zoom)";
-  if (direction === 0) return `${range}/2`;
-  const progress = `on/${frames}`;
-  return direction > 0
-    ? `${range}*${progress}`
-    : `${range}*(1-${progress})`;
+/**
+ * Geglätteter Fortschritt 0→1 über `frames` Ausgabeframes (Smoothstep,
+ * 3p²−2p³) — nimmt der Kamerafahrt das Lineare/Roboterhafte.
+ */
+function easedProgress(frames: number): string {
+  const p = `(on/${frames})`;
+  return `(${p}*${p}*(3-2*${p}))`;
 }
 
-export class MockVideoProvider implements VideoGenerationProvider {
-  readonly key = "mock";
-  readonly displayName = "Mock-Vorschau (ffmpeg Ken Burns)";
+function panExpression(
+  direction: -1 | 0 | 1,
+  axis: "x" | "y",
+  eased: string
+): string {
+  const range = axis === "x" ? "(iw-iw/zoom)" : "(ih-ih/zoom)";
+  if (direction === 0) return `${range}/2`;
+  return direction > 0 ? `${range}*${eased}` : `${range}*(1-${eased})`;
+}
+
+/** Dezentes Grading: leichter Kontrast-/Sättigungs-Lift + weiche Vignette. */
+const GRADE_FILTERS = [
+  "eq=contrast=1.06:saturation=1.12:brightness=0.01",
+  "vignette=angle=PI/6",
+];
+
+export interface FotoMotionOptions {
+  /** Sichtbares Overlay (z. B. „MOCK-VORSCHAU …“); undefined = kein Label. */
+  watermarkLabel?: string;
+}
+
+export class FotoMotionVideoProvider implements VideoGenerationProvider {
+  readonly key = "foto_motion";
+  readonly displayName = "Foto-Motion (ffmpeg Ken Burns, geglättet)";
+  readonly watermarkLabel?: string;
+
+  constructor(options: FotoMotionOptions = {}) {
+    this.watermarkLabel = options.watermarkLabel;
+  }
 
   isEnabled(): boolean {
     return true;
@@ -60,20 +89,23 @@ export class MockVideoProvider implements VideoGenerationProvider {
     const frames = Math.max(2, Math.round(spec.durationSec * spec.fps));
     const { zoomFrom, zoomTo, panX, panY } = move.kenBurns;
 
-    const zoomExpr = `${zoomFrom}+(${zoomTo}-${zoomFrom})*on/${frames}`;
-    const xExpr = panExpression(panX, "x", frames);
-    const yExpr = panExpression(panY, "y", frames);
+    const eased = easedProgress(frames);
+    const zoomExpr = `${zoomFrom}+(${zoomTo}-${zoomFrom})*${eased}`;
+    const xExpr = panExpression(panX, "x", eased);
+    const yExpr = panExpression(panY, "y", eased);
 
     // Vorskalierung auf Ziel-Seitenverhältnis + 2×-Überabtastung gegen
-    // zoompan-Jitter; danach virtueller Kameraschwenk.
+    // zoompan-Jitter; danach virtueller Kameraschwenk + Grading.
     const filters: string[] = [
       `scale=${spec.width}:${spec.height}:force_original_aspect_ratio=increase:flags=lanczos`,
       `crop=${spec.width}:${spec.height}`,
       `scale=${spec.width * 2}:${spec.height * 2}:flags=lanczos`,
       `zoompan=z='${zoomExpr}':x='${xExpr}':y='${yExpr}':d=${frames}:s=${spec.width}x${spec.height}:fps=${spec.fps}`,
+      ...GRADE_FILTERS,
     ];
 
-    if (spec.overlayLabel) {
+    const overlayLabel = spec.overlayLabel ?? this.watermarkLabel;
+    if (overlayLabel) {
       const font = resolveFontPath();
       const bandHeight = Math.round(spec.height * 0.055);
       filters.push(
@@ -82,7 +114,7 @@ export class MockVideoProvider implements VideoGenerationProvider {
       if (font) {
         filters.push(
           `drawtext=fontfile='${escapeFilterValue(font)}'` +
-            `:text='${escapeFilterValue(spec.overlayLabel)}'` +
+            `:text='${escapeFilterValue(overlayLabel)}'` +
             `:fontcolor=white:fontsize=${Math.round(bandHeight * 0.6)}` +
             `:x=(w-text_w)/2:y=h-${Math.round(bandHeight * 1.7)}`
         );

@@ -125,9 +125,10 @@ export function GenerationSection({ projectId, status, latestJob, shotCount }: P
     <section className="card" id="generierung">
       <h2>4 · Generierung</h2>
       <p className="muted small">
-        Pro ausgewähltem Bild entsteht eine kurze Szene (Mock-Provider:
-        Ken-Burns-Vorschau mit deutlichem Label). Ausgabe: 16:9-Master,
-        9:16-Reel, Posterbild und Untertitel.
+        Pro ausgewähltem Bild entsteht eine kurze Szene (Foto-Motion: sanfte
+        Kamerafahrt über das Originalfoto, mit Überblendungen und dezentem
+        Farb-Grading — es wird nichts hinzuerfunden). Ausgabe: 16:9-Master,
+        9:16-Reel (straffer geschnitten), Posterbild und Untertitel.
       </p>
 
       <div className="actions-row">

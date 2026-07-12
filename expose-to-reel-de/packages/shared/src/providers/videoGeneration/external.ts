@@ -37,7 +37,7 @@ export class ExternalImageToVideoProvider implements VideoGenerationProvider {
     return Promise.reject(
       new ProviderNotConfiguredError(
         this.key,
-        "Kein verifizierter Video-Provider hinterlegt — MockVideoProvider verwenden (VIDEO_PROVIDER=mock)."
+        "Kein verifizierter Video-Provider hinterlegt — Foto-Motion verwenden (VIDEO_PROVIDER=foto_motion)."
       )
     );
   }

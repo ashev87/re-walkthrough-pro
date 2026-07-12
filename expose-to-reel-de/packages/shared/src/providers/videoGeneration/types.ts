@@ -27,6 +27,11 @@ export interface SceneRenderResult {
 export interface VideoGenerationProvider {
   readonly key: string;
   readonly displayName: string;
+  /**
+   * Sichtbares Label, das der Worker in jede Szene einbrennt (Demo-/Mock-
+   * Betrieb). undefined ⇒ Ausgabe ohne Overlay (finales Material).
+   */
+  readonly watermarkLabel?: string;
   isEnabled(): boolean;
   renderScene(spec: SceneRenderSpec): Promise<SceneRenderResult>;
 }

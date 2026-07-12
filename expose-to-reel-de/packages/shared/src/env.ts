@@ -113,6 +113,6 @@ export const env = {
     return optional("IMAGE_ANALYSIS_PROVIDER", "heuristic");
   },
   get videoProvider(): string {
-    return optional("VIDEO_PROVIDER", "mock");
+    return optional("VIDEO_PROVIDER", "foto_motion");
   },
 };

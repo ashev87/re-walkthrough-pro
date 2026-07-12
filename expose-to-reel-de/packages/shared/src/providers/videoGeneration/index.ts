@@ -1,20 +1,37 @@
 import { env } from "../../env";
 import { ExternalImageToVideoProvider } from "./external";
-import { MockVideoProvider } from "./mock";
+import { FotoMotionVideoProvider } from "./fotoMotion";
 import type { VideoGenerationProvider } from "./types";
 
-/** Provider-Auswahl über VIDEO_PROVIDER; Fallback ist immer der Mock. */
+export const MOCK_WATERMARK_LABEL = "MOCK-VORSCHAU – KEIN FINALES MATERIAL";
+
+/**
+ * Provider-Auswahl über VIDEO_PROVIDER:
+ *   "foto_motion" (Standard) — geglätteter Ken Burns, ohne Wasserzeichen.
+ *   "mock"                   — derselbe Renderer, aber mit deutlich
+ *                              sichtbarem MOCK-Label (Demos/Previews).
+ *   "external"               — künftiger KI-Provider; fällt ohne
+ *                              Konfiguration auf Foto-Motion zurück.
+ */
 export function getVideoProvider(): VideoGenerationProvider {
-  if (env.videoProvider === "external") {
-    const external = new ExternalImageToVideoProvider();
-    if (external.isEnabled()) return external;
-    console.warn(
-      "[video] Externer Provider nicht konfiguriert — Fallback auf MockVideoProvider."
-    );
+  switch (env.videoProvider) {
+    case "external": {
+      const external = new ExternalImageToVideoProvider();
+      if (external.isEnabled()) return external;
+      console.warn(
+        "[video] Externer Provider nicht konfiguriert — Fallback auf Foto-Motion."
+      );
+      return new FotoMotionVideoProvider();
+    }
+    case "mock":
+      return new FotoMotionVideoProvider({
+        watermarkLabel: MOCK_WATERMARK_LABEL,
+      });
+    default:
+      return new FotoMotionVideoProvider();
   }
-  return new MockVideoProvider();
 }
 
 export * from "./types";
-export { MockVideoProvider, resolveFontPath } from "./mock";
+export { FotoMotionVideoProvider, resolveFontPath } from "./fotoMotion";
 export { ExternalImageToVideoProvider } from "./external";

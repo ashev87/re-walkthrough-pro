@@ -18,8 +18,10 @@ import {
   concatClips,
   extractPoster,
   normalizeImage,
+  totalDurationWithCrossfade,
   validateOutput,
   type CaptionCue,
+  type ClipInput,
 } from "./ffmpegSteps";
 
 /**
@@ -31,6 +33,20 @@ import {
 export const FPS = 25;
 export const MASTER = { width: 1920, height: 1080, suffix: "16x9" } as const;
 export const REEL = { width: 1080, height: 1920, suffix: "9x16" } as const;
+
+/** Kurze Überblendung zwischen Szenen — knackig, kein „Screensaver“-Effekt. */
+export const CROSSFADE_SEC = 0.35;
+
+/** Reel-Pacing: 9:16-Szenen sind kürzer geschnitten als der 16:9-Master. */
+export const REEL_MAX_SCENE_SEC = 3;
+
+type AspectTarget = typeof MASTER | typeof REEL;
+
+function sceneDurationFor(shotDurationSec: number, target: AspectTarget): number {
+  return target.suffix === REEL.suffix
+    ? Math.min(shotDurationSec, REEL_MAX_SCENE_SEC)
+    : shotDurationSec;
+}
 
 export class JobCancelledError extends Error {
   constructor() {
@@ -166,14 +182,13 @@ export async function processGenerationJob(
 
   const storage = getStorage();
   const provider = getVideoProvider();
-  const overlayLabel =
-    provider.key === "mock" ? "MOCK-VORSCHAU – KEIN FINALES MATERIAL" : undefined;
+  const overlayLabel = provider.watermarkLabel;
 
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-job-"));
   try {
     const totalRenderSteps = shots.length * 2;
     let completedRenders = 0;
-    const clipPaths: Record<string, string[]> = { "16x9": [], "9x16": [] };
+    const clips: Record<string, ClipInput[]> = { "16x9": [], "9x16": [] };
 
     for (const shot of shots) {
       if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
@@ -212,11 +227,12 @@ export async function processGenerationJob(
         for (const target of [MASTER, REEL]) {
           if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
 
+          const durationSec = sceneDurationFor(shot.durationSec, target);
           const clipBytes = await renderSceneWithRetry(provider, {
             imageBytes: normalizedBytes,
             prompt: shot.prompt,
             cameraMoveKey: shot.cameraMove,
-            durationSec: shot.durationSec,
+            durationSec,
             width: target.width,
             height: target.height,
             fps: FPS,
@@ -243,7 +259,7 @@ export async function processGenerationJob(
 
           const clipPath = path.join(tempDir, sceneFilename);
           await writeFile(clipPath, clipBytes);
-          clipPaths[target.suffix]!.push(clipPath);
+          clips[target.suffix]!.push({ path: clipPath, durationSec });
 
           if (target.suffix === MASTER.suffix) {
             await prisma.shot.update({
@@ -279,8 +295,7 @@ export async function processGenerationJob(
       }
     }
 
-    // --- Konkatenation ---
-    const expectedDuration = shots.reduce((sum, s) => sum + s.durationSec, 0);
+    // --- Konkatenation (mit Überblendungen) ---
     const version =
       ((await prisma.videoVersion.aggregate({
         where: { projectId: project.id },
@@ -290,12 +305,16 @@ export async function processGenerationJob(
     const finals: Record<string, { assetId: string; durationSec: number }> = {};
     for (const target of [MASTER, REEL]) {
       if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
+      const targetClips = clips[target.suffix]!;
       const outputPath = path.join(tempDir, `walkthrough-${target.suffix}.mp4`);
-      await concatClips(clipPaths[target.suffix]!, outputPath);
+      await concatClips(targetClips, outputPath, CROSSFADE_SEC);
       const validation = await validateOutput(outputPath, {
         width: target.width,
         height: target.height,
-        durationSec: expectedDuration,
+        durationSec: totalDurationWithCrossfade(
+          targetClips.map((clip) => clip.durationSec),
+          CROSSFADE_SEC
+        ),
       });
       const filename = `walkthrough-${target.suffix}-v${version}.mp4`;
       const finalKey = projectStorageKey(
@@ -373,6 +392,7 @@ export async function processGenerationJob(
         }),
       ].filter(Boolean);
 
+      // Cue-Timing folgt dem 16:9-Master (inkl. Überblendungs-Versatz).
       const cues: CaptionCue[] = shots.map((shot: Shot, index: number) => ({
         text:
           index === 0
@@ -380,7 +400,7 @@ export async function processGenerationJob(
             : ROOM_LABEL_NAMES[shot.roomLabel],
         durationSec: shot.durationSec,
       }));
-      const srt = buildSrt(cues);
+      const srt = buildSrt(cues, CROSSFADE_SEC);
       captionsAssetId = await upsertAsset({
         projectId: project.id,
         kind: "CAPTIONS",

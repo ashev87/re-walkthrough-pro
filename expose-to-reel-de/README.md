@@ -81,7 +81,7 @@ Alle Variablen inkl. Beschreibung: [.env.example](.env.example). Kernpunkte:
 | `CREDENTIALS_ENCRYPTION_KEY` | 32-Byte-Hex-Schlüssel; AES-256-GCM für Provider-Credentials |
 | `STORAGE_DRIVER` | `local` (Standard) oder `s3` (MinIO/AWS) |
 | `FFMPEG_PATH` / `FFPROBE_PATH` | Nur nötig, wenn nicht im PATH |
-| `VIDEO_PROVIDER` | `mock` (Standard); `external` fällt ohne Konfiguration auf den Mock zurück |
+| `VIDEO_PROVIDER` | `foto_motion` (Standard, ohne Wasserzeichen) · `mock` (gleicher Renderer mit MOCK-Label) · `external` (fällt ohne Konfiguration auf foto_motion zurück) |
 | `IS24_IMPORT_ENABLED` / `IS24_PUBLISH_ENABLED` | Feature-Flags der ImmoScout24-Scaffolds (Standard: aus) |
 
 Es liegen **keine Secrets im Repository**; `.env` ist git-ignoriert.
@@ -111,18 +111,21 @@ Alle externen Systeme liegen hinter Interfaces in
 | | Propstack-Import (Python-Bridge, [services/propstack](services/propstack/README.md)) | ✅ aktiv, sobald `propstack_api_key` gesetzt ist |
 | | `ImmoScout24ListingProvider` | 🔒 Scaffold, deaktiviert (Feature-Flag + Apify-Actor-Konfiguration nötig) |
 | `ImageAnalysisProvider` | `HeuristicImageAnalysisProvider` | ✅ aktiv — deterministisch, ohne KI-Schlüssel (Label aus Dateinamen, Duplikate über aHash, Grundrisse über Weißanteil) |
-| `VideoGenerationProvider` | `MockVideoProvider` | ✅ aktiv — ffmpeg-Ken-Burns mit sichtbarem „MOCK-VORSCHAU“-Label |
+| `VideoGenerationProvider` | `FotoMotionVideoProvider` | ✅ aktiv (Standard) — geglätteter ffmpeg-Ken-Burns (Ease-in/out), 0,35-s-Überblendungen, dezentes Farb-Grading; `VIDEO_PROVIDER=mock` = derselbe Renderer mit sichtbarem „MOCK-VORSCHAU“-Label |
 | | `ExternalImageToVideoProvider` | 🔒 dokumentierter Adapter, wirft `ProviderNotConfiguredError` (keine erfundenen Endpunkte) |
 | `PublishingProvider` | `LocalDownloadPublisher` | ✅ aktiv — signierte Download-URLs nach Freigabe |
 | | `ImmoScout24PublishingAdapter` | 🔒 Scaffold, deaktiviert |
 
-**Warum ein Mock-Video-Provider?** Ohne verifizierten, lizenzierten
-Image-to-Video-Dienst erfinden wir keine API-Endpunkte. Der Mock erzeugt
-funktionsfähige, klar gekennzeichnete Vorschau-Clips (virtuelle Kamerafahrt
-über das Originalfoto — es wird nichts hinzuerfunden). Die Prompts für einen
-späteren echten Provider sind bereits enthalten und verbieten explizit das
-Hinzufügen von Objekten, Personen, baulichen Änderungen, Text oder
-unbelegten Ausblicken (`CONTENT_GUARDRAILS`).
+**Warum Foto-Motion statt KI-Video?** Ohne verifizierten, lizenzierten
+Image-to-Video-Dienst erfinden wir keine API-Endpunkte. Foto-Motion ist der
+kostenfreie Produktionspfad: eine geglättete virtuelle Kamerafahrt über das
+Originalfoto (Ease-in/out statt linear), kurze Überblendungen zwischen den
+Räumen, ein dezenter Farb-Look und strafferes 9:16-Pacing (max. 3 s pro
+Szene) — es wird nichts hinzuerfunden, daher kein Wasserzeichen nötig.
+`VIDEO_PROVIDER=mock` nutzt denselben Renderer mit deutlichem MOCK-Label für
+Demos. Die Prompts für einen späteren echten KI-Provider sind bereits
+enthalten und verbieten explizit das Hinzufügen von Objekten, Personen,
+baulichen Änderungen, Text oder unbelegten Ausblicken (`CONTENT_GUARDRAILS`).
 
 ### Propstack-Import (eigenes CRM)
 
@@ -179,7 +182,7 @@ Propstack-API-Calls an (Rate-Limits beachten).
 ## Was ist implementiert vs. Scaffold?
 
 **Implementiert (funktioniert lokal):** manueller End-to-End-Fluss (Projekt →
-Exposé-Daten → Upload+Kuratierung → Shotliste → Mock-Generierung 16:9/9:16 →
+Exposé-Daten → Upload+Kuratierung → Shotliste → Foto-Motion-Generierung 16:9/9:16 →
 Freigabe → Download), Worker-Pipeline mit Fortschritt/Abbruch/Retry,
 Heuristik-Bildanalyse, Seeds mit drei deutschen Beispiel-Exposés, Unit- und
 Integrationstests.
