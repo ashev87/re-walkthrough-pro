@@ -170,6 +170,9 @@ export function ShotsSection({
                   <td>
                     {editable ? (
                       <input
+                        // Remount bei Server-Änderung (z. B. „Mit KI vorschlagen“),
+                        // sonst zeigt das unkontrollierte Feld den alten Wert.
+                        key={`${shot.id}:${shot.narration ?? ""}`}
                         defaultValue={shot.narration ?? ""}
                         placeholder="z. B. Die offene Küche mit Kochinsel."
                         maxLength={160}
