@@ -85,7 +85,7 @@ Alle Variablen inkl. Beschreibung: [.env.example](.env.example). Kernpunkte:
 | `IS24_IMPORT_ENABLED` / `IS24_PUBLISH_ENABLED` | Feature-Flags der ImmoScout24-Scaffolds (Standard: aus) |
 | `LLM_PROVIDER` | LLM für die KI-Optionen: `anthropic` (Standard) oder `minimax` (MiniMax M3) |
 | `ANTHROPIC_API_KEY` / `MINIMAX_API_KEY` | Key des gewählten Providers — aktiviert KI-Bildanalyse (`IMAGE_ANALYSIS_PROVIDER=ai`) + KI-Marketing-Texte |
-| `OPENAI_API_KEY` | Opt-in: Voiceover per TTS |
+| `OPENAI_API_KEY` / `ELEVENLABS_API_KEY` | Opt-in: Voiceover per TTS (`TTS_PROVIDER` wählt; sonst entscheidet der vorhandene Key) |
 | `MUSIC_TRACK_PATH` | Opt-in: Hintergrundmusik (lizenzierte Audiodatei des Betreibers) |
 
 Es liegen **keine Secrets im Repository**; `.env` ist git-ignoriert.
@@ -144,7 +144,7 @@ den Basis-Funktionen weiter.
 | **Text-Overlays** | Checkbox bei der Generierung | Raum-Name dezent in jeder Szene |
 | **Endkarte** | Checkbox bei der Generierung | 3-s-Abschluss-Karte mit Titel, Lage, Eckdaten und Firmenname |
 | **Hintergrundmusik** | `MUSIC_TRACK_PATH` + Checkbox | Lizenzierter Track des Betreibers, geloopt/leise gemischt, Ausblendung am Ende |
-| **Voiceover** | `OPENAI_API_KEY` + gespeichertes Skript + Checkbox | TTS spricht das geprüfte Skript ein; wird mit ggf. abgesenkter Musik gemischt und als MP3-Asset gespeichert |
+| **Voiceover** | `OPENAI_API_KEY` *oder* `ELEVENLABS_API_KEY` + gespeichertes Skript + Checkbox | TTS spricht das geprüfte Skript ein (ElevenLabs: `eleven_multilingual_v2`, erkennt Deutsch automatisch; Stimme via `ELEVENLABS_VOICE_ID`); wird mit ggf. abgesenkter Musik gemischt und als MP3-Asset gespeichert |
 | **Hybrid-KI-Video** | Externer Video-Provider konfiguriert | Pro Shot wählbar („KI-Video“-Spalte): Hero-Szenen über den KI-Provider, Rest Foto-Motion — ohne Provider unsichtbar |
 
 **LLM-Provider:** `LLM_PROVIDER=anthropic` (Standard, `ANTHROPIC_API_KEY`,

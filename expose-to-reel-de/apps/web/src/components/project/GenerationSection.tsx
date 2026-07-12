@@ -228,7 +228,7 @@ export function GenerationSection({
           >
             <strong>Voiceover</strong>{" "}
             {!capabilities.tts
-              ? "— nicht konfiguriert (OPENAI_API_KEY für TTS setzen)."
+              ? "— nicht konfiguriert (OPENAI_API_KEY oder ELEVENLABS_API_KEY für TTS setzen)."
               : !hasVoiceoverScript
                 ? "— zuerst ein Voiceover-Skript in Abschnitt 4 speichern."
                 : "— gespeichertes Skript wird eingesprochen und eingemischt."}

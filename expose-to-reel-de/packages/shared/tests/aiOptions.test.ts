@@ -18,7 +18,11 @@ import {
   buildMarketingPrompt,
   isTextGenerationEnabled,
 } from "../src/providers/texts/index";
-import { OpenAiTtsProvider } from "../src/providers/tts/index";
+import {
+  ElevenLabsTtsProvider,
+  getTtsProvider,
+  OpenAiTtsProvider,
+} from "../src/providers/tts/index";
 
 const ENV_KEYS = [
   "ANTHROPIC_API_KEY",
@@ -27,6 +31,8 @@ const ENV_KEYS = [
   "LLM_PROVIDER",
   "LLM_TEXT_MODEL",
   "ANTHROPIC_TEXT_MODEL",
+  "TTS_PROVIDER",
+  "ELEVENLABS_API_KEY",
 ] as const;
 const saved = new Map<string, string | undefined>();
 for (const key of ENV_KEYS) saved.set(key, process.env[key]);
@@ -72,6 +78,38 @@ describe("KI-Opt-in-Schalter", () => {
     process.env.OPENAI_API_KEY = "sk-test";
     expect(isLlmConfigured()).toBe(true);
     expect(new OpenAiTtsProvider().isEnabled()).toBe(true);
+  });
+});
+
+describe("TTS-Provider-Auswahl (OpenAI / ElevenLabs)", () => {
+  test("explizite Wahl über TTS_PROVIDER", () => {
+    process.env.TTS_PROVIDER = "elevenlabs";
+    expect(getTtsProvider()).toBeInstanceOf(ElevenLabsTtsProvider);
+    process.env.TTS_PROVIDER = "openai";
+    expect(getTtsProvider()).toBeInstanceOf(OpenAiTtsProvider);
+  });
+
+  test("Auto-Auswahl über den vorhandenen Key", () => {
+    delete process.env.TTS_PROVIDER;
+    delete process.env.OPENAI_API_KEY;
+    process.env.ELEVENLABS_API_KEY = "el-test";
+    const provider = getTtsProvider();
+    expect(provider).toBeInstanceOf(ElevenLabsTtsProvider);
+    expect(provider.isEnabled()).toBe(true);
+  });
+
+  test("ElevenLabs nur mit ELEVENLABS_API_KEY aktiv", () => {
+    process.env.TTS_PROVIDER = "elevenlabs";
+    delete process.env.ELEVENLABS_API_KEY;
+    process.env.OPENAI_API_KEY = "sk-test"; // falscher Key zählt nicht
+    expect(getTtsProvider().isEnabled()).toBe(false);
+  });
+
+  test("ohne jeden Key bleibt TTS deaktiviert", () => {
+    delete process.env.TTS_PROVIDER;
+    delete process.env.OPENAI_API_KEY;
+    delete process.env.ELEVENLABS_API_KEY;
+    expect(getTtsProvider().isEnabled()).toBe(false);
   });
 });
 

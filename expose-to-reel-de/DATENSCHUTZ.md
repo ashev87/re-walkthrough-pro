@@ -27,7 +27,7 @@ lange sie aufbewahrt werden und wie die Löschung funktioniert.
 | Audit-Ereignisse | Wer hat wann was ausgelöst (ohne Secrets) | PostgreSQL |
 | Provider-Zugangsdaten | Nur verschlüsselt (AES-256-GCM) oder als Umgebungsvariablen | PostgreSQL / Env |
 | Propstack-Import | Objektdaten + Fotos aus dem eigenen CRM des Maklers; der Eigentümer-Kontakt wird zur Anzeige abgerufen, aber nicht als Datensatz gespeichert (Audit enthält nur Status-Metadaten, keine Kontaktdaten) | PostgreSQL / Objektspeicher |
-| KI-Optionen (Opt-in) | Bei aktivierter KI-Bildanalyse werden hochgeladene Fotos an den konfigurierten LLM-Provider übermittelt (Anthropic oder MiniMax, je nach `LLM_PROVIDER`); bei KI-Texten die freigegebenen Exposé-Fakten; bei Voiceover das geprüfte Skript an die OpenAI-API. Ohne die jeweiligen API-Keys findet keine Übermittlung statt. | Anthropic / MiniMax / OpenAI (transient) |
+| KI-Optionen (Opt-in) | Bei aktivierter KI-Bildanalyse werden hochgeladene Fotos an den konfigurierten LLM-Provider übermittelt (Anthropic oder MiniMax, je nach `LLM_PROVIDER`); bei KI-Texten die freigegebenen Exposé-Fakten; bei Voiceover das geprüfte Skript an den konfigurierten TTS-Anbieter (OpenAI oder ElevenLabs). Ohne die jeweiligen API-Keys findet keine Übermittlung statt. | Anthropic / MiniMax / OpenAI / ElevenLabs (transient) |
 
 **Adress-Sichtbarkeit:** Die genaue Adresse (Straße/Hausnummer) wird nur
 angezeigt bzw. in Untertitel übernommen, wenn der Nutzer die Sichtbarkeit
