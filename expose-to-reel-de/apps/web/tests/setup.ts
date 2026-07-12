@@ -10,6 +10,9 @@ process.env.CREDENTIALS_ENCRYPTION_KEY ??=
 process.env.DATABASE_URL ??=
   "postgresql://e2r:e2r_dev_password@localhost:5432/expose_to_reel";
 process.env.STORAGE_DRIVER = "local";
+// Tests deterministisch halten und keine API-Kosten verursachen: die lokale
+// .env (via Prisma geladen) darf hier keinen Vision-Provider aktivieren.
+process.env.IMAGE_ANALYSIS_PROVIDER = "heuristic";
 process.env.STORAGE_LOCAL_DIR ??= path.resolve(
   __dirname,
   "../../../.data/test-storage"

@@ -177,6 +177,19 @@ function mapListingData(payload: PropstackPayload) {
   };
 }
 
+/**
+ * PROPSTACK_MAX_IMAGES robust auslesen: leere/ungültige Werte (etwa der
+ * ""-Platzhalter aus der .env-Vorlage) fallen auf den Standard zurück —
+ * Number("") wäre 0 und würde den Foto-Import komplett abschalten.
+ * Explizite Werte inkl. "0" (Tests: keine Downloads) bleiben erhalten.
+ */
+export function resolveMaxImages(raw: string | undefined): number {
+  const trimmed = raw?.trim();
+  if (!trimmed) return DEFAULT_MAX_IMAGES;
+  const parsed = Number(trimmed);
+  return Number.isInteger(parsed) && parsed >= 0 ? parsed : DEFAULT_MAX_IMAGES;
+}
+
 export interface PropstackImportResult {
   projectId: string;
   titel: string;
@@ -207,11 +220,11 @@ export async function importPropstackProject(
     },
   });
 
-  const maxImages = Number(process.env.PROPSTACK_MAX_IMAGES ?? DEFAULT_MAX_IMAGES);
+  const maxImages = resolveMaxImages(process.env.PROPSTACK_MAX_IMAGES);
   const candidates = (payload.images ?? [])
     .filter((img) => !img.is_private && img.url)
     .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-    .slice(0, Math.max(0, maxImages));
+    .slice(0, maxImages);
 
   let imported = 0;
   let skipped = 0;

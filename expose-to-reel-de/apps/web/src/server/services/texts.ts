@@ -1,5 +1,7 @@
+import Anthropic from "@anthropic-ai/sdk";
 import {
   generateMarketingTexts,
+  getLlmProviderKey,
   isTextGenerationEnabled,
   marketingTextsSchema,
   prisma,
@@ -46,7 +48,69 @@ export async function generateTextsForProject(
     throw new ApiError(422, "Bitte zuerst die Exposé-Daten speichern.");
   }
 
-  const texts = await generateMarketingTexts({
+  let texts: MarketingTexts;
+  try {
+    texts = await generateMarketingTextsSafe(project, listing);
+  } catch (error) {
+    throw mapLlmError(error);
+  }
+
+  await prisma.propertyProject.update({
+    where: { id: projectId },
+    data: { marketingTexts: texts },
+  });
+  await recordAudit(prisma, {
+    organizationId: user.organizationId,
+    projectId,
+    userId: user.id,
+    type: "texts.generated",
+  });
+  return texts;
+}
+
+/** LLM-API-Fehler in verständliche, deutschsprachige Antworten übersetzen. */
+function mapLlmError(error: unknown): unknown {
+  if (error instanceof Anthropic.APIError) {
+    const provider = getLlmProviderKey() === "minimax" ? "MiniMax" : "Anthropic";
+    if (
+      error.status === 402 ||
+      /insufficient.balance/i.test(error.message ?? "")
+    ) {
+      return new ApiError(
+        502,
+        `Das Guthaben Ihres ${provider}-Kontos ist aufgebraucht — bitte aufladen oder in .env den LLM_PROVIDER wechseln.`
+      );
+    }
+    if (error.status === 401 || error.status === 403) {
+      return new ApiError(
+        502,
+        `${provider}-API-Key wurde abgelehnt — bitte Key in .env prüfen.`
+      );
+    }
+    if (error.status === 429) {
+      return new ApiError(
+        429,
+        `${provider}-Rate-Limit erreicht — bitte kurz warten und erneut versuchen.`
+      );
+    }
+    return new ApiError(
+      502,
+      `LLM-Anfrage fehlgeschlagen (${provider}, HTTP ${error.status ?? "?"}).`
+    );
+  }
+  return error;
+}
+
+type ProjectWithShots = { shots: Array<{ roomLabel: keyof typeof ROOM_LABEL_NAMES }> };
+type ListingRow = NonNullable<
+  Awaited<ReturnType<typeof prisma.listingData.findFirst>>
+>;
+
+async function generateMarketingTextsSafe(
+  project: ProjectWithShots,
+  listing: ListingRow
+): Promise<MarketingTexts> {
+  return generateMarketingTexts({
     facts: {
       marketingType: listing.marketingType,
       objectType: listing.objectType,
@@ -67,18 +131,6 @@ export async function generateTextsForProject(
     },
     roomNames: project.shots.map((shot) => ROOM_LABEL_NAMES[shot.roomLabel]),
   });
-
-  await prisma.propertyProject.update({
-    where: { id: projectId },
-    data: { marketingTexts: texts },
-  });
-  await recordAudit(prisma, {
-    organizationId: user.organizationId,
-    projectId,
-    userId: user.id,
-    type: "texts.generated",
-  });
-  return texts;
 }
 
 export async function saveTexts(

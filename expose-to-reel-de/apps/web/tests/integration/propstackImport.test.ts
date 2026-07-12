@@ -1,6 +1,7 @@
 import { prisma } from "@e2r/shared";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { POST as createProjectRoute } from "@/app/api/projects/route";
+import { resolveMaxImages } from "@/server/services/propstackImport";
 import {
   cleanupTestContext,
   createTestContext,
@@ -26,6 +27,30 @@ afterAll(async () => {
   delete process.env.PROPSTACK_FIXTURES;
   delete process.env.PROPSTACK_MAX_IMAGES;
   await cleanupTestContext(ctx);
+});
+
+describe("resolveMaxImages", () => {
+  test("ungesetzt → Standard 20", () => {
+    expect(resolveMaxImages(undefined)).toBe(20);
+  });
+
+  test("leerer String (Vorlage in .env) → Standard 20, nicht 0", () => {
+    // Regression: PROPSTACK_MAX_IMAGES="" führte zu Number("") === 0 und
+    // damit zu einem Import ganz ohne Fotos (0 importiert, 0 übersprungen).
+    expect(resolveMaxImages("")).toBe(20);
+    expect(resolveMaxImages("   ")).toBe(20);
+  });
+
+  test("explizite Werte bleiben erhalten (auch 0 für Tests)", () => {
+    expect(resolveMaxImages("0")).toBe(0);
+    expect(resolveMaxImages("5")).toBe(5);
+  });
+
+  test("unbrauchbare Werte → Standard 20", () => {
+    expect(resolveMaxImages("abc")).toBe(20);
+    expect(resolveMaxImages("-3")).toBe(20);
+    expect(resolveMaxImages("2.5")).toBe(20);
+  });
 });
 
 describe("Propstack-Import", () => {
