@@ -1,7 +1,8 @@
 /**
  * Zeilenumbruch für drawtext-Overlays: greedy an Wortgrenzen, maximal
  * `maxLines` Zeilen; was nicht passt, wird mit „…“ gekappt. Einzelne
- * überlange Wörter werden nie zerschnitten.
+ * überlange Wörter werden beim Umbrechen nie zerschnitten — nur im
+ * Ellipsen-Pfad wird hart gekappt, damit das Overlay nie überläuft.
  */
 export function wrapText(
   text: string,
@@ -32,6 +33,11 @@ export function wrapText(
     let last = lines[lines.length - 1] ?? "";
     while (last.length + 2 > maxCharsPerLine && last.includes(" ")) {
       last = last.slice(0, last.lastIndexOf(" "));
+    }
+    if (last.length + 2 > maxCharsPerLine) {
+      // Nur im Ellipsen-Pfad: Layout gewinnt über Wortintegrität — ein
+      // einzelnes überlanges Wort wird hart gekappt, damit „Wort …“ passt.
+      last = last.slice(0, Math.max(0, maxCharsPerLine - 2)).trimEnd();
     }
     lines[lines.length - 1] = last ? `${last} …` : "…";
   }

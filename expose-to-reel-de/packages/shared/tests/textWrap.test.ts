@@ -29,6 +29,18 @@ describe("wrapText", () => {
     for (const line of lines) expect(line.length).toBeLessThanOrEqual(22);
   });
 
+  test("Ellipse kappt auch ein einzelnes überlanges Wort hart (Layout-Garantie)", () => {
+    const result = wrapText(
+      "ab cd Supercalifragilisticexpialidocious xyz mehr",
+      10,
+      2
+    );
+    const lines = result.split("\n");
+    expect(lines).toHaveLength(2);
+    expect(lines[1]!.endsWith("…")).toBe(true);
+    for (const line of lines) expect(line.length).toBeLessThanOrEqual(10);
+  });
+
   test("einzelnes überlanges Wort wird nicht zerschnitten, aber einzeilig gelassen", () => {
     expect(wrapText("Donaudampfschifffahrtsgesellschaft", 10)).toBe(
       "Donaudampfschifffahrtsgesellschaft"
