@@ -1,0 +1,345 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Nutzer & Organisationen
+// ---------------------------------------------------------------------------
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  users               User[]
+  projects            PropertyProject[]
+  providerConnections ProviderConnection[]
+  auditEvents         AuditEvent[]
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String
+  name           String
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  organization       Organization        @relation(fields: [organizationId], references: [id])
+  approvalRecords    ApprovalRecord[]
+  rightsAttestations RightsAttestation[]
+  auditEvents        AuditEvent[]
+}
+
+// ---------------------------------------------------------------------------
+// Projekte
+// ---------------------------------------------------------------------------
+
+enum ProjectStatus {
+  DRAFT
+  NEEDS_REVIEW
+  GENERATING
+  READY
+  APPROVED
+  EXPORTED
+  FAILED
+}
+
+enum SourceType {
+  MANUAL_UPLOAD
+  IMMOSCOUT24_API
+  PROPSTACK
+}
+
+model PropertyProject {
+  id             String        @id @default(cuid())
+  organizationId String
+  title          String
+  status         ProjectStatus @default(DRAFT)
+  sourceType     SourceType    @default(MANUAL_UPLOAD)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  organization       Organization        @relation(fields: [organizationId], references: [id])
+  listingData        ListingData?
+  mediaAssets        MediaAsset[]
+  shots              Shot[]
+  generationJobs     GenerationJob[]
+  videoVersions      VideoVersion[]
+  approvalRecords    ApprovalRecord[]
+  rightsAttestations RightsAttestation[]
+  auditEvents        AuditEvent[]
+
+  @@index([organizationId, status])
+}
+
+// ---------------------------------------------------------------------------
+// Exposé-Daten (nur freigegebene Fakten; Videotexte dürfen ausschließlich
+// hieraus gespeist werden)
+// ---------------------------------------------------------------------------
+
+enum MarketingType {
+  KAUF
+  MIETE
+}
+
+enum AddressVisibility {
+  FULL // Straße + Hausnummer sichtbar
+  STREET_ONLY // Straße ohne Hausnummer
+  CITY_ONLY // nur PLZ/Ort (Standard)
+}
+
+model ListingData {
+  id        String @id @default(cuid())
+  projectId String @unique
+
+  marketingType MarketingType
+  objectType    String // z. B. "Wohnung", "Einfamilienhaus"
+  titel         String
+  plz           String
+  ort           String
+  strasse       String?
+  hausnummer    String?
+
+  addressVisibility AddressVisibility @default(CITY_ONLY)
+
+  kaufpreis           Decimal? @db.Decimal(12, 2)
+  kaltmiete           Decimal? @db.Decimal(12, 2)
+  nebenkosten         Decimal? @db.Decimal(12, 2)
+  warmmiete           Decimal? @db.Decimal(12, 2)
+  zimmer              Decimal? @db.Decimal(4, 1)
+  wohnflaeche         Decimal? @db.Decimal(8, 2)
+  grundstuecksflaeche Decimal? @db.Decimal(10, 2)
+  baujahr             Int?
+  provision           String?
+
+  // Energieausweis — nur befüllt, wenn vom Nutzer geliefert
+  energieausweisTyp String? // "Bedarfsausweis" | "Verbrauchsausweis"
+  energiekennwert   Decimal? @db.Decimal(6, 1) // kWh/(m²·a)
+  energieklasse     String? // A+ … H
+  energietraeger    String?
+
+  beschreibung String? // freigegebener Exposé-Text
+
+  project PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// ---------------------------------------------------------------------------
+// Medien
+// ---------------------------------------------------------------------------
+
+enum MediaKind {
+  SOURCE_IMAGE
+  NORMALIZED_IMAGE
+  SCENE_CLIP
+  FINAL_VIDEO
+  POSTER
+  CAPTIONS
+}
+
+enum RoomLabel {
+  AUSSENANSICHT
+  EINGANG
+  FLUR
+  WOHNZIMMER
+  KUECHE
+  ESSBEREICH
+  SCHLAFZIMMER
+  ARBEITSZIMMER
+  BAD
+  BALKON_TERRASSE
+  GARTEN
+  AUSSICHT
+  GRUNDRISS
+  SONSTIGES
+}
+
+model MediaAsset {
+  id         String    @id @default(cuid())
+  projectId  String
+  kind       MediaKind
+  storageKey String    @unique
+  filename   String
+  mimeType   String
+  sizeBytes  Int
+  width      Int?
+  height     Int?
+  sha256     String
+  perceptualHash String? // 64-Bit aHash (hex) für Duplikat-Erkennung
+  whiteRatio     Float? // Anteil sehr heller Pixel — Grundriss-Heuristik
+  caption    String?
+  sortIndex  Int       @default(0)
+  roomLabel  RoomLabel?
+
+  // Analyseergebnisse (Vorschläge — Nutzer kann jede Entscheidung überstimmen)
+  isLowResolution  Boolean @default(false)
+  isLikelyFloorplan Boolean @default(false)
+  duplicateOfId    String?
+  excluded         Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  project     PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  duplicateOf MediaAsset?     @relation("Duplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates  MediaAsset[]    @relation("Duplicates")
+  shots       Shot[]
+
+  @@index([projectId, kind, sortIndex])
+}
+
+// ---------------------------------------------------------------------------
+// Shotliste & Generierung
+// ---------------------------------------------------------------------------
+
+enum ShotStatus {
+  PENDING
+  RENDERING
+  DONE
+  FAILED
+}
+
+model Shot {
+  id           String     @id @default(cuid())
+  projectId    String
+  mediaAssetId String
+  roomLabel    RoomLabel
+  sortIndex    Int
+  selected     Boolean    @default(true)
+  cameraMove   String
+  prompt       String
+  durationSec  Float      @default(4)
+  status       ShotStatus @default(PENDING)
+  sceneAssetId String?
+  errorMessage String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  project    PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset      @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortIndex])
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model GenerationJob {
+  id             String    @id @default(cuid())
+  projectId      String
+  idempotencyKey String?   @unique
+  queueJobId     String?
+  status         JobStatus @default(QUEUED)
+  progress       Int       @default(0) // 0–100
+  currentStep    String?
+  errorMessage   String?
+  cancelRequested Boolean  @default(false)
+  createdAt      DateTime  @default(now())
+  startedAt      DateTime?
+  finishedAt     DateTime?
+
+  project       PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  videoVersions VideoVersion[]
+
+  @@index([projectId, createdAt])
+}
+
+model VideoVersion {
+  id              String  @id @default(cuid())
+  projectId       String
+  generationJobId String?
+  version         Int
+
+  master16x9AssetId String
+  reel9x16AssetId   String
+  posterAssetId     String?
+  captionsAssetId   String?
+
+  durationSec Float
+  createdAt   DateTime @default(now())
+
+  project       PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  generationJob GenerationJob?  @relation(fields: [generationJobId], references: [id], onDelete: SetNull)
+  approvals     ApprovalRecord[]
+
+  @@unique([projectId, version])
+}
+
+// ---------------------------------------------------------------------------
+// Rechte, Freigabe, Audit
+// ---------------------------------------------------------------------------
+
+model RightsAttestation {
+  id                String   @id @default(cuid())
+  projectId         String
+  userId            String
+  scope             String // z. B. "Alle in diesem Projekt hochgeladenen Fotos"
+  sourceDescription String // Herkunft der Bilder
+  confirmedAt       DateTime @default(now())
+
+  project PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User            @relation(fields: [userId], references: [id])
+}
+
+model ApprovalRecord {
+  id             String   @id @default(cuid())
+  projectId      String
+  userId         String
+  videoVersionId String
+  checklist       Json // { factsVerified, noMisleadingContent, imageRightsConfirmed, privacyReviewed, addressVisibilityConfirmed }
+  snapshot       Json // unveränderlicher Stand: Fakten, Shotliste, Asset-Hashes
+  snapshotSha256 String
+  createdAt      DateTime @default(now())
+
+  project      PropertyProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user         User            @relation(fields: [userId], references: [id])
+  videoVersion VideoVersion    @relation(fields: [videoVersionId], references: [id], onDelete: Cascade)
+}
+
+model AuditEvent {
+  id             String   @id @default(cuid())
+  organizationId String
+  projectId      String?
+  userId         String?
+  type           String // z. B. "project.created", "project.approved"
+  data           Json?
+  createdAt      DateTime @default(now())
+
+  organization Organization     @relation(fields: [organizationId], references: [id])
+  project      PropertyProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  user         User?            @relation(fields: [userId], references: [id])
+
+  @@index([organizationId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Provider-Verbindungen (Credentials nur verschlüsselt)
+// ---------------------------------------------------------------------------
+
+enum ProviderConnectionStatus {
+  DISABLED
+  CONFIGURED
+}
+
+model ProviderConnection {
+  id                   String                   @id @default(cuid())
+  organizationId       String
+  provider             String // "IMMOSCOUT24_IMPORT" | "IMMOSCOUT24_PUBLISH" | "APIFY" | …
+  status               ProviderConnectionStatus @default(DISABLED)
+  encryptedCredentials String? // AES-256-GCM (iv:tag:ciphertext, base64) — niemals im Klartext loggen
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([organizationId, provider])
+}

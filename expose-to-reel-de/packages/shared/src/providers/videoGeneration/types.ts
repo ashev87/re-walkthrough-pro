@@ -1,0 +1,32 @@
+/**
+ * Video-Generierung: ein kurzer Clip pro ausgewähltem Bild.
+ * MockVideoProvider (ffmpeg-Ken-Burns) ist der Entwicklungs-Standard.
+ */
+
+export interface SceneRenderSpec {
+  /** Quellbild (normalisiert, JPEG/PNG). */
+  imageBytes: Buffer;
+  /** Vollständiger Prompt inkl. Inhalts-Leitplanken. */
+  prompt: string;
+  /** Schlüssel der Kamerabewegung (siehe domain/cameraMoves). */
+  cameraMoveKey: string;
+  durationSec: number;
+  width: number;
+  height: number;
+  fps: number;
+  /** Sichtbares Label (z. B. „MOCK-VORSCHAU“); leer = kein Overlay. */
+  overlayLabel?: string;
+}
+
+export interface SceneRenderResult {
+  /** H.264-MP4-Bytes des gerenderten Clips. */
+  videoBytes: Buffer;
+  providerKey: string;
+}
+
+export interface VideoGenerationProvider {
+  readonly key: string;
+  readonly displayName: string;
+  isEnabled(): boolean;
+  renderScene(spec: SceneRenderSpec): Promise<SceneRenderResult>;
+}

@@ -1,0 +1,2147 @@
+{
+  "documents": [],
+  "id": 5472912,
+  "name": "Koserstraße 25 - Berlin",
+  "title": {
+    "label": "Überschrift",
+    "value": null
+  },
+  "unit_id": null,
+  "exposee_id": null,
+  "project_id": null,
+  "location_id": 13539,
+  "broker_id": 7918,
+  "archived": false,
+  "token": "WG41bujMrz15DFSERDszPhWm",
+  "street": "Koserstraße",
+  "house_number": "25",
+  "apartment_number": null,
+  "zip_code": "14195",
+  "city": "Berlin",
+  "address": "Koserstraße 25, 14195 Berlin, Deutschland",
+  "short_address": "Koserstraße 25, 14195 Berlin",
+  "lat": 52.4620585,
+  "lng": 13.2938948,
+  "country": "DEU",
+  "custom_lp_address": null,
+  "district": {
+    "label": "Gemarkung",
+    "value": null
+  },
+  "region": "Berlin",
+  "hide_address": true,
+  "location_name": "Dahlem",
+  "sublocality_level_1": "Dahlem",
+  "property_space_value": 250.0,
+  "property_space_min_value": null,
+  "property_rent_per_sqm_from_value": null,
+  "property_additional_costs_per_sqm_from_value": null,
+  "for_bidding": false,
+  "group_ids": [],
+  "construction_type": null,
+  "recommended_use_types": null,
+  "marketing_type": "BUY",
+  "object_type": "LIVING",
+  "rs_type": "HOUSE",
+  "rs_category": "SINGLE_FAMILY_HOUSE",
+  "custom_fields": {
+    "flurnummer": {
+      "value": null,
+      "pretty_value": null
+    },
+    "reservierungsdatum": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_baujahr": {
+      "value": 1933.0,
+      "pretty_value": 1933
+    },
+    "einheit_nr": {
+      "value": null,
+      "pretty_value": null
+    },
+    "flurstucknummer": {
+      "value": null,
+      "pretty_value": null
+    },
+    "reservierungsdatum_bis": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_letzte_modernisierung": {
+      "value": 2005.0,
+      "pretty_value": 2005
+    },
+    "beschreibung": {
+      "value": null,
+      "pretty_value": null
+    },
+    "grundstucksgrosse": {
+      "value": null,
+      "pretty_value": null
+    },
+    "anzahlung_kaufer": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_objekttyp": {
+      "value": 138776,
+      "pretty_value": "Einfamilienhaus mit Garten"
+    },
+    "angebotspreis": {
+      "value": null,
+      "pretty_value": null
+    },
+    "bodenrichtwert_1": {
+      "value": null,
+      "pretty_value": null
+    },
+    "anzahlung_verkaufer": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_anzahl_objektbilder": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mehrere_eigentumer": {
+      "value": null,
+      "pretty_value": null
+    },
+    "brw_summe": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_vermarktungszeit": {
+      "value": 138800,
+      "pretty_value": "6"
+    },
+    "we_nr": {
+      "value": null,
+      "pretty_value": null
+    },
+    "bebauungsplan_1": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_immobilienart": {
+      "value": 138803,
+      "pretty_value": "Wohnimmobilie"
+    },
+    "wochentlicher_eigentumer_report": {
+      "value": null,
+      "pretty_value": "Nein"
+    },
+    "alkis_link": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_datum_besichtigung": {
+      "value": "2026-05-27",
+      "pretty_value": "27.05.2026"
+    },
+    "objektschlussel_vorhanden": {
+      "value": null,
+      "pretty_value": null
+    },
+    "datenraum_link": {
+      "value": null,
+      "pretty_value": null
+    },
+    "akquise_ma": {
+      "value": 7918,
+      "pretty_value": {
+        "anrede": "Herr",
+        "titel": null,
+        "vorname": "Dorian",
+        "nachname": "Rouhani",
+        "name": "Dorian Rouhani",
+        "telefon": "030 120 841 86",
+        "mobil": "0152 044 186 30",
+        "kuerzel": "DR",
+        "email": "rouhani@dk360.de",
+        "oeffentliche_email": "rouhani@dk360.de",
+        "webseite": "www.dk360.de",
+        "avatar": "<img src='https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/thumb_Dorian.jpg' width='100' />",
+        "profilbild_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/Dorian.jpg",
+        "profilbild_url_quadrat": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/thumb_Dorian.jpg",
+        "profilbild_url_klein": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/small_thumb_Dorian.jpg",
+        "position": "Leiter Akquise & Verkauf",
+        "weiblich": false,
+        "buero": null,
+        "logo": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/logo/f6QuXaneHuw83c2ZcKcFkKDG/DK-logo-dark.png",
+        "unterschrift": null,
+        "custom": {}
+      }
+    },
+    "mwa_objekt_titel": {
+      "value": 138810,
+      "pretty_value": "Gepflegtes"
+    },
+    "aufgeteilt": {
+      "value": null,
+      "pretty_value": "Nein"
+    },
+    "realistischen_preis": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_objekt_titel_2": {
+      "value": 138829,
+      "pretty_value": "mit Einliegerwohnung"
+    },
+    "grundflaeche_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "lead_quelle": {
+      "value": 145267,
+      "pretty_value": "andere"
+    },
+    "mwa_letzte_modernisierung_beschreibung": {
+      "value": "zuletzt: neuer Heizkessel - Ölzentral Heizung\n1993-2000: Objket gekauft, Dach neu, Elektrik- , Alarmanlage, Kamin, Küche 98, ",
+      "pretty_value": "zuletzt: neuer Heizkessel - Ölzentral Heizung\n1993-2000: Objket gekauft, Dach neu, Elektrik- , Alarmanlage, Kamin, Küche 98, "
+    },
+    "bgf_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "verkauft_durch": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_wohnflaeche": {
+      "value": 250.0,
+      "pretty_value": "250 m²"
+    },
+    "wohnflache_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "in_einigung": {
+      "value": null,
+      "pretty_value": "Nein"
+    },
+    "mwa_gartenflache": {
+      "value": 1300.0,
+      "pretty_value": "1.300 m²"
+    },
+    "annahme_miete": {
+      "value": null,
+      "pretty_value": null
+    },
+    "preis_pro_m_2_kaufpreis_vermietbare_flaeche": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_grundstucksflache": {
+      "value": 1500.0,
+      "pretty_value": "1.500 m²"
+    },
+    "jnkm_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "bodenrichtwert": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_bodenrichtwert": {
+      "value": "1800 W 0,4",
+      "pretty_value": "1800 W 0,4"
+    },
+    "nachweis_miete": {
+      "value": null,
+      "pretty_value": null
+    },
+    "besichtigt_am": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_etage": {
+      "value": null,
+      "pretty_value": null
+    },
+    "m_2_wfl_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "qualicall_ma": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_etagenzahl": {
+      "value": "4",
+      "pretty_value": "4"
+    },
+    "faktor_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "fnp": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_aufzug_vorhanden": {
+      "value": 138838,
+      "pretty_value": "nicht vorhanden"
+    },
+    "preis_bestand": {
+      "value": null,
+      "pretty_value": null
+    },
+    "bebauungsplan": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_zimmer_anzahl": {
+      "value": 7.0,
+      "pretty_value": "7"
+    },
+    "grundflache_neubau": {
+      "value": null,
+      "pretty_value": null
+    },
+    "vermietungssituation": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_ausstattungsmerkmale_1": {
+      "value": "eleganter Grundriss mit vielen Verbindungszimmer mit Schiebetüren, offenes Wohnkonzept auf moderne Ansprüche anwendbar, Entwicklung der Immobilie weiter möglich, hochwertige Gesamtausstattung, Einliegerwohnung im Soutterain vorhanden, Sichtgeschützter und großzügiger Gartenbereich, Moderne, parkähnliche Außenanlage mit Ganzjahres-Pavillon und Bewässerungssystem; Eingelasssnerer Bunker im Gartenberiech, Inneneinrichtung mit Sanierumgsstand der späten 90er, Hobbykeller, Sinnvoll durchdachtes Wohnkonzept (klassisch unten Leben mit Wohnzimmer, Esszimmer, Bibliothek, Gartenaustritt, Küche und Bäder, oben Schlafzimmer, Bäder und Zugang zu ausgebauten Kaltdach; Badezimmer en Suite, Whirlpool, Sauna, Swimmingpool, Kamin, Hobbykeller, Gartenhaus, Fitnessraum, Scheune, Stuckelemente, Deckenbeleuchtung, Deckenlüftung, Sicherheitssystem, Videosprechanlage, Alarmanlage, Smart Home, elektrische Jalousien, Sonnenschutz, Markise, en Suite Badezimer an Hauptschlafzimmer.",
+      "pretty_value": "eleganter Grundriss mit vielen Verbindungszimmer mit Schiebetüren, offenes Wohnkonzept auf moderne Ansprüche anwendbar, Entwicklung der Immobilie weiter möglich, hochwertige Gesamtausstattung, Einliegerwohnung im Soutterain vorhanden, Sichtgeschützter und großzügiger Gartenbereich, Moderne, parkähnliche Außenanlage mit Ganzjahres-Pavillon und Bewässerungssystem; Eingelasssnerer Bunker im Gartenberiech, Inneneinrichtung mit Sanierumgsstand der späten 90er, Hobbykeller, Sinnvoll durchdachtes Wohnkonzept (klassisch unten Leben mit Wohnzimmer, Esszimmer, Bibliothek, Gartenaustritt, Küche und Bäder, oben Schlafzimmer, Bäder und Zugang zu ausgebauten Kaltdach; Badezimmer en Suite, Whirlpool, Sauna, Swimmingpool, Kamin, Hobbykeller, Gartenhaus, Fitnessraum, Scheune, Stuckelemente, Deckenbeleuchtung, Deckenlüftung, Sicherheitssystem, Videosprechanlage, Alarmanlage, Smart Home, elektrische Jalousien, Sonnenschutz, Markise, en Suite Badezimer an Hauptschlafzimmer."
+    },
+    "etagenanzahl_neubau": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_fenster": {
+      "value": 138899,
+      "pretty_value": "Doppelkastenfenster"
+    },
+    "bgf_neubaupot": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_boden": {
+      "value": 138912,
+      "pretty_value": "Echtholzparkett"
+    },
+    "wohnfl_neubaupot": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_anzahl_badezimmer": {
+      "value": 138937,
+      "pretty_value": "4"
+    },
+    "m_2_neubau": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_gaste_wc": {
+      "value": 138939,
+      "pretty_value": "vorhanden"
+    },
+    "preis_neubau": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_ausstattung_toil_wcs": {
+      "value": 138941,
+      "pretty_value": "Dusche"
+    },
+    "kaufpreis_haus_abzuglich_grundstuck": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_einbaukuche": {
+      "value": 138948,
+      "pretty_value": "vorhanden"
+    },
+    "faktor_nach_grundstuckabzug": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_kuche_jahr_anschaffung": {
+      "value": 1995.0,
+      "pretty_value": 1995
+    },
+    "angebot_fur_et": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_kuche_wert_anschaffung": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_balkon_anzahl": {
+      "value": 138951,
+      "pretty_value": "1"
+    },
+    "mwa_balkon_m_2": {
+      "value": 5.0,
+      "pretty_value": "5 m²"
+    },
+    "mwa_terrasse_anzahl": {
+      "value": 138957,
+      "pretty_value": "2"
+    },
+    "mwa_terrasse_m_2": {
+      "value": 30.0,
+      "pretty_value": "30 m²"
+    },
+    "mwa_ausrichtung": {
+      "value": 138967,
+      "pretty_value": "Süd-Ost-Ausrichtung"
+    },
+    "mwa_pkw_stellplatz": {
+      "value": 138968,
+      "pretty_value": "Garage"
+    },
+    "mwa_heizung": {
+      "value": 138978,
+      "pretty_value": "Zentralheizung"
+    },
+    "mwa_energietrager": {
+      "value": 138984,
+      "pretty_value": "Öl"
+    },
+    "mwa_keller": {
+      "value": 138987,
+      "pretty_value": "voll-unterkellert"
+    },
+    "mwa_dach": {
+      "value": 138999,
+      "pretty_value": "ausgebaut"
+    },
+    "mwa_vermietungssituation": {
+      "value": 139009,
+      "pretty_value": "von Eigentümer bewohnt, bezugsfrei bei Verkauf"
+    },
+    "mwa_hohe_des_wohngeldes": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_barrierefreiheit": {
+      "value": 139016,
+      "pretty_value": "herstellbar"
+    },
+    "mwa_gerauschbelastung": {
+      "value": 139018,
+      "pretty_value": "keine Geräuschbelastung durch Verkehrslärm abzulesen"
+    },
+    "mwa_die_immobilie": {
+      "value": 139026,
+      "pretty_value": "Sehr gutes Gesamtangebot durch vorhandenes Potential; "
+    },
+    "mwa_die_immobilie_2": {
+      "value": 139027,
+      "pretty_value": "Sehr gute und beliebte Lage"
+    },
+    "mwa_immobilie_symbol": {
+      "value": 139029,
+      "pretty_value": "+"
+    },
+    "mwa_gerauschpegel": {
+      "value": 139031,
+      "pretty_value": "Am analysierten Standort ist keine Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+    },
+    "mwa_symbol_larm": {
+      "value": 139036,
+      "pretty_value": "+"
+    },
+    "mwa_vorteil_1": {
+      "value": 139180,
+      "pretty_value": "Hohes Nachfragepotential "
+    },
+    "mwa_vorteil_2": {
+      "value": 139188,
+      "pretty_value": "Gefragtes Gesamtangebot"
+    },
+    "mwa_vorteil_3": {
+      "value": 139204,
+      "pretty_value": "Gepflegtes Objekt in gefragter Wohnlage"
+    },
+    "mwa_vorteil_4": {
+      "value": 139214,
+      "pretty_value": "vielseitige Nutzungsmöglichkeiten "
+    },
+    "mwa_vorteil_5": {
+      "value": 139222,
+      "pretty_value": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+    },
+    "mwa_nachteil_1": {
+      "value": 139232,
+      "pretty_value": "leichter Sanierungsrückstand \t\t\t\t\t\t\t\t\t\t\t\t\t\""
+    },
+    "mwa_nachteil_2": {
+      "value": 139239,
+      "pretty_value": "Teils Renovierungsaufwand vorhanden"
+    },
+    "mwa_nachteil_3": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_nachteil_4": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_nachteil_5": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_qualitat_fassade": {
+      "value": 139265,
+      "pretty_value": "gehoben"
+    },
+    "mwa_qualitat_hauseingang": {
+      "value": 139272,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_treppenhaus": {
+      "value": 139282,
+      "pretty_value": "gehoben"
+    },
+    "mwa_qualitat_sanitar": {
+      "value": 139288,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_kuche": {
+      "value": 139296,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_boden": {
+      "value": 139304,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_balkon_terrasse": {
+      "value": 139312,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_garten": {
+      "value": 139342,
+      "pretty_value": "gehoben"
+    },
+    "mwa_qualitat_keller": {
+      "value": 139350,
+      "pretty_value": "gehoben"
+    },
+    "mwa_qualitat_fenster": {
+      "value": 139364,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_dach": {
+      "value": 139390,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_elektrik": {
+      "value": 139397,
+      "pretty_value": "einfach"
+    },
+    "mwa_qualitat_heizung": {
+      "value": 139406,
+      "pretty_value": "normal"
+    },
+    "mwa_qualitat_straenge": {
+      "value": 139414,
+      "pretty_value": "normal"
+    },
+    "mwa_zustand_fassade": {
+      "value": 139450,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_hauseingang": {
+      "value": 139462,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_treppenhaus": {
+      "value": 139474,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_sanitar": {
+      "value": 139486,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_kuche": {
+      "value": 139498,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_boden": {
+      "value": 139510,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_balkon_terrasse": {
+      "value": 139519,
+      "pretty_value": "Sanierungsbedarf"
+    },
+    "mwa_zustand_garten": {
+      "value": 139534,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_keller": {
+      "value": 139546,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_fenster": {
+      "value": 139558,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_dach": {
+      "value": 139570,
+      "pretty_value": "gepflegt"
+    },
+    "mwa_zustand_elektrik": {
+      "value": 139581,
+      "pretty_value": "Handlungsbedarf"
+    },
+    "mwa_zustand_heizung": {
+      "value": 139593,
+      "pretty_value": "Handlungsbedarf"
+    },
+    "mwa_zustand_straenge": {
+      "value": 139605,
+      "pretty_value": "Handlungsbedarf"
+    },
+    "mwa_resume_1": {
+      "value": 139625,
+      "pretty_value": "Ihrer gefragten Wohnlage,"
+    },
+    "mwa_resume_2": {
+      "value": 139628,
+      "pretty_value": "Ihres gepflegten Zustands "
+    },
+    "mwa_resume_2_erw": {
+      "value": 139635,
+      "pretty_value": "mit weiteren Entwicklungsmöglichkeiten,"
+    },
+    "mwa_real_preis_von": {
+      "value": 2226500.0,
+      "pretty_value": "2.226.500 €"
+    },
+    "mwa_m_2_preis_von": {
+      "value": 8906.0,
+      "pretty_value": "8.906 €"
+    },
+    "mwa_real_preis_bis": {
+      "value": 2650000.0,
+      "pretty_value": "2.650.000 €"
+    },
+    "mwa_m_2_preis_bis": {
+      "value": 10600.0,
+      "pretty_value": "10.600 €"
+    },
+    "mwa_angebot_preis": {
+      "value": 2950000.0,
+      "pretty_value": "2.950.000 €"
+    },
+    "mwa_m_2_angebot": {
+      "value": 11800.0,
+      "pretty_value": "11.800 €"
+    },
+    "mwa_notizen": {
+      "value": null,
+      "pretty_value": null
+    },
+    "mwa_fenster_2": {
+      "value": 139752,
+      "pretty_value": "Holzfenster"
+    },
+    "mwa_boden_2": {
+      "value": 139774,
+      "pretty_value": "Fliesen"
+    },
+    "mwa_ausstattung_toil_wcs_2": {
+      "value": 139791,
+      "pretty_value": "Fenster"
+    },
+    "mwa_pkw_stellplatz_2": {
+      "value": 139797,
+      "pretty_value": "Außenstellplatz"
+    },
+    "mwa_erstellen": {
+      "value": true,
+      "pretty_value": "Ja"
+    },
+    "mwa_anrede": {
+      "value": 144344,
+      "pretty_value": "Frau"
+    },
+    "mwa_geehrte": {
+      "value": 144353,
+      "pretty_value": "geehrte"
+    },
+    "mwa_vorname": {
+      "value": "Christel",
+      "pretty_value": "Christel"
+    },
+    "mwa_nachname": {
+      "value": "Lenkeit",
+      "pretty_value": "Lenkeit"
+    },
+    "mwa_email": {
+      "value": "slenkeit@gmail.com",
+      "pretty_value": "slenkeit@gmail.com"
+    },
+    "mwa_ausstattung_toil_wcs_3": {
+      "value": 144934,
+      "pretty_value": "Wanne"
+    },
+    "mwa_fenster_3": {
+      "value": 144951,
+      "pretty_value": "Bodentiefe Fenster "
+    },
+    "mwa_boden_3": {
+      "value": 144964,
+      "pretty_value": "Naturstein "
+    },
+    "mwa_test_check": {
+      "value": null,
+      "pretty_value": "Nein"
+    }
+  },
+  "sold_date": null,
+  "valuation_price": null,
+  "valuation_price_from": null,
+  "valuation_price_to": null,
+  "total_commission": null,
+  "internal_commission": null,
+  "external_commission": null,
+  "internal_commission_percentage": null,
+  "external_commission_percentage": null,
+  "property_groups": [],
+  "property_status": {
+    "id": 5978,
+    "name": "00 Akquise Backlog",
+    "position": 0,
+    "color": "#4EAB3E",
+    "exclude_from_search_profile_matching": false,
+    "disable_expose_landing_page": false,
+    "remove_from_portal": false
+  },
+  "broker": {
+    "id": 7918,
+    "salutation": "mr",
+    "academic_title": null,
+    "first_name": "Dorian",
+    "last_name": "Rouhani",
+    "name": "Dorian Rouhani",
+    "avatar": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/thumb_Dorian.jpg",
+    "avatar_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/avatar/ZqfoRrRAmvxXABHjXxd5TyxA/Dorian.jpg",
+    "old_crm_id": null,
+    "position": "Leiter Akquise & Verkauf",
+    "email": "rouhani@dk360.de",
+    "pricehubble_username": null,
+    "phone_system_number": "+49 30 120 841 86",
+    "phone_system_numbers": [
+      {
+        "value": "+49 30 120 841 86",
+        "group_id": null,
+        "position": 0
+      }
+    ],
+    "phone": "+49 30 120 841 86",
+    "cell": "+49 152 044 186 30",
+    "public_phone": "030 120 841 86",
+    "public_cell": "0152 044 186 30",
+    "public_email": "rouhani@dk360.de",
+    "color": "#636363",
+    "locale": "de",
+    "connected": true,
+    "team_id": null,
+    "department_ids": [
+      19755
+    ],
+    "abstract": null,
+    "description": null,
+    "custom_fields": {},
+    "shop": {
+      "id": 3910,
+      "name": "D.K. Real Estate GmbH",
+      "color": "#30456e",
+      "locale": "de",
+      "logo_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/logo/f6QuXaneHuw83c2ZcKcFkKDG/DK-logo-dark.png",
+      "alt_logo_url": null,
+      "watermark_url": null,
+      "favicon_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/favicon/f6QuXaneHuw83c2ZcKcFkKDG/IV_breit.png",
+      "subdomain": "dk-real-estate",
+      "domain_name": "www.dk360.de",
+      "email": "kontakt@dk360.de",
+      "phone": "+49 (0)30 120 841 86",
+      "available_licenses": 8,
+      "street": "Hubertusallee",
+      "house_number": "76",
+      "zip_code": "14193",
+      "city": "Berlin",
+      "short_address": "Hubertusallee 76, 14193 Berlin",
+      "deal_cockpit_automatic_invite": null
+    },
+    "team": null
+  },
+  "project": null,
+  "relationships": [
+    {
+      "id": 6924635,
+      "name": null,
+      "internal_name": "owner",
+      "client_id": 31692831
+    }
+  ],
+  "folders": [
+    {
+      "id": 3855,
+      "name": "Akquise-Ordner"
+    },
+    {
+      "id": 15181,
+      "name": "Dokumente"
+    },
+    {
+      "id": 570817,
+      "name": "Kunde"
+    },
+    {
+      "id": 88,
+      "name": "Objektunterlagen"
+    }
+  ],
+  "scout_id": null,
+  "public_expose_url": "https://crm.propstack.de/public/exposee/-eyJzaG9wX3Rva2VuIjoiZjZRdVhhbmVIdXc4M2MyWmNLY0ZrS0RHIiwicHJvcGVydHlfdG9rZW4iOiJXRzQxYnVqTXJ6MTVERlNFUkRzelBoV20ifQ==",
+  "openimmo_firstname": null,
+  "openimmo_lastname": null,
+  "openimmo_email": null,
+  "openimmo_phone": null,
+  "is24_contact_id": "161021299",
+  "translations": null,
+  "status_updated_at": "2026-05-26T09:00:47.515+02:00",
+  "inquiry_department_id": null,
+  "team_id": null,
+  "images": [
+    {
+      "id": 46202229,
+      "is_floorplan": true,
+      "is_private": false,
+      "title": "Grundriss",
+      "tags": null,
+      "position": 1,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/Bildschirmfoto%202026-05-29%20um%2017.48.21.png",
+      "updated_at": "2026-06-02T19:33:05.174+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/big_Bildschirmfoto%202026-05-29%20um%2017.48.21.png",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/medium_Bildschirmfoto%202026-05-29%20um%2017.48.21.png",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/thumb_Bildschirmfoto%202026-05-29%20um%2017.48.21.png",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/small_thumb_Bildschirmfoto%202026-05-29%20um%2017.48.21.png",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BSBZDbkSzUwwbkn9EdwCRhLK/square_Bildschirmfoto%202026-05-29%20um%2017.48.21.png"
+    },
+    {
+      "id": 46202228,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "titel",
+      "tags": null,
+      "position": 1,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/titel.png",
+      "updated_at": "2026-06-02T19:32:59.096+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/big_titel.png",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/medium_titel.png",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/thumb_titel.png",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/small_thumb_titel.png",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/kqSB43MB2oGLHALbJzmJXBEy/square_titel.png"
+    },
+    {
+      "id": 46202232,
+      "is_floorplan": true,
+      "is_private": false,
+      "title": "Luftaufnahme",
+      "tags": null,
+      "position": 3,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/Bildschirmfoto%202026-05-29%20um%2017.45.58.png",
+      "updated_at": "2026-06-02T19:33:46.501+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/big_Bildschirmfoto%202026-05-29%20um%2017.45.58.png",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/medium_Bildschirmfoto%202026-05-29%20um%2017.45.58.png",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/thumb_Bildschirmfoto%202026-05-29%20um%2017.45.58.png",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/small_thumb_Bildschirmfoto%202026-05-29%20um%2017.45.58.png",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/q4aDDXpdBfx5tbxqXKk3c2Lx/square_Bildschirmfoto%202026-05-29%20um%2017.45.58.png"
+    },
+    {
+      "id": 46202231,
+      "is_floorplan": true,
+      "is_private": false,
+      "title": "Grundriss",
+      "tags": null,
+      "position": 3,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/Bildschirmfoto%202026-05-29%20um%2017.43.48.png",
+      "updated_at": "2026-06-02T19:33:09.354+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/big_Bildschirmfoto%202026-05-29%20um%2017.43.48.png",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/medium_Bildschirmfoto%202026-05-29%20um%2017.43.48.png",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/thumb_Bildschirmfoto%202026-05-29%20um%2017.43.48.png",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/small_thumb_Bildschirmfoto%202026-05-29%20um%2017.43.48.png",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/aWoStP8Q9z4amQWQehe1YSmX/square_Bildschirmfoto%202026-05-29%20um%2017.43.48.png"
+    },
+    {
+      "id": 46202233,
+      "is_floorplan": true,
+      "is_private": false,
+      "title": "Grundriss",
+      "tags": null,
+      "position": 4,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/Bildschirmfoto%202026-05-29%20um%2017.40.55.png",
+      "updated_at": "2026-06-02T19:33:15.246+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/big_Bildschirmfoto%202026-05-29%20um%2017.40.55.png",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/medium_Bildschirmfoto%202026-05-29%20um%2017.40.55.png",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/thumb_Bildschirmfoto%202026-05-29%20um%2017.40.55.png",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/small_thumb_Bildschirmfoto%202026-05-29%20um%2017.40.55.png",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/hQQSnp1PhHwtPX4b4dDfeuDV/square_Bildschirmfoto%202026-05-29%20um%2017.40.55.png"
+    },
+    {
+      "id": 46202234,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "Dachboden",
+      "tags": null,
+      "position": 5,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/16.JPEG",
+      "updated_at": "2026-06-02T19:33:18.348+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/big_16.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/medium_16.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/thumb_16.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/small_thumb_16.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/FNbqRsBXymRs5uJgQtzXYsMe/square_16.JPEG"
+    },
+    {
+      "id": 46202235,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "12",
+      "tags": null,
+      "position": 6,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/11.JPEG",
+      "updated_at": "2026-06-02T19:35:35.334+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/big_11.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/medium_11.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/thumb_11.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/small_thumb_11.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/BbcNC7QhdrbiE5fxx9XEaT2H/square_11.JPEG"
+    },
+    {
+      "id": 46202239,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "14",
+      "tags": null,
+      "position": 8,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/12.JPEG",
+      "updated_at": "2026-06-02T19:35:38.974+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/big_12.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/medium_12.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/thumb_12.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/small_thumb_12.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ZGAUavqwrffyodH9jWnXeZys/square_12.JPEG"
+    },
+    {
+      "id": 46202238,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "13",
+      "tags": null,
+      "position": 8,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/13.JPEG",
+      "updated_at": "2026-06-02T19:35:37.433+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/big_13.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/medium_13.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/thumb_13.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/small_thumb_13.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/9AjZD2L2vTaVDhVwu8Sps6Pa/square_13.JPEG"
+    },
+    {
+      "id": 46202240,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "15",
+      "tags": null,
+      "position": 10,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/14.JPEG",
+      "updated_at": "2026-06-02T19:35:41.255+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/big_14.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/medium_14.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/thumb_14.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/small_thumb_14.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/P9dsjGYktGJSCaJWyJ1w3pcS/square_14.JPEG"
+    },
+    {
+      "id": 46202241,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "16",
+      "tags": null,
+      "position": 11,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/15.JPEG",
+      "updated_at": "2026-06-02T19:36:56.759+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/big_15.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/medium_15.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/thumb_15.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/small_thumb_15.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/2pxjhHJ1WiyohvXw6k2dsFma/square_15.JPEG"
+    },
+    {
+      "id": 46202242,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "Außenansicht",
+      "tags": null,
+      "position": 12,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/18.JPEG",
+      "updated_at": "2026-06-02T19:33:29.874+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/big_18.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/medium_18.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/thumb_18.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/small_thumb_18.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/RrkTX3MLhLNNpUTCBfav9PbC/square_18.JPEG"
+    },
+    {
+      "id": 46202244,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "7",
+      "tags": null,
+      "position": 13,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/7.JPEG",
+      "updated_at": "2026-06-02T19:35:10.929+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/big_7.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/medium_7.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/thumb_7.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/small_thumb_7.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ex7AAumHMRc8q79edvfMsX6t/square_7.JPEG"
+    },
+    {
+      "id": 46202243,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "11",
+      "tags": null,
+      "position": 13,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/17.JPEG",
+      "updated_at": "2026-06-02T19:35:27.672+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/big_17.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/medium_17.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/thumb_17.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/small_thumb_17.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/GjCHxCUBrH81Zz3sy78n6vTg/square_17.JPEG"
+    },
+    {
+      "id": 46202246,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "6",
+      "tags": null,
+      "position": 15,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/6.JPEG",
+      "updated_at": "2026-06-02T19:35:04.416+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/big_6.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/medium_6.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/thumb_6.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/small_thumb_6.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/ggZhc2xfPBM9PurRG59nyzA3/square_6.JPEG"
+    },
+    {
+      "id": 46202245,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "1",
+      "tags": null,
+      "position": 15,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/1.JPEG",
+      "updated_at": "2026-06-02T19:34:46.776+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/big_1.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/medium_1.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/thumb_1.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/small_thumb_1.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/m33emVWzF7jyvi4WBnjNCo6s/square_1.JPEG"
+    },
+    {
+      "id": 46202247,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "5",
+      "tags": null,
+      "position": 17,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/9.JPEG",
+      "updated_at": "2026-06-02T19:35:03.146+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/big_9.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/medium_9.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/thumb_9.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/small_thumb_9.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/PooQMb3gQkPrV63QkjjADSCW/square_9.JPEG"
+    },
+    {
+      "id": 46202249,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "4",
+      "tags": null,
+      "position": 18,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/8.JPEG",
+      "updated_at": "2026-06-02T19:35:01.671+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/big_8.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/medium_8.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/thumb_8.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/small_thumb_8.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/WBLo1sJrnPE5vKhwtvE3NHs2/square_8.JPEG"
+    },
+    {
+      "id": 46202248,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "2",
+      "tags": null,
+      "position": 18,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/2.JPEG",
+      "updated_at": "2026-06-02T19:34:58.649+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/big_2.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/medium_2.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/thumb_2.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/small_thumb_2.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/TBo7sRfyK7jtPaWeMQiTeW6r/square_2.JPEG"
+    },
+    {
+      "id": 46202250,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "3",
+      "tags": null,
+      "position": 20,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/3.JPEG",
+      "updated_at": "2026-06-02T19:34:59.957+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/big_3.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/medium_3.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/thumb_3.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/small_thumb_3.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/YijQAEnywAWRfbT666X86862/square_3.JPEG"
+    },
+    {
+      "id": 46202251,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "8",
+      "tags": null,
+      "position": 21,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/4.JPEG",
+      "updated_at": "2026-06-02T19:35:17.343+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/big_4.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/medium_4.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/thumb_4.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/small_thumb_4.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/G6TEnNiDf4VHrDiCux7r7RHC/square_4.JPEG"
+    },
+    {
+      "id": 46202253,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "9",
+      "tags": null,
+      "position": 22,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/5.JPEG",
+      "updated_at": "2026-06-02T19:35:19.535+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/big_5.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/medium_5.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/thumb_5.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/small_thumb_5.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/fa5J88AcfuAE5ieTjXNDtCKq/square_5.JPEG"
+    },
+    {
+      "id": 46202252,
+      "is_floorplan": false,
+      "is_private": false,
+      "title": "10",
+      "tags": null,
+      "position": 22,
+      "url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/10.JPEG",
+      "updated_at": "2026-06-02T19:35:23.601+02:00",
+      "imageable_type": "Property",
+      "imageable_id": 5472912,
+      "connection_ids": [],
+      "is_not_for_exposee": false,
+      "big_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/big_10.JPEG",
+      "medium_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/medium_10.JPEG",
+      "thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/thumb_10.JPEG",
+      "small_thumb_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/small_thumb_10.JPEG",
+      "square_url": "https://images.propstack.de/photos/f6QuXaneHuw83c2ZcKcFkKDG/photo/h3fTLdgYAGh6haPHFAMZK422/square_10.JPEG"
+    }
+  ],
+  "floorplans": [],
+  "links": [],
+  "created_at_formatted": "26.05.2026 09:00",
+  "created_at": "2026-05-26T09:00:47.515+02:00",
+  "updated_at_formatted": "02.06.2026 20:53",
+  "updated_at": "2026-06-02T20:53:24.314+02:00",
+  "description_note": {
+    "label": "Beschreibung",
+    "value": "freihstehende wunderbare EFH-Villa auf vier Etagen (ST, HP, OG, DG) - 1933 gebaut, vollständige Klinker Fassade,"
+  },
+  "short_note": {
+    "label": "Kurzbeschreibung",
+    "value": null
+  },
+  "location_note": {
+    "label": "Lage",
+    "value": null
+  },
+  "furnishing_note": {
+    "label": "Ausstattung",
+    "value": null
+  },
+  "other_note": {
+    "label": "Sonstiges",
+    "value": null
+  },
+  "long_description_note": {
+    "label": "Objektbeschreibung (lang)",
+    "value": null
+  },
+  "long_location_note": {
+    "label": "Lage (lang)",
+    "value": null
+  },
+  "long_furnishing_note": {
+    "label": "Ausstattung (lang)",
+    "value": null
+  },
+  "long_other_note": {
+    "label": "Sonstiges (lang)",
+    "value": null
+  },
+  "courtage": {
+    "label": "Käuferprovision",
+    "value": "3,57 % inkl. gesetzlicher MwSt."
+  },
+  "courtage_note": {
+    "label": "Provisionshinweis",
+    "value": ""
+  },
+  "internal_brokerage": {
+    "label": "Innenprovision",
+    "value": null
+  },
+  "number_of_rooms": {
+    "label": "Zimmer",
+    "value": 7.0
+  },
+  "price": {
+    "label": "Preis",
+    "value": null
+  },
+  "base_rent": {
+    "label": "Kaltmiete",
+    "value": null
+  },
+  "living_space": {
+    "label": "Wohnfläche ca.",
+    "value": 250.0
+  },
+  "start_rental_date": {
+    "label": "Bezugsfrei ab",
+    "value": null
+  },
+  "commercialization_type": {
+    "label": "Vermarktungsart",
+    "value": null
+  },
+  "price_type": {
+    "label": "Preistyp",
+    "value": null
+  },
+  "floor": {
+    "label": "Etage",
+    "value": "4"
+  },
+  "number_of_floors": {
+    "label": "Etagenzahl",
+    "value": 20
+  },
+  "energy_certificate_construction_year": {
+    "label": "Energieausweis: Baujahr Gebäude",
+    "value": null
+  },
+  "energy_certificate_start_date": {
+    "label": "Energieausweis: Ausstellungsdatum",
+    "value": null
+  },
+  "energy_certificate_end_date": {
+    "label": "Energieausweis: gültig bis",
+    "value": null
+  },
+  "energy_efficiency_class": {
+    "label": "Energieeffizienzklasse",
+    "value": null
+  },
+  "energy_efficiency_value": {
+    "label": "Energieverbrauchskennwert",
+    "value": null
+  },
+  "thermal_characteristic": {
+    "label": "Energieverbrauchskennwert",
+    "value": null
+  },
+  "thermal_characteristic_electricity": {
+    "label": "Energiekennwert Strom",
+    "value": null
+  },
+  "thermal_characteristic_heating": {
+    "label": "Energiekennwert Wärme",
+    "value": null
+  },
+  "deposit": {
+    "label": "Kaution",
+    "value": null
+  },
+  "rent_duration": {
+    "label": "Mietdauer",
+    "value": null
+  },
+  "lan_cables": {
+    "label": "LAN-Kabel",
+    "value": null
+  },
+  "air_conditioning": {
+    "label": "Klimaanlage",
+    "value": false
+  },
+  "duration": {
+    "label": "Laufzeit",
+    "value": null
+  },
+  "duration_from": {
+    "label": "Auftragsbeginn",
+    "value": null
+  },
+  "duration_until": {
+    "label": "Auftragsende",
+    "value": null
+  },
+  "has_furniture": {
+    "label": "Möbliert",
+    "value": false
+  },
+  "floor_position": {
+    "label": "Etagenlage",
+    "value": null
+  },
+  "plot_number": {
+    "label": "Flurstück",
+    "value": null
+  },
+  "renter": {
+    "label": "Aktueller Mieter",
+    "value": null
+  },
+  "note": {
+    "label": "Notiz",
+    "value": "zuletzt: neuer Heizkessel - Ölzentral Heizung\n1993-2000: Objket gekauft, Dach neu, Elektrik- , Alarmanlage, Kamin, Küche 98, \n\nTochter (Frau von Herrn Möbius) julia \njslenkeit@gmail.com\n01736216355\n\nSohn (Bruder von Julia)\njohannesausberlin@gmail.com\n01728034116\n\nMutter (Eigentümerin) \nch.le@gmx.de\n01723997729\n"
+  },
+  "te_id": {
+    "label": "Teilungserklärungs-Nr.",
+    "value": null
+  },
+  "crane_runway_load": {
+    "label": "Kranbahn Traglast in Tonnen",
+    "value": null
+  },
+  "floor_load": {
+    "label": "Bodenbelastung",
+    "value": null
+  },
+  "connected_load": {
+    "label": "Stromanschlusswert (kVA)",
+    "value": null
+  },
+  "shop_window_length": {
+    "label": "Schaufensterfront",
+    "value": null
+  },
+  "price_per_sqm": {
+    "label": "Preis/m²",
+    "value": null
+  },
+  "price_multiplier": {
+    "label": "Faktor-Ist",
+    "value": null
+  },
+  "price_multiplier_target": {
+    "label": "Faktor-Soll",
+    "value": null
+  },
+  "industrial_area": {
+    "label": "Gewerbefläche ca.",
+    "value": null
+  },
+  "rental_income_target": {
+    "label": "Nettomiete Soll p.a.",
+    "value": null
+  },
+  "rental_income_actual": {
+    "label": "Nettomiete Ist p.a.",
+    "value": null
+  },
+  "sold_price": {
+    "label": "Realisierter Preis",
+    "value": null
+  },
+  "min_divisible": {
+    "label": "Teilbar ab",
+    "value": null
+  },
+  "grz": {
+    "label": "GRZ",
+    "value": null
+  },
+  "gfz": {
+    "label": "GFZ",
+    "value": null
+  },
+  "length_garage": {
+    "label": "Länge der Garage",
+    "value": null
+  },
+  "width_garage": {
+    "label": "Breite der Garage",
+    "value": null
+  },
+  "height_garage": {
+    "label": "Höhe der Garage",
+    "value": null
+  },
+  "hall_height": {
+    "label": "Hallen-/ Geschosshöhe",
+    "value": null
+  },
+  "goods_lift_load": {
+    "label": "Tragkraft Lastenaufzug",
+    "value": null
+  },
+  "cost_other": {
+    "label": "Kostenanteil sonstiges",
+    "value": null
+  },
+  "cost_lift": {
+    "label": "Kostenanteil Aufzug Gartenhaus",
+    "value": null
+  },
+  "cost_balcony": {
+    "label": "Kostenanteil Balkone",
+    "value": null
+  },
+  "min_rental_time": {
+    "label": "Mindestmietdauer",
+    "value": null
+  },
+  "max_rental_time": {
+    "label": "Maximale Mietdauer",
+    "value": null
+  },
+  "co_ownership_share": {
+    "label": "Miteigentumsanteil",
+    "value": null
+  },
+  "rental_income": {
+    "label": "Mtl. Mieteinnahmen",
+    "value": null
+  },
+  "total_rent": {
+    "label": "Warmmiete",
+    "value": null
+  },
+  "service_charge": {
+    "label": "Nebenkosten",
+    "value": null
+  },
+  "heating_costs": {
+    "label": "Heizkosten",
+    "value": null
+  },
+  "maintenance_reserve": {
+    "label": "Instandhaltungsrücklage",
+    "value": null
+  },
+  "other_costs": {
+    "label": "Nicht umlegbare Kosten",
+    "value": null
+  },
+  "parking_space_price": {
+    "label": "Stellplatz-Preis",
+    "value": null
+  },
+  "plot_area": {
+    "label": "Grundstücksfläche ca.",
+    "value": 1500.0
+  },
+  "additional_area": {
+    "label": "Weitere Fläche",
+    "value": null
+  },
+  "usable_floor_space": {
+    "label": "Nutzfläche ca.",
+    "value": 180
+  },
+  "balcony_space": {
+    "label": "Balkon/Terrasse Fläche ca.",
+    "value": 30
+  },
+  "net_floor_space": {
+    "label": "Nutzfläche ca.",
+    "value": null
+  },
+  "total_floor_space": {
+    "label": "Gesamtfläche ca.",
+    "value": null
+  },
+  "cubature": {
+    "label": "Kubatur",
+    "value": null
+  },
+  "cellar_space": {
+    "label": "Kellerfläche ca.",
+    "value": null
+  },
+  "garden_space": {
+    "label": "Gartenfläche ca.",
+    "value": null
+  },
+  "yield_actual": {
+    "label": "Rendite Ist",
+    "value": null
+  },
+  "yield_target": {
+    "label": "Rendite Soll",
+    "value": null
+  },
+  "co2_emission": {
+    "label": "CO2-Emissionen",
+    "value": null
+  },
+  "vat": {
+    "label": "Mehrwertsteuer",
+    "value": null
+  },
+  "heating_costs_net": {
+    "label": "Heizkosten Netto",
+    "value": null
+  },
+  "heating_costs_vat": {
+    "label": "Heizkosten Ust.",
+    "value": null
+  },
+  "service_charge_net": {
+    "label": "Betriebskosten Netto",
+    "value": null
+  },
+  "service_charge_vat": {
+    "label": "Betriebskosten Ust.",
+    "value": null
+  },
+  "other_costs_net": {
+    "label": "Sonstige Kosten Netto",
+    "value": null
+  },
+  "other_costs_vat": {
+    "label": "Sonstige Kosten Ust.",
+    "value": null
+  },
+  "price_net": {
+    "label": "Kaufpreis Netto",
+    "value": null
+  },
+  "price_vat": {
+    "label": "Kaufpreis Ust.",
+    "value": null
+  },
+  "base_rent_net": {
+    "label": "Gesamtmiete Netto",
+    "value": null
+  },
+  "base_rent_vat": {
+    "label": "Gesamtmiete Ust.",
+    "value": null
+  },
+  "total_rent_net": {
+    "label": "Gesamtbelastung Netto",
+    "value": null
+  },
+  "total_rent_vat": {
+    "label": "Gesamtbelastung Ust.",
+    "value": null
+  },
+  "other_rent": {
+    "label": "Summemiete",
+    "value": null
+  },
+  "other_rent_net": {
+    "label": "Summemiete Netto",
+    "value": null
+  },
+  "other_rent_vat": {
+    "label": "Summemiete Ust.",
+    "value": null
+  },
+  "recurring_costs": {
+    "label": "Monatliche Kosten Brutto",
+    "value": null
+  },
+  "recurring_costs_net": {
+    "label": "Monatliche Kosten Netto",
+    "value": null
+  },
+  "recurring_costs_vat": {
+    "label": "Monatliche Kosten Ust.",
+    "value": null
+  },
+  "compensation_costs": {
+    "label": "Abstand",
+    "value": null
+  },
+  "financial_contribution": {
+    "label": "Finanzierungsbeitrag",
+    "value": null
+  },
+  "distance_to_mrs": {
+    "label": "Fahrzeit nächster Hauptbahnhof",
+    "value": null
+  },
+  "distance_to_fm": {
+    "label": "Fahrzeit nächste Autobahn",
+    "value": null
+  },
+  "distance_to_pt": {
+    "label": "Fußweg zu öffentl. Verkehrsmitteln",
+    "value": null
+  },
+  "distance_to_airport": {
+    "label": "Fahrzeit nächster Flughafen",
+    "value": null
+  },
+  "distance_to_pt_in_km": {
+    "label": "Translation missing: de.simple_form.labels.defaults.distance_to_pt_in_km",
+    "value": null
+  },
+  "distance_to_fm_in_km": {
+    "label": "Translation missing: de.simple_form.labels.defaults.distance_to_fm_in_km",
+    "value": null
+  },
+  "distance_to_mrs_in_km": {
+    "label": "Translation missing: de.simple_form.labels.defaults.distance_to_mrs_in_km",
+    "value": null
+  },
+  "distance_to_airport_in_km": {
+    "label": "Translation missing: de.simple_form.labels.defaults.distance_to_airport_in_km",
+    "value": null
+  },
+  "distance_to_pt_length": {
+    "label": "Entfernung zu öffentl. Verkehrsmitteln",
+    "value": null
+  },
+  "distance_to_mrs_length": {
+    "label": "Entfernung nächster Hauptbahnhof",
+    "value": null
+  },
+  "distance_to_fm_length": {
+    "label": "Entfernung nächste Autobahn",
+    "value": null
+  },
+  "distance_to_airport_length": {
+    "label": "Entfernung nächster Flughafen",
+    "value": null
+  },
+  "number_of_bed_rooms": {
+    "label": "Anzahl Schlafzimmer",
+    "value": 5
+  },
+  "number_of_bath_rooms": {
+    "label": "Anzahl Badezimmer",
+    "value": 3
+  },
+  "number_of_ev_charging": {
+    "label": "E-Ladeplätze",
+    "value": null
+  },
+  "parking_space_number": {
+    "label": "Stellplatz Nr.",
+    "value": null
+  },
+  "number_of_parking_spaces": {
+    "label": "Anzahl Parkplätze",
+    "value": null
+  },
+  "last_refurbishment": {
+    "label": "Letzte Modernisierung",
+    "value": 2000
+  },
+  "construction_year": {
+    "label": "Baujahr ca.",
+    "value": 1933
+  },
+  "equipment_technology_construction_year": {
+    "label": "Baujahr Anlagentechnik",
+    "value": 2005
+  },
+  "rent_subsidy": {
+    "label": "Hausgeld/Monat",
+    "value": null
+  },
+  "tenancy": {
+    "label": "Pacht",
+    "value": null
+  },
+  "number_seats": {
+    "label": "Plätze Gastraum",
+    "value": null
+  },
+  "number_beds": {
+    "label": "Anzahl an Betten",
+    "value": null
+  },
+  "max_number_of_persons": {
+    "label": "Max. Personenanzahl",
+    "value": null
+  },
+  "corridor": {
+    "label": "Flur",
+    "value": null
+  },
+  "register_number": {
+    "label": "Grundbuchblatt",
+    "value": null
+  },
+  "number_of_balconies": {
+    "label": "Anzahl Balkone",
+    "value": null
+  },
+  "number_of_terraces": {
+    "label": "Anzahl Terrassen",
+    "value": null
+  },
+  "number_of_apartments": {
+    "label": "Wohneinheiten",
+    "value": null
+  },
+  "number_of_commercials": {
+    "label": "Gewerbeeinheiten",
+    "value": null
+  },
+  "number_of_units": {
+    "label": "Gesamteinheiten",
+    "value": null
+  },
+  "condition": {
+    "label": "Objektzustand",
+    "value": "vollständig renoviert"
+  },
+  "interior_quality": {
+    "label": "Qualität der Ausstattung",
+    "value": "gehoben"
+  },
+  "flooring_type": {
+    "label": "Bodenbelag",
+    "value": [
+      "Parkett",
+      "Marmor",
+      "Dielen",
+      "Teppichboden"
+    ]
+  },
+  "energy_certificate_availability": {
+    "label": "Energieausweis",
+    "value": null
+  },
+  "energy_certificate_creation_date": {
+    "label": "Erstellungsdatum",
+    "value": null
+  },
+  "building_energy_rating_type": {
+    "label": "Energieausweistyp",
+    "value": null
+  },
+  "firing_types": {
+    "label": "Wesentlicher Energieträger",
+    "value": "Öl"
+  },
+  "heating_type": {
+    "label": "Heizungsart",
+    "value": "Öl-Heizung"
+  },
+  "parking_space_type": {
+    "label": "Stellplatztyp",
+    "value": null
+  },
+  "parking_space_types": {
+    "label": "Stellplatztyp",
+    "value": null
+  },
+  "aut_building_certificates": {
+    "label": "Gebäudezertifizierung",
+    "value": null
+  },
+  "primary_outdoor_orientation": {
+    "label": "Ausrichtung (Balkon/Terrasse)",
+    "value": null
+  },
+  "construction_phase": {
+    "label": "Bauphase",
+    "value": null
+  },
+  "utilization_trade_site": {
+    "label": "Grundstückstyp",
+    "value": null
+  },
+  "site_development_type": {
+    "label": "Erschließung",
+    "value": null
+  },
+  "site_constructible_type": {
+    "label": "Bebaubar nach",
+    "value": null
+  },
+  "garage_type": {
+    "label": "Stellplatztyp",
+    "value": null
+  },
+  "store_type": {
+    "label": "Objekttyp",
+    "value": null
+  },
+  "supply_type": {
+    "label": "Zulieferung",
+    "value": null
+  },
+  "apartment_type": {
+    "label": "Wohnungstyp",
+    "value": null
+  },
+  "building_type": {
+    "label": "Haustyp",
+    "value": "Einfamilienhaus"
+  },
+  "location_classification_type": {
+    "label": "Lageart",
+    "value": null
+  },
+  "investment_type": {
+    "label": "Objektart",
+    "value": null
+  },
+  "contract_type": {
+    "label": "Art des Vermittlungsauftrages",
+    "value": null
+  },
+  "short_term_accomodation_type": {
+    "label": "Wohnart",
+    "value": null
+  },
+  "gender": {
+    "label": "Geschlecht",
+    "value": null
+  },
+  "pets_allowed": {
+    "label": "Haustiere erlaubt",
+    "value": null
+  },
+  "rent_durations": {
+    "label": "Mietdauer",
+    "value": null
+  },
+  "rented": {
+    "label": "Vermietet",
+    "value": false
+  },
+  "suitable_for_investment": {
+    "label": "Anlageobjekt",
+    "value": null
+  },
+  "lodger_flat": {
+    "label": "Einliegerwohnung vorhanden",
+    "value": false
+  },
+  "lift": {
+    "label": "Personenaufzug",
+    "value": false
+  },
+  "cellar": {
+    "label": "Keller",
+    "value": true
+  },
+  "window_shutter": {
+    "label": "Rollläden",
+    "value": null
+  },
+  "bicycle_storage": {
+    "label": "Fahrradraum",
+    "value": null
+  },
+  "laundry_room": {
+    "label": "Wasch-/Trockenraum",
+    "value": null
+  },
+  "smart_home": {
+    "label": "Smart Home",
+    "value": null
+  },
+  "barrier_free": {
+    "label": "Barrierefrei",
+    "value": false
+  },
+  "guest_toilet": {
+    "label": "Gäste-WC",
+    "value": true
+  },
+  "built_in_kitchen": {
+    "label": "Einbauküche",
+    "value": true
+  },
+  "balcony": {
+    "label": "Balkon / Terrasse",
+    "value": true
+  },
+  "garden": {
+    "label": "Garten / -mitbenutzung",
+    "value": true
+  },
+  "monument": {
+    "label": "Denkmalschutzobjekt",
+    "value": false
+  },
+  "ramp": {
+    "label": "Rampe",
+    "value": false
+  },
+  "construction_year_unknown": {
+    "label": "Baujahr unbekannt",
+    "value": false
+  },
+  "flat_share_suitable": {
+    "label": "WG-geeignet",
+    "value": false
+  },
+  "certificate_of_eligibility_needed": {
+    "label": "Wohnberechtigungsschein erforderlich",
+    "value": false
+  },
+  "price_on_inquiry": {
+    "label": "Preis auf Anfrage",
+    "value": false
+  },
+  "heating_costs_in_service_charge": {
+    "label": "Heizkosten in Nebenkosten enthalten",
+    "value": false
+  },
+  "short_term_constructible": {
+    "label": "Kurzfristig bebaubar",
+    "value": false
+  },
+  "building_permission": {
+    "label": "Baugenehmigung",
+    "value": false
+  },
+  "demolition": {
+    "label": "Abriss",
+    "value": false
+  },
+  "has_canteen": {
+    "label": "Kantine / Cafeteria",
+    "value": false
+  },
+  "kitchen_complete": {
+    "label": "Küche vorhanden",
+    "value": false
+  },
+  "high_voltage": {
+    "label": "Starkstrom",
+    "value": false
+  },
+  "terrace": {
+    "label": "Terrasse",
+    "value": false
+  },
+  "auto_lift": {
+    "label": "Hebebühne",
+    "value": false
+  },
+  "goods_lift": {
+    "label": "Lastenaufzug",
+    "value": false
+  },
+  "crane_runway": {
+    "label": "Kranbahn Traglast",
+    "value": false
+  },
+  "energy_consumption_contains_warm_water": {
+    "label": "Energieverbrauch für Warmwasser enthalten",
+    "value": false
+  },
+  "summer_residence_practical": {
+    "label": "Als Ferienwohnung geeignet",
+    "value": false
+  },
+  "non_smoker": {
+    "label": "Nur an Nichtraucher",
+    "value": false
+  },
+  "loggia": {
+    "label": "Loggia",
+    "value": true
+  },
+  "winter_garden": {
+    "label": "Wintergarten",
+    "value": true
+  },
+  "wellness_area": {
+    "label": "Wellness-Bereich",
+    "value": false
+  },
+  "chimney": {
+    "label": "Kamin",
+    "value": true
+  },
+  "swimming_pool": {
+    "label": "Pool",
+    "value": false
+  },
+  "sauna": {
+    "label": "Sauna",
+    "value": true
+  },
+  "bathroom": {
+    "label": "Bad",
+    "value": null
+  },
+  "storeroom": {
+    "label": "Abstellraum",
+    "value": true
+  },
+  "alarm_system": {
+    "label": "Alarmanlage",
+    "value": true
+  },
+  "plus_vat": {
+    "label": "Zzgl. MwSt.",
+    "value": null
+  },
+  "free_from": {
+    "label": "Verfügbar ab",
+    "value": null
+  },
+  "free_until": {
+    "label": "Verfügbar bis",
+    "value": null
+  },
+  "end_rental_date": {
+    "label": "Das Angebot ist frei bis",
+    "value": null
+  },
+  "marketing_start_date": {
+    "label": "Vermarktungsbeginn",
+    "value": null
+  },
+  "currency": {
+    "label": "Währung",
+    "value": null
+  },
+  "areabutler_link_with_address": {
+    "label": "Translation missing: de.simple_form.labels.defaults.areabutler_link_with_address",
+    "value": null
+  },
+  "areabutler_link_without_address": {
+    "label": "Translation missing: de.simple_form.labels.defaults.areabutler_link_without_address",
+    "value": null
+  },
+  "aut_hwb": null,
+  "aut_hwb_class": null,
+  "aut_fgee": null,
+  "aut_fgee_class": null,
+  "aut_main_rent": null,
+  "aut_cadastral_community": null
+}

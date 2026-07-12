@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: e2r-postgres
+    environment:
+      POSTGRES_USER: e2r
+      POSTGRES_PASSWORD: e2r_dev_password
+      POSTGRES_DB: expose_to_reel
+    ports:
+      - "5432:5432"
+    volumes:
+      - e2r_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U e2r -d expose_to_reel"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: e2r-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: e2r-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: e2r-minio
+      MINIO_ROOT_PASSWORD: e2r_dev_password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - e2r_minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  e2r_pgdata:
+  e2r_minio:

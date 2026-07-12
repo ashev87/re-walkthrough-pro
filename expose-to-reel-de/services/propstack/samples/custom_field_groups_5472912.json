@@ -1,0 +1,4534 @@
+{
+  "data": [
+    {
+      "id": 137471,
+      "name": "mwa daten",
+      "entity": "for_properties",
+      "custom_fields": [
+        {
+          "id": 250257,
+          "name": "mwa_baujahr",
+          "pretty_name": "mwa Baujahr",
+          "field_type": "Number",
+          "position": 1,
+          "unit": "year",
+          "custom_options": []
+        },
+        {
+          "id": 250260,
+          "name": "mwa_letzte_modernisierung",
+          "pretty_name": "mwa Letzte Modernisierung",
+          "field_type": "Number",
+          "position": 2,
+          "unit": "year",
+          "custom_options": []
+        },
+        {
+          "id": 250293,
+          "name": "mwa_objekttyp",
+          "pretty_name": "mwa Objekttyp",
+          "field_type": "Dropdown",
+          "position": 3,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138793,
+              "name": "Altbau Dachgeschosswohnung"
+            },
+            {
+              "id": 138792,
+              "name": "Altbau Etangenwohnung"
+            },
+            {
+              "id": 138783,
+              "name": "Bungalow"
+            },
+            {
+              "id": 138775,
+              "name": "Dachgeschoss-Maisonette-Wohnung"
+            },
+            {
+              "id": 138774,
+              "name": "Dachgeschosswohnung"
+            },
+            {
+              "id": 138794,
+              "name": "Dachrohling"
+            },
+            {
+              "id": 138779,
+              "name": "Doppelhaushälfte"
+            },
+            {
+              "id": 138767,
+              "name": "Eigentumswohnung"
+            },
+            {
+              "id": 138776,
+              "name": "Einfamilienhaus mit Garten"
+            },
+            {
+              "id": 138791,
+              "name": "Einliegerwohnung "
+            },
+            {
+              "id": 138788,
+              "name": "Erbbaugrundstück "
+            },
+            {
+              "id": 138769,
+              "name": "Erdgeschosswohnung"
+            },
+            {
+              "id": 138770,
+              "name": "Etagenwohnung"
+            },
+            {
+              "id": 138784,
+              "name": "Gewerbeimmobilie"
+            },
+            {
+              "id": 138785,
+              "name": "Grundstück erschlossen "
+            },
+            {
+              "id": 138786,
+              "name": "Grundstück nicht erschlossen "
+            },
+            {
+              "id": 138790,
+              "name": "Hammergrundstück "
+            },
+            {
+              "id": 138772,
+              "name": "Hochparterre Wohnung"
+            },
+            {
+              "id": 138773,
+              "name": "Maisonette-Wohnung"
+            },
+            {
+              "id": 138778,
+              "name": "Mehrfamilienhaus"
+            },
+            {
+              "id": 138768,
+              "name": "Mietwohnung"
+            },
+            {
+              "id": 138787,
+              "name": "Modrow-Grundstück "
+            },
+            {
+              "id": 138789,
+              "name": "Pachtgrundstück "
+            },
+            {
+              "id": 138782,
+              "name": "Reihenendhaus"
+            },
+            {
+              "id": 138780,
+              "name": "Reihenhaus"
+            },
+            {
+              "id": 138781,
+              "name": "Reihenmittelhaus"
+            },
+            {
+              "id": 138771,
+              "name": "Souterrain Wohnung"
+            },
+            {
+              "id": 138777,
+              "name": "Zweifamilienhaus"
+            }
+          ]
+        },
+        {
+          "id": 250295,
+          "name": "mwa_anzahl_objektbilder",
+          "pretty_name": "mwa Anzahl_Objektbilder",
+          "field_type": "Dropdown",
+          "position": 4,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138796,
+              "name": "12"
+            },
+            {
+              "id": 138795,
+              "name": "6"
+            }
+          ]
+        },
+        {
+          "id": 250297,
+          "name": "mwa_vermarktungszeit",
+          "pretty_name": "mwa Vermarktungszeit",
+          "field_type": "Dropdown",
+          "position": 5,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138797,
+              "name": "3"
+            },
+            {
+              "id": 138798,
+              "name": "4"
+            },
+            {
+              "id": 138799,
+              "name": "5"
+            },
+            {
+              "id": 138800,
+              "name": "6"
+            },
+            {
+              "id": 138801,
+              "name": "7"
+            },
+            {
+              "id": 138802,
+              "name": "8"
+            }
+          ]
+        },
+        {
+          "id": 250298,
+          "name": "mwa_immobilienart",
+          "pretty_name": "mwa Immobilienart",
+          "field_type": "Dropdown",
+          "position": 6,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138804,
+              "name": "Gewerbeimmobilie "
+            },
+            {
+              "id": 138805,
+              "name": "Grundstück "
+            },
+            {
+              "id": 138803,
+              "name": "Wohnimmobilie"
+            },
+            {
+              "id": 138806,
+              "name": "Wohn- und Geschäftsimmobilie"
+            }
+          ]
+        },
+        {
+          "id": 250300,
+          "name": "mwa_datum_besichtigung",
+          "pretty_name": "mwa Datum_Besichtigung",
+          "field_type": "Date",
+          "position": 7,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 250256,
+          "name": "mwa_objekt_titel",
+          "pretty_name": "mwa Objekt_Titel 1",
+          "field_type": "Dropdown",
+          "position": 8,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138819,
+              "name": "Abrissreife"
+            },
+            {
+              "id": 138818,
+              "name": "Abrissreifes"
+            },
+            {
+              "id": 138811,
+              "name": "Gepflegte"
+            },
+            {
+              "id": 138810,
+              "name": "Gepflegtes"
+            },
+            {
+              "id": 138821,
+              "name": "Modernisierte"
+            },
+            {
+              "id": 138820,
+              "name": "Modernisiertes"
+            },
+            {
+              "id": 138815,
+              "name": "Neuwertige"
+            },
+            {
+              "id": 138814,
+              "name": "Neuwertiges"
+            },
+            {
+              "id": 138813,
+              "name": "Sanierte"
+            },
+            {
+              "id": 138812,
+              "name": "Saniertes"
+            },
+            {
+              "id": 138817,
+              "name": "Sanierungsbedürftige"
+            },
+            {
+              "id": 138816,
+              "name": "Sanierungsbedürftiges"
+            }
+          ]
+        },
+        {
+          "id": 250303,
+          "name": "mwa_objekt_titel_2",
+          "pretty_name": "Objekt_Titel 2",
+          "field_type": "Dropdown",
+          "position": 9,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138832,
+              "name": "Balkon "
+            },
+            {
+              "id": 138834,
+              "name": "Dachterrasse "
+            },
+            {
+              "id": 138836,
+              "name": "Garagenstellplatz"
+            },
+            {
+              "id": 138831,
+              "name": "Gewerbeeinheit"
+            },
+            {
+              "id": 138835,
+              "name": "Loggia"
+            },
+            {
+              "id": 138829,
+              "name": "mit Einliegerwohnung"
+            },
+            {
+              "id": 138825,
+              "name": "mit Garage"
+            },
+            {
+              "id": 138824,
+              "name": "mit Garten"
+            },
+            {
+              "id": 138828,
+              "name": "mit hochwertiger Ausstattung"
+            },
+            {
+              "id": 138830,
+              "name": "mit Parkplatz"
+            },
+            {
+              "id": 138826,
+              "name": "mit Swimmingpool"
+            },
+            {
+              "id": 138827,
+              "name": "mit Wellnessbereich"
+            },
+            {
+              "id": 138833,
+              "name": "Terrasse"
+            }
+          ]
+        },
+        {
+          "id": 250306,
+          "name": "mwa_letzte_modernisierung_beschreibung",
+          "pretty_name": "mwa Letzte_Modernisierung beschreibung",
+          "field_type": "Text",
+          "position": 10,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 250307,
+          "name": "mwa_wohnflaeche",
+          "pretty_name": "mwa Wohnflaeche",
+          "field_type": "Number",
+          "position": 11,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 250308,
+          "name": "mwa_gartenflache",
+          "pretty_name": "mwa Gartenfläche",
+          "field_type": "Number",
+          "position": 12,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 250309,
+          "name": "mwa_grundstucksflache",
+          "pretty_name": "mwa Grundstücksfläche",
+          "field_type": "Number",
+          "position": 13,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 250310,
+          "name": "mwa_bodenrichtwert",
+          "pretty_name": "mwa Bodenrichtwert",
+          "field_type": "String",
+          "position": 14,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250311,
+          "name": "mwa_etage",
+          "pretty_name": "mwa Etage",
+          "field_type": "Number",
+          "position": 15,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 250312,
+          "name": "mwa_etagenzahl",
+          "pretty_name": "mwa Etagenzahl",
+          "field_type": "String",
+          "position": 16,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 250313,
+          "name": "mwa_aufzug_vorhanden",
+          "pretty_name": "mwa Aufzug vorhanden?",
+          "field_type": "Dropdown",
+          "position": 17,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138838,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 138839,
+              "name": "teils vorhanden"
+            },
+            {
+              "id": 138837,
+              "name": "vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250314,
+          "name": "mwa_zimmer_anzahl",
+          "pretty_name": "mwa Zimmer_Anzahl",
+          "field_type": "Number",
+          "position": 18,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138840,
+              "name": "1"
+            },
+            {
+              "id": 138853,
+              "name": "10"
+            },
+            {
+              "id": 138854,
+              "name": "11"
+            },
+            {
+              "id": 138855,
+              "name": "12"
+            },
+            {
+              "id": 138841,
+              "name": "1,5"
+            },
+            {
+              "id": 138842,
+              "name": "2"
+            },
+            {
+              "id": 138843,
+              "name": "2,5"
+            },
+            {
+              "id": 138844,
+              "name": "3"
+            },
+            {
+              "id": 138845,
+              "name": "3,5"
+            },
+            {
+              "id": 138846,
+              "name": "4"
+            },
+            {
+              "id": 138847,
+              "name": "4,5"
+            },
+            {
+              "id": 138848,
+              "name": "5"
+            },
+            {
+              "id": 138849,
+              "name": "6"
+            },
+            {
+              "id": 138850,
+              "name": "7"
+            },
+            {
+              "id": 138851,
+              "name": "8"
+            },
+            {
+              "id": 138852,
+              "name": "9"
+            }
+          ]
+        },
+        {
+          "id": 250315,
+          "name": "mwa_ausstattungsmerkmale_1",
+          "pretty_name": "mwa Ausstattungsmerkmale1",
+          "field_type": "Text",
+          "position": 19,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138884,
+              "name": "Alarmanlage "
+            },
+            {
+              "id": 138870,
+              "name": "Badezimmer en Suite"
+            },
+            {
+              "id": 138896,
+              "name": "begehbarer Kleiderschrank"
+            },
+            {
+              "id": 138880,
+              "name": "Deckenbeleuchtung"
+            },
+            {
+              "id": 138881,
+              "name": "Deckenlüftung"
+            },
+            {
+              "id": 138861,
+              "name": "Einliegerwohnung herstellbar"
+            },
+            {
+              "id": 138862,
+              "name": "Einliegerwohnung vorhanden"
+            },
+            {
+              "id": 138887,
+              "name": "Elektrische Jalousien"
+            },
+            {
+              "id": 138892,
+              "name": "en Suite Badezimer"
+            },
+            {
+              "id": 138859,
+              "name": "Entwicklung der Immobilie weiter möglich "
+            },
+            {
+              "id": 138877,
+              "name": "Fitnessraum"
+            },
+            {
+              "id": 138867,
+              "name": "Fitnessraum"
+            },
+            {
+              "id": 138876,
+              "name": "Gartenhaus"
+            },
+            {
+              "id": 138875,
+              "name": "Hobbykeller"
+            },
+            {
+              "id": 138868,
+              "name": "Hobbykeller"
+            },
+            {
+              "id": 138860,
+              "name": "hochwertige Gesamtausstattung"
+            },
+            {
+              "id": 138874,
+              "name": "Kamin"
+            },
+            {
+              "id": 138886,
+              "name": "keine"
+            },
+            {
+              "id": 138894,
+              "name": "Kochinsel "
+            },
+            {
+              "id": 138888,
+              "name": "Manuelle Jalousien"
+            },
+            {
+              "id": 138891,
+              "name": "Markise"
+            },
+            {
+              "id": 138864,
+              "name": "Moderne Außenanlage "
+            },
+            {
+              "id": 138858,
+              "name": "modernes Küchensystem "
+            },
+            {
+              "id": 138857,
+              "name": "offenes Wohnkonzept "
+            },
+            {
+              "id": 138872,
+              "name": "Sauna"
+            },
+            {
+              "id": 138878,
+              "name": "Scheune"
+            },
+            {
+              "id": 138882,
+              "name": "Sicherheitssystem"
+            },
+            {
+              "id": 138863,
+              "name": "Sichtgeschützter Gartenbereich "
+            },
+            {
+              "id": 138869,
+              "name": "Sinnvoll durchdachtes Wohnkonzept"
+            },
+            {
+              "id": 138856,
+              "name": "sinnvoll genutzter Grundriss"
+            },
+            {
+              "id": 138885,
+              "name": "Smart Home "
+            },
+            {
+              "id": 138890,
+              "name": "Sonnenschutz"
+            },
+            {
+              "id": 138889,
+              "name": "Soundanlage "
+            },
+            {
+              "id": 138879,
+              "name": "Stuckelemente"
+            },
+            {
+              "id": 138873,
+              "name": "Swimmingpool"
+            },
+            {
+              "id": 138883,
+              "name": "Videosprechanlage "
+            },
+            {
+              "id": 138895,
+              "name": "Videoüberwachung"
+            },
+            {
+              "id": 138871,
+              "name": "Whirlpool"
+            },
+            {
+              "id": 138866,
+              "name": "Wohnküche"
+            },
+            {
+              "id": 138893,
+              "name": "Wohnküche"
+            },
+            {
+              "id": 138865,
+              "name": "Zeitgemäße Inneneinrichtung "
+            }
+          ]
+        },
+        {
+          "id": 250316,
+          "name": "mwa_fenster",
+          "pretty_name": "mwa Fenster",
+          "field_type": "Dropdown",
+          "position": 20,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138908,
+              "name": "Bodentiefe Fenster "
+            },
+            {
+              "id": 138905,
+              "name": "Brandschutzfenster"
+            },
+            {
+              "id": 138899,
+              "name": "Doppelkastenfenster"
+            },
+            {
+              "id": 138903,
+              "name": "Doppeltverglast"
+            },
+            {
+              "id": 138904,
+              "name": "Dreifachverglast"
+            },
+            {
+              "id": 138897,
+              "name": "Holzfenster"
+            },
+            {
+              "id": 138901,
+              "name": "Isolierglasfenster"
+            },
+            {
+              "id": 138909,
+              "name": "Kippfenster"
+            },
+            {
+              "id": 138898,
+              "name": "Kunststofffenster"
+            },
+            {
+              "id": 138906,
+              "name": "Lärmschutzfenster"
+            },
+            {
+              "id": 138900,
+              "name": "Panoramafenster"
+            },
+            {
+              "id": 138911,
+              "name": "Schallschutz-Fenster"
+            },
+            {
+              "id": 138907,
+              "name": "Schiebefenster"
+            },
+            {
+              "id": 138910,
+              "name": "Sonnenschutz-Fenster"
+            },
+            {
+              "id": 138902,
+              "name": "Velux Fenster"
+            }
+          ]
+        },
+        {
+          "id": 250317,
+          "name": "mwa_boden",
+          "pretty_name": "mwa Boden",
+          "field_type": "Dropdown",
+          "position": 21,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138912,
+              "name": "Echtholzparkett"
+            },
+            {
+              "id": 138928,
+              "name": "Epoxidharz"
+            },
+            {
+              "id": 138914,
+              "name": "Fischgrätparkett"
+            },
+            {
+              "id": 138919,
+              "name": "Fliesen"
+            },
+            {
+              "id": 138922,
+              "name": "Granit "
+            },
+            {
+              "id": 138913,
+              "name": "Holzdielen"
+            },
+            {
+              "id": 138923,
+              "name": "Kork"
+            },
+            {
+              "id": 138916,
+              "name": "Laminat"
+            },
+            {
+              "id": 138926,
+              "name": "Marmor "
+            },
+            {
+              "id": 138921,
+              "name": "Naturstein "
+            },
+            {
+              "id": 138927,
+              "name": "Pressspan"
+            },
+            {
+              "id": 138918,
+              "name": "PVC"
+            },
+            {
+              "id": 138915,
+              "name": "Stäbchenparkett"
+            },
+            {
+              "id": 138920,
+              "name": "Steinfliesen"
+            },
+            {
+              "id": 138925,
+              "name": "Steinteppich "
+            },
+            {
+              "id": 138924,
+              "name": "Teppich "
+            },
+            {
+              "id": 138917,
+              "name": "Vinyl"
+            }
+          ]
+        },
+        {
+          "id": 250319,
+          "name": "mwa_anzahl_badezimmer",
+          "pretty_name": "mwa Anzahl Badezimmer",
+          "field_type": "Dropdown",
+          "position": 22,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138934,
+              "name": "1"
+            },
+            {
+              "id": 138935,
+              "name": "2"
+            },
+            {
+              "id": 138936,
+              "name": "3"
+            },
+            {
+              "id": 138937,
+              "name": "4"
+            },
+            {
+              "id": 138938,
+              "name": "5"
+            }
+          ]
+        },
+        {
+          "id": 250320,
+          "name": "mwa_gaste_wc",
+          "pretty_name": "mwa Gäste WC",
+          "field_type": "Dropdown",
+          "position": 23,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138940,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 138939,
+              "name": "vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250321,
+          "name": "mwa_ausstattung_toil_wcs",
+          "pretty_name": "mwa Ausstattung Toil./WCs",
+          "field_type": "Dropdown",
+          "position": 24,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138944,
+              "name": "Bidet"
+            },
+            {
+              "id": 138941,
+              "name": "Dusche"
+            },
+            {
+              "id": 138943,
+              "name": "Fenster"
+            },
+            {
+              "id": 138947,
+              "name": "Innenliegend"
+            },
+            {
+              "id": 138945,
+              "name": "Urinal "
+            },
+            {
+              "id": 138942,
+              "name": "Wanne"
+            },
+            {
+              "id": 138946,
+              "name": "Whirpool"
+            }
+          ]
+        },
+        {
+          "id": 250322,
+          "name": "mwa_einbaukuche",
+          "pretty_name": "mwa Einbauküche",
+          "field_type": "Dropdown",
+          "position": 25,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138949,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 138948,
+              "name": "vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250323,
+          "name": "mwa_kuche_jahr_anschaffung",
+          "pretty_name": "mwa küche Jahr Anschaffung",
+          "field_type": "Number",
+          "position": 26,
+          "unit": "year",
+          "custom_options": []
+        },
+        {
+          "id": 250324,
+          "name": "mwa_kuche_wert_anschaffung",
+          "pretty_name": "mwa küche Wert Anschaffung",
+          "field_type": "Number",
+          "position": 27,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250325,
+          "name": "mwa_balkon_anzahl",
+          "pretty_name": "mwa Balkon Anzahl",
+          "field_type": "Dropdown",
+          "position": 28,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138950,
+              "name": "-"
+            },
+            {
+              "id": 138951,
+              "name": "1"
+            },
+            {
+              "id": 138952,
+              "name": "2"
+            },
+            {
+              "id": 138953,
+              "name": "3"
+            },
+            {
+              "id": 138954,
+              "name": "4"
+            }
+          ]
+        },
+        {
+          "id": 250327,
+          "name": "mwa_balkon_m_2",
+          "pretty_name": "mwa Balkon m2",
+          "field_type": "Number",
+          "position": 29,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 250326,
+          "name": "mwa_terrasse_anzahl",
+          "pretty_name": "mwa Terrasse Anzahl",
+          "field_type": "Dropdown",
+          "position": 30,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138955,
+              "name": "-"
+            },
+            {
+              "id": 138956,
+              "name": "1"
+            },
+            {
+              "id": 138957,
+              "name": "2"
+            },
+            {
+              "id": 138958,
+              "name": "3"
+            },
+            {
+              "id": 138959,
+              "name": "4"
+            }
+          ]
+        },
+        {
+          "id": 250328,
+          "name": "mwa_terrasse_m_2",
+          "pretty_name": "mwa Terrasse m2",
+          "field_type": "Number",
+          "position": 31,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 250329,
+          "name": "mwa_ausrichtung",
+          "pretty_name": "mwa Ausrichtung",
+          "field_type": "Dropdown",
+          "position": 32,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138960,
+              "name": "Nordausrichtung"
+            },
+            {
+              "id": 138964,
+              "name": "Nord-Ost-Ausrichtung "
+            },
+            {
+              "id": 138965,
+              "name": "Nord-West-Ausrichtung"
+            },
+            {
+              "id": 138961,
+              "name": "Ostausrichtung"
+            },
+            {
+              "id": 138962,
+              "name": "Südausrichtung"
+            },
+            {
+              "id": 138967,
+              "name": "Süd-Ost-Ausrichtung"
+            },
+            {
+              "id": 138966,
+              "name": "Süd-West-Ausrichtung"
+            },
+            {
+              "id": 138963,
+              "name": "Westausrichtung"
+            }
+          ]
+        },
+        {
+          "id": 250330,
+          "name": "mwa_pkw_stellplatz",
+          "pretty_name": "mwa PKW_Stellplatz",
+          "field_type": "Dropdown",
+          "position": 33,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138974,
+              "name": "anmietbar"
+            },
+            {
+              "id": 138973,
+              "name": "Außenstellplatz"
+            },
+            {
+              "id": 138970,
+              "name": "Carport"
+            },
+            {
+              "id": 138971,
+              "name": "Doppelcarport"
+            },
+            {
+              "id": 138969,
+              "name": "Doppelgarage"
+            },
+            {
+              "id": 138968,
+              "name": "Garage"
+            },
+            {
+              "id": 138975,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 138972,
+              "name": "Tiefgarage"
+            }
+          ]
+        },
+        {
+          "id": 250331,
+          "name": "mwa_heizung",
+          "pretty_name": "mwa Heizung",
+          "field_type": "Dropdown",
+          "position": 34,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138979,
+              "name": "Etagenheizung"
+            },
+            {
+              "id": 138976,
+              "name": "Fernwärme"
+            },
+            {
+              "id": 138977,
+              "name": "Fußbodenheizung"
+            },
+            {
+              "id": 138980,
+              "name": "Gas-Heizung"
+            },
+            {
+              "id": 138981,
+              "name": "PV-Anlage"
+            },
+            {
+              "id": 138982,
+              "name": "Wärmepumpe"
+            },
+            {
+              "id": 138978,
+              "name": "Zentralheizung"
+            }
+          ]
+        },
+        {
+          "id": 250332,
+          "name": "mwa_energietrager",
+          "pretty_name": "mwa Energieträger",
+          "field_type": "Dropdown",
+          "position": 35,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138985,
+              "name": "Erdwärme"
+            },
+            {
+              "id": 138983,
+              "name": "Gas"
+            },
+            {
+              "id": 138984,
+              "name": "Öl"
+            },
+            {
+              "id": 138986,
+              "name": "Solar"
+            }
+          ]
+        },
+        {
+          "id": 250333,
+          "name": "mwa_keller",
+          "pretty_name": "mwa Keller",
+          "field_type": "Dropdown",
+          "position": 36,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 138991,
+              "name": "ausgebaut "
+            },
+            {
+              "id": 138993,
+              "name": "Einliegerwohnung "
+            },
+            {
+              "id": 138998,
+              "name": "Einliegerwohnung möglich"
+            },
+            {
+              "id": 138990,
+              "name": "Kellerraum auf Etage"
+            },
+            {
+              "id": 138992,
+              "name": "nicht ausgebaut "
+            },
+            {
+              "id": 138997,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 138989,
+              "name": "ohne Keller"
+            },
+            {
+              "id": 138994,
+              "name": "separater Zugang "
+            },
+            {
+              "id": 138988,
+              "name": "teil-unterkellert"
+            },
+            {
+              "id": 138987,
+              "name": "voll-unterkellert"
+            },
+            {
+              "id": 138996,
+              "name": "vorhanden"
+            },
+            {
+              "id": 138995,
+              "name": "Wohnkeller"
+            }
+          ]
+        },
+        {
+          "id": 250334,
+          "name": "mwa_dach",
+          "pretty_name": "mwa Dach",
+          "field_type": "Dropdown",
+          "position": 37,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139001,
+              "name": "ausbaufähig"
+            },
+            {
+              "id": 138999,
+              "name": "ausgebaut"
+            },
+            {
+              "id": 139004,
+              "name": "Flachdach"
+            },
+            {
+              "id": 139002,
+              "name": "gedämmt "
+            },
+            {
+              "id": 139000,
+              "name": "nicht ausgebaut"
+            },
+            {
+              "id": 139003,
+              "name": "nicht gedämmt "
+            },
+            {
+              "id": 139007,
+              "name": "Pultdach"
+            },
+            {
+              "id": 139006,
+              "name": "Satteldach"
+            },
+            {
+              "id": 139005,
+              "name": "Walmdach"
+            }
+          ]
+        },
+        {
+          "id": 250335,
+          "name": "mwa_vermietungssituation",
+          "pretty_name": "mwa Vermietungssituation",
+          "field_type": "Dropdown",
+          "position": 38,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139008,
+              "name": "Aktuell vermietet "
+            },
+            {
+              "id": 139011,
+              "name": "bezugsfrei"
+            },
+            {
+              "id": 139012,
+              "name": "bezugsfrei nach Absprache"
+            },
+            {
+              "id": 139013,
+              "name": "Verkauf mit lebenslangem Wohnrecht"
+            },
+            {
+              "id": 139010,
+              "name": "von Eigentümer bewohnt"
+            },
+            {
+              "id": 139009,
+              "name": "von Eigentümer bewohnt, bezugsfrei bei Verkauf"
+            }
+          ]
+        },
+        {
+          "id": 250336,
+          "name": "mwa_hohe_des_wohngeldes",
+          "pretty_name": "mwa Höhe des Wohngeldes",
+          "field_type": "Number",
+          "position": 39,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250337,
+          "name": "mwa_barrierefreiheit",
+          "pretty_name": "mwa Barrierefreiheit",
+          "field_type": "Dropdown",
+          "position": 40,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139017,
+              "name": "-"
+            },
+            {
+              "id": 139014,
+              "name": "gegeben"
+            },
+            {
+              "id": 139016,
+              "name": "herstellbar"
+            },
+            {
+              "id": 139015,
+              "name": "nicht gegeben"
+            }
+          ]
+        },
+        {
+          "id": 250338,
+          "name": "mwa_gerauschbelastung",
+          "pretty_name": "mwa Gerauschbelastung",
+          "field_type": "Dropdown",
+          "position": 41,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139021,
+              "name": "eine erhöhte Geräuschbelastung durch Verkehrslärm abzulesen"
+            },
+            {
+              "id": 139019,
+              "name": "eine leichte Geräuschbelastung durch Verkehrslärm abzulesen"
+            },
+            {
+              "id": 139020,
+              "name": "eine leicht erhöhte Geräuschbelastung durch Verkehrslärm abzulesen"
+            },
+            {
+              "id": 139022,
+              "name": "eine stark erhöhte Geräuschbelastung durch Verkehrslärm abzulesen"
+            },
+            {
+              "id": 139018,
+              "name": "keine Geräuschbelastung durch Verkehrslärm abzulesen"
+            }
+          ]
+        },
+        {
+          "id": 250339,
+          "name": "mwa_die_immobilie",
+          "pretty_name": "mwa Die_Immobilie",
+          "field_type": "Dropdown",
+          "position": 42,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139024,
+              "name": "Gutes Gesamtangebot durch vorhandene Ausstattung; "
+            },
+            {
+              "id": 139025,
+              "name": "Gutes Gesamtangebot durch vorhandenes Potential; "
+            },
+            {
+              "id": 139023,
+              "name": "Sehr gutes Gesamtangebot durch vorhandene Ausstattung; "
+            },
+            {
+              "id": 139026,
+              "name": "Sehr gutes Gesamtangebot durch vorhandenes Potential; "
+            }
+          ]
+        },
+        {
+          "id": 250340,
+          "name": "mwa_die_immobilie_2",
+          "pretty_name": "mwa Die_Immobilie2",
+          "field_type": "Dropdown",
+          "position": 43,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139028,
+              "name": "Gute und gefragte Lage"
+            },
+            {
+              "id": 139027,
+              "name": "Sehr gute und beliebte Lage"
+            }
+          ]
+        },
+        {
+          "id": 250341,
+          "name": "mwa_immobilie_symbol",
+          "pretty_name": "mwa Immobilie_Symbol",
+          "field_type": "Dropdown",
+          "position": 44,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139030,
+              "name": "-"
+            },
+            {
+              "id": 139029,
+              "name": "+"
+            }
+          ]
+        },
+        {
+          "id": 250342,
+          "name": "mwa_gerauschpegel",
+          "pretty_name": "mwa Geräuschpegel",
+          "field_type": "Dropdown",
+          "position": 45,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139034,
+              "name": "Am analysierten Standort ist eine erhöhte Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+            },
+            {
+              "id": 139032,
+              "name": "Am analysierten Standort ist eine leichte Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+            },
+            {
+              "id": 139033,
+              "name": "Am analysierten Standort ist eine leicht erhöhte Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+            },
+            {
+              "id": 139035,
+              "name": "Am analysierten Standort ist eine stark erhöhte Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+            },
+            {
+              "id": 139031,
+              "name": "Am analysierten Standort ist keine Lärmbelastung durch den innerstädtischen Straßenverkehr messbar"
+            }
+          ]
+        },
+        {
+          "id": 250343,
+          "name": "mwa_symbol_larm",
+          "pretty_name": "mwa Symbol_Larm",
+          "field_type": "Dropdown",
+          "position": 46,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139037,
+              "name": "-"
+            },
+            {
+              "id": 139036,
+              "name": "+"
+            }
+          ]
+        },
+        {
+          "id": 250525,
+          "name": "mwa_vorteil_1",
+          "pretty_name": "mwa vorteil 1",
+          "field_type": "Dropdown",
+          "position": 47,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139179,
+              "name": "Erhebliches Entwicklungspotential vorhanden (Haus und Grund)"
+            },
+            {
+              "id": 139185,
+              "name": "Erweiterter Suchkundenkreis "
+            },
+            {
+              "id": 139183,
+              "name": "Exklusive Ausstattungsqualität "
+            },
+            {
+              "id": 139177,
+              "name": "Gefragtes Gesamtangebot"
+            },
+            {
+              "id": 139182,
+              "name": "Gepflegtes Objekt in gefragter Wohnlage"
+            },
+            {
+              "id": 139180,
+              "name": "Hohes Nachfragepotential "
+            },
+            {
+              "id": 139186,
+              "name": "Sehr hochwertige Immobilie"
+            },
+            {
+              "id": 139181,
+              "name": "vielseitige Nutzungsmöglichkeiten "
+            },
+            {
+              "id": 139187,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139184,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139178,
+              "name": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+            }
+          ]
+        },
+        {
+          "id": 250526,
+          "name": "mwa_vorteil_2",
+          "pretty_name": "mwa vorteil 2",
+          "field_type": "Dropdown",
+          "position": 48,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139190,
+              "name": "Erhebliches Entwicklungspotential vorhanden (Haus und Grund)"
+            },
+            {
+              "id": 139196,
+              "name": "Erweiterter Suchkundenkreis "
+            },
+            {
+              "id": 139194,
+              "name": "Exklusive Ausstattungsqualität "
+            },
+            {
+              "id": 139188,
+              "name": "Gefragtes Gesamtangebot"
+            },
+            {
+              "id": 139193,
+              "name": "Gepflegtes Objekt in gefragter Wohnlage"
+            },
+            {
+              "id": 139191,
+              "name": "Hohes Nachfragepotential "
+            },
+            {
+              "id": 139197,
+              "name": "Sehr hochwertige Immobilie"
+            },
+            {
+              "id": 139192,
+              "name": "vielseitige Nutzungsmöglichkeiten "
+            },
+            {
+              "id": 139195,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139198,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139189,
+              "name": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+            }
+          ]
+        },
+        {
+          "id": 250527,
+          "name": "mwa_vorteil_3",
+          "pretty_name": "mwa vorteil 3",
+          "field_type": "Dropdown",
+          "position": 49,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139201,
+              "name": "Erhebliches Entwicklungspotential vorhanden (Haus und Grund)"
+            },
+            {
+              "id": 139207,
+              "name": "Erweiterter Suchkundenkreis "
+            },
+            {
+              "id": 139205,
+              "name": "Exklusive Ausstattungsqualität "
+            },
+            {
+              "id": 139199,
+              "name": "Gefragtes Gesamtangebot"
+            },
+            {
+              "id": 139204,
+              "name": "Gepflegtes Objekt in gefragter Wohnlage"
+            },
+            {
+              "id": 139202,
+              "name": "Hohes Nachfragepotential "
+            },
+            {
+              "id": 139208,
+              "name": "Sehr hochwertige Immobilie"
+            },
+            {
+              "id": 139203,
+              "name": "vielseitige Nutzungsmöglichkeiten "
+            },
+            {
+              "id": 139206,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139209,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139200,
+              "name": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+            }
+          ]
+        },
+        {
+          "id": 250535,
+          "name": "mwa_vorteil_4",
+          "pretty_name": "mwa vorteil 4",
+          "field_type": "Dropdown",
+          "position": 50,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139212,
+              "name": "Erhebliches Entwicklungspotential vorhanden (Haus und Grund)"
+            },
+            {
+              "id": 139218,
+              "name": "Erweiterter Suchkundenkreis "
+            },
+            {
+              "id": 139216,
+              "name": "Exklusive Ausstattungsqualität "
+            },
+            {
+              "id": 139210,
+              "name": "Gefragtes Gesamtangebot"
+            },
+            {
+              "id": 139215,
+              "name": "Gepflegtes Objekt in gefragter Wohnlage"
+            },
+            {
+              "id": 139213,
+              "name": "Hohes Nachfragepotential "
+            },
+            {
+              "id": 139219,
+              "name": "Sehr hochwertige Immobilie"
+            },
+            {
+              "id": 139214,
+              "name": "vielseitige Nutzungsmöglichkeiten "
+            },
+            {
+              "id": 139217,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139220,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139211,
+              "name": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+            }
+          ]
+        },
+        {
+          "id": 250536,
+          "name": "mwa_vorteil_5",
+          "pretty_name": "mwa vorteil 5",
+          "field_type": "Dropdown",
+          "position": 51,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139223,
+              "name": "Erhebliches Entwicklungspotential vorhanden (Haus und Grund)"
+            },
+            {
+              "id": 139229,
+              "name": "Erweiterter Suchkundenkreis "
+            },
+            {
+              "id": 139227,
+              "name": "Exklusive Ausstattungsqualität "
+            },
+            {
+              "id": 139221,
+              "name": "Gefragtes Gesamtangebot"
+            },
+            {
+              "id": 139226,
+              "name": "Gepflegtes Objekt in gefragter Wohnlage"
+            },
+            {
+              "id": 139224,
+              "name": "Hohes Nachfragepotential "
+            },
+            {
+              "id": 139230,
+              "name": "Sehr hochwertige Immobilie"
+            },
+            {
+              "id": 139225,
+              "name": "vielseitige Nutzungsmöglichkeiten "
+            },
+            {
+              "id": 139228,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139231,
+              "name": "vielseitige Nutzungsmöglichkeiten vorhanden"
+            },
+            {
+              "id": 139222,
+              "name": "Weiteres Entwicklungspotential vorhanden (Haus und Grund)"
+            }
+          ]
+        },
+        {
+          "id": 250537,
+          "name": "mwa_nachteil_1",
+          "pretty_name": "mwa nachteil 1",
+          "field_type": "Dropdown",
+          "position": 52,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139237,
+              "name": "Aufwand für Abrissarbeiten "
+            },
+            {
+              "id": 139235,
+              "name": "eingeschränkter Zielgruppenpreis"
+            },
+            {
+              "id": 139236,
+              "name": "hoher Sanierungsaufwand"
+            },
+            {
+              "id": 139234,
+              "name": "keine Nachteile vorhanden"
+            },
+            {
+              "id": 139232,
+              "name": "leichter Sanierungsrückstand \t\t\t\t\t\t\t\t\t\t\t\t\t\""
+            },
+            {
+              "id": 139233,
+              "name": "Teils Renovierungsaufwand vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250538,
+          "name": "mwa_nachteil_2",
+          "pretty_name": "mwa nachteil 2",
+          "field_type": "Dropdown",
+          "position": 53,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139243,
+              "name": "Aufwand für Abrissarbeiten "
+            },
+            {
+              "id": 139241,
+              "name": "eingeschränkter Zielgruppenpreis"
+            },
+            {
+              "id": 139242,
+              "name": "hoher Sanierungsaufwand"
+            },
+            {
+              "id": 139240,
+              "name": "keine Nachteile vorhanden"
+            },
+            {
+              "id": 139238,
+              "name": "leichter Sanierungsrückstand"
+            },
+            {
+              "id": 139239,
+              "name": "Teils Renovierungsaufwand vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250539,
+          "name": "mwa_nachteil_3",
+          "pretty_name": "mwa nachteil 3",
+          "field_type": "Dropdown",
+          "position": 54,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139249,
+              "name": "Aufwand für Abrissarbeiten "
+            },
+            {
+              "id": 139247,
+              "name": "eingeschränkter Zielgruppenpreis"
+            },
+            {
+              "id": 139248,
+              "name": "hoher Sanierungsaufwand"
+            },
+            {
+              "id": 139246,
+              "name": "keine Nachteile vorhanden"
+            },
+            {
+              "id": 139244,
+              "name": "leichter Sanierungsrückstand"
+            },
+            {
+              "id": 139245,
+              "name": "Teils Renovierungsaufwand vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250540,
+          "name": "mwa_nachteil_4",
+          "pretty_name": "mwa nachteil 4",
+          "field_type": "Dropdown",
+          "position": 55,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139255,
+              "name": "Aufwand für Abrissarbeiten "
+            },
+            {
+              "id": 139253,
+              "name": "eingeschränkter Zielgruppenpreis"
+            },
+            {
+              "id": 139254,
+              "name": "hoher Sanierungsaufwand"
+            },
+            {
+              "id": 139252,
+              "name": "keine Nachteile vorhanden"
+            },
+            {
+              "id": 139250,
+              "name": "leichter Sanierungsrückstand"
+            },
+            {
+              "id": 139251,
+              "name": "Teils Renovierungsaufwand vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250541,
+          "name": "mwa_nachteil_5",
+          "pretty_name": "mwa nachteil 5",
+          "field_type": "Dropdown",
+          "position": 56,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139261,
+              "name": "Aufwand für Abrissarbeiten "
+            },
+            {
+              "id": 139259,
+              "name": "eingeschränkter Zielgruppenpreis"
+            },
+            {
+              "id": 139260,
+              "name": "hoher Sanierungsaufwand"
+            },
+            {
+              "id": 139258,
+              "name": "keine Nachteile vorhanden"
+            },
+            {
+              "id": 139256,
+              "name": "leichter Sanierungsrückstand"
+            },
+            {
+              "id": 139257,
+              "name": "Teils Renovierungsaufwand vorhanden"
+            }
+          ]
+        },
+        {
+          "id": 250542,
+          "name": "mwa_qualitat_fassade",
+          "pretty_name": "mwa Qualität_Fassade",
+          "field_type": "Dropdown",
+          "position": 57,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139268,
+              "name": " -"
+            },
+            {
+              "id": 139262,
+              "name": "einfach"
+            },
+            {
+              "id": 139265,
+              "name": "gehoben"
+            },
+            {
+              "id": 139267,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139264,
+              "name": "mittel"
+            },
+            {
+              "id": 139269,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139263,
+              "name": "normal"
+            },
+            {
+              "id": 139266,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250543,
+          "name": "mwa_qualitat_hauseingang",
+          "pretty_name": "mwa Qualität_Hauseingang",
+          "field_type": "Dropdown",
+          "position": 58,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139277,
+              "name": " - "
+            },
+            {
+              "id": 139271,
+              "name": "einfach"
+            },
+            {
+              "id": 139274,
+              "name": "gehoben"
+            },
+            {
+              "id": 139276,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139273,
+              "name": "mittel"
+            },
+            {
+              "id": 139278,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139272,
+              "name": "normal"
+            },
+            {
+              "id": 139275,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250544,
+          "name": "mwa_qualitat_treppenhaus",
+          "pretty_name": "mwa Qualität_Treppenhaus",
+          "field_type": "Dropdown",
+          "position": 59,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139285,
+              "name": " - "
+            },
+            {
+              "id": 139279,
+              "name": "einfach"
+            },
+            {
+              "id": 139282,
+              "name": "gehoben"
+            },
+            {
+              "id": 139284,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139281,
+              "name": "mittel"
+            },
+            {
+              "id": 139286,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139280,
+              "name": "normal"
+            },
+            {
+              "id": 139283,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250545,
+          "name": "mwa_qualitat_sanitar",
+          "pretty_name": "mwa Qualität_Sanitär",
+          "field_type": "Dropdown",
+          "position": 60,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139293,
+              "name": " - "
+            },
+            {
+              "id": 139287,
+              "name": "einfach"
+            },
+            {
+              "id": 139290,
+              "name": "gehoben"
+            },
+            {
+              "id": 139292,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139289,
+              "name": "mittel"
+            },
+            {
+              "id": 139294,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139288,
+              "name": "normal"
+            },
+            {
+              "id": 139291,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250546,
+          "name": "mwa_qualitat_kuche",
+          "pretty_name": "mwa Qualität_Küche",
+          "field_type": "Dropdown",
+          "position": 61,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139301,
+              "name": " - "
+            },
+            {
+              "id": 139295,
+              "name": "einfach"
+            },
+            {
+              "id": 139298,
+              "name": "gehoben"
+            },
+            {
+              "id": 139300,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139297,
+              "name": "mittel"
+            },
+            {
+              "id": 139302,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139296,
+              "name": "normal"
+            },
+            {
+              "id": 139299,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250576,
+          "name": "mwa_qualitat_boden",
+          "pretty_name": "mwa Qualität_Boden",
+          "field_type": "Dropdown",
+          "position": 62,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139309,
+              "name": " - "
+            },
+            {
+              "id": 139303,
+              "name": "einfach"
+            },
+            {
+              "id": 139306,
+              "name": "gehoben"
+            },
+            {
+              "id": 139308,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139305,
+              "name": "mittel"
+            },
+            {
+              "id": 139310,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139304,
+              "name": "normal"
+            },
+            {
+              "id": 139307,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250577,
+          "name": "mwa_qualitat_balkon_terrasse",
+          "pretty_name": "mwa Qualität_Balkon/Terrasse",
+          "field_type": "Dropdown",
+          "position": 63,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139317,
+              "name": " - "
+            },
+            {
+              "id": 139311,
+              "name": "einfach"
+            },
+            {
+              "id": 139314,
+              "name": "gehoben"
+            },
+            {
+              "id": 139316,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139313,
+              "name": "mittel"
+            },
+            {
+              "id": 139318,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139312,
+              "name": "normal"
+            },
+            {
+              "id": 139315,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250578,
+          "name": "mwa_qualitat_garten",
+          "pretty_name": "mwa Qualität_Garten",
+          "field_type": "Dropdown",
+          "position": 64,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139345,
+              "name": " - "
+            },
+            {
+              "id": 139339,
+              "name": "einfach"
+            },
+            {
+              "id": 139342,
+              "name": "gehoben"
+            },
+            {
+              "id": 139344,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139341,
+              "name": "mittel"
+            },
+            {
+              "id": 139346,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139340,
+              "name": "normal"
+            },
+            {
+              "id": 139343,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250579,
+          "name": "mwa_qualitat_keller",
+          "pretty_name": "mwa Qualität_Keller",
+          "field_type": "Dropdown",
+          "position": 65,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139353,
+              "name": " - "
+            },
+            {
+              "id": 139347,
+              "name": "einfach"
+            },
+            {
+              "id": 139350,
+              "name": "gehoben"
+            },
+            {
+              "id": 139352,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139349,
+              "name": "mittel"
+            },
+            {
+              "id": 139354,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139348,
+              "name": "normal"
+            },
+            {
+              "id": 139351,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250581,
+          "name": "mwa_qualitat_fenster",
+          "pretty_name": "mwa Qualität_Fenster",
+          "field_type": "Dropdown",
+          "position": 66,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139369,
+              "name": " - "
+            },
+            {
+              "id": 139363,
+              "name": "einfach"
+            },
+            {
+              "id": 139366,
+              "name": "gehoben"
+            },
+            {
+              "id": 139368,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139365,
+              "name": "mittel"
+            },
+            {
+              "id": 139370,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139364,
+              "name": "normal"
+            },
+            {
+              "id": 139367,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250601,
+          "name": "mwa_qualitat_dach",
+          "pretty_name": "mwa Qualität_Dach",
+          "field_type": "Dropdown",
+          "position": 67,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139395,
+              "name": " - "
+            },
+            {
+              "id": 139389,
+              "name": "einfach"
+            },
+            {
+              "id": 139392,
+              "name": "gehoben"
+            },
+            {
+              "id": 139394,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139391,
+              "name": "mittel"
+            },
+            {
+              "id": 139396,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139390,
+              "name": "normal"
+            },
+            {
+              "id": 139393,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250602,
+          "name": "mwa_qualitat_elektrik",
+          "pretty_name": "mwa Qualität_Elektrik",
+          "field_type": "Dropdown",
+          "position": 68,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139403,
+              "name": " - "
+            },
+            {
+              "id": 139397,
+              "name": "einfach"
+            },
+            {
+              "id": 139400,
+              "name": "gehoben"
+            },
+            {
+              "id": 139402,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139399,
+              "name": "mittel"
+            },
+            {
+              "id": 139404,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139398,
+              "name": "normal"
+            },
+            {
+              "id": 139401,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250603,
+          "name": "mwa_qualitat_heizung",
+          "pretty_name": "mwa Qualität_Heizung",
+          "field_type": "Dropdown",
+          "position": 69,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139411,
+              "name": " - "
+            },
+            {
+              "id": 139405,
+              "name": "einfach"
+            },
+            {
+              "id": 139408,
+              "name": "gehoben"
+            },
+            {
+              "id": 139410,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139407,
+              "name": "mittel"
+            },
+            {
+              "id": 139412,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139406,
+              "name": "normal"
+            },
+            {
+              "id": 139409,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250604,
+          "name": "mwa_qualitat_straenge",
+          "pretty_name": "mwa Qualität_Straenge",
+          "field_type": "Dropdown",
+          "position": 70,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139419,
+              "name": " - "
+            },
+            {
+              "id": 139413,
+              "name": "einfach"
+            },
+            {
+              "id": 139416,
+              "name": "gehoben"
+            },
+            {
+              "id": 139418,
+              "name": "luxuriös"
+            },
+            {
+              "id": 139415,
+              "name": "mittel"
+            },
+            {
+              "id": 139420,
+              "name": "nicht bekannt "
+            },
+            {
+              "id": 139414,
+              "name": "normal"
+            },
+            {
+              "id": 139417,
+              "name": "stark gehoben"
+            }
+          ]
+        },
+        {
+          "id": 250667,
+          "name": "mwa_zustand_fassade",
+          "pretty_name": "mwa Zustand_Fassade",
+          "field_type": "Dropdown",
+          "position": 71,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139457,
+              "name": " -"
+            },
+            {
+              "id": 139446,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139456,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139450,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139449,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139454,
+              "name": "in Bau"
+            },
+            {
+              "id": 139451,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139448,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139453,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139455,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139452,
+              "name": "saniert"
+            },
+            {
+              "id": 139447,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250668,
+          "name": "mwa_zustand_hauseingang",
+          "pretty_name": "mwa Zustand_Hauseingang",
+          "field_type": "Dropdown",
+          "position": 72,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139469,
+              "name": " -"
+            },
+            {
+              "id": 139458,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139468,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139462,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139461,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139466,
+              "name": "in Bau"
+            },
+            {
+              "id": 139463,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139460,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139465,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139467,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139464,
+              "name": "saniert"
+            },
+            {
+              "id": 139459,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250669,
+          "name": "mwa_zustand_treppenhaus",
+          "pretty_name": "mwa Zustand_Treppenhaus",
+          "field_type": "Dropdown",
+          "position": 73,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139481,
+              "name": " -"
+            },
+            {
+              "id": 139470,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139480,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139474,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139473,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139478,
+              "name": "in Bau"
+            },
+            {
+              "id": 139475,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139472,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139477,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139479,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139476,
+              "name": "saniert"
+            },
+            {
+              "id": 139471,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250670,
+          "name": "mwa_zustand_sanitar",
+          "pretty_name": "mwa Zustand_Sanitär",
+          "field_type": "Dropdown",
+          "position": 74,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139493,
+              "name": " -"
+            },
+            {
+              "id": 139482,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139492,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139486,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139485,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139490,
+              "name": "in Bau"
+            },
+            {
+              "id": 139487,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139484,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139489,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139491,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139488,
+              "name": "saniert"
+            },
+            {
+              "id": 139483,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250671,
+          "name": "mwa_zustand_kuche",
+          "pretty_name": "mwa Zustand_Küche",
+          "field_type": "Dropdown",
+          "position": 75,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139505,
+              "name": " -"
+            },
+            {
+              "id": 139494,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139504,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139498,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139497,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139502,
+              "name": "in Bau"
+            },
+            {
+              "id": 139499,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139496,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139501,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139503,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139500,
+              "name": "saniert"
+            },
+            {
+              "id": 139495,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250672,
+          "name": "mwa_zustand_boden",
+          "pretty_name": "mwa Zustand_Boden",
+          "field_type": "Dropdown",
+          "position": 76,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139517,
+              "name": " -"
+            },
+            {
+              "id": 139506,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139516,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139510,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139509,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139514,
+              "name": "in Bau"
+            },
+            {
+              "id": 139511,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139508,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139513,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139515,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139512,
+              "name": "saniert"
+            },
+            {
+              "id": 139507,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250673,
+          "name": "mwa_zustand_balkon_terrasse",
+          "pretty_name": "mwa Zustand_Balkon/Terrasse",
+          "field_type": "Dropdown",
+          "position": 77,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139529,
+              "name": " -"
+            },
+            {
+              "id": 139518,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139528,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139522,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139521,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139526,
+              "name": "in Bau"
+            },
+            {
+              "id": 139523,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139520,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139525,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139527,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139524,
+              "name": "saniert"
+            },
+            {
+              "id": 139519,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250674,
+          "name": "mwa_zustand_garten",
+          "pretty_name": "mwa Zustand_Garten",
+          "field_type": "Dropdown",
+          "position": 78,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139541,
+              "name": " -"
+            },
+            {
+              "id": 139530,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139540,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139534,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139533,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139538,
+              "name": "in Bau"
+            },
+            {
+              "id": 139535,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139532,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139537,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139539,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139536,
+              "name": "saniert"
+            },
+            {
+              "id": 139531,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250675,
+          "name": "mwa_zustand_keller",
+          "pretty_name": "mwa Zustand_Keller",
+          "field_type": "Dropdown",
+          "position": 79,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139553,
+              "name": " -"
+            },
+            {
+              "id": 139542,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139552,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139546,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139545,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139550,
+              "name": "in Bau"
+            },
+            {
+              "id": 139547,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139544,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139549,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139551,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139548,
+              "name": "saniert"
+            },
+            {
+              "id": 139543,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250676,
+          "name": "mwa_zustand_fenster",
+          "pretty_name": "mwa Zustand_Fenster",
+          "field_type": "Dropdown",
+          "position": 80,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139565,
+              "name": " -"
+            },
+            {
+              "id": 139554,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139564,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139558,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139557,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139562,
+              "name": "in Bau"
+            },
+            {
+              "id": 139559,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139556,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139561,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139563,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139560,
+              "name": "saniert"
+            },
+            {
+              "id": 139555,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250677,
+          "name": "mwa_zustand_dach",
+          "pretty_name": "mwa Zustand_Dach",
+          "field_type": "Dropdown",
+          "position": 81,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139577,
+              "name": " -"
+            },
+            {
+              "id": 139566,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139576,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139570,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139569,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139574,
+              "name": "in Bau"
+            },
+            {
+              "id": 139571,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139568,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139573,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139575,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139572,
+              "name": "saniert"
+            },
+            {
+              "id": 139567,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250678,
+          "name": "mwa_zustand_elektrik",
+          "pretty_name": "mwa Zustand_Elektrik",
+          "field_type": "Dropdown",
+          "position": 82,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139589,
+              "name": " -"
+            },
+            {
+              "id": 139578,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139588,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139582,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139581,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139586,
+              "name": "in Bau"
+            },
+            {
+              "id": 139583,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139580,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139585,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139587,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139584,
+              "name": "saniert"
+            },
+            {
+              "id": 139579,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250679,
+          "name": "mwa_zustand_heizung",
+          "pretty_name": "mwa Zustand_Heizung",
+          "field_type": "Dropdown",
+          "position": 83,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139601,
+              "name": " -"
+            },
+            {
+              "id": 139590,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139600,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139594,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139593,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139598,
+              "name": "in Bau"
+            },
+            {
+              "id": 139595,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139592,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139597,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139599,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139596,
+              "name": "saniert"
+            },
+            {
+              "id": 139591,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250680,
+          "name": "mwa_zustand_straenge",
+          "pretty_name": "mwa Zustand_Straenge",
+          "field_type": "Dropdown",
+          "position": 84,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139613,
+              "name": " -"
+            },
+            {
+              "id": 139602,
+              "name": "abrissreif"
+            },
+            {
+              "id": 139612,
+              "name": "aus Erbauung"
+            },
+            {
+              "id": 139606,
+              "name": "gepflegt"
+            },
+            {
+              "id": 139605,
+              "name": "Handlungsbedarf"
+            },
+            {
+              "id": 139610,
+              "name": "in Bau"
+            },
+            {
+              "id": 139607,
+              "name": "modernisiert"
+            },
+            {
+              "id": 139604,
+              "name": "Modernisierungsbedarf"
+            },
+            {
+              "id": 139609,
+              "name": "neuwertig"
+            },
+            {
+              "id": 139611,
+              "name": "nicht bekannt"
+            },
+            {
+              "id": 139608,
+              "name": "saniert"
+            },
+            {
+              "id": 139603,
+              "name": "Sanierungsbedarf"
+            }
+          ]
+        },
+        {
+          "id": 250688,
+          "name": "mwa_resume_1",
+          "pretty_name": "mwa Resume1",
+          "field_type": "Dropdown",
+          "position": 85,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139626,
+              "name": "Ihrer exklusiven Wohnlage,"
+            },
+            {
+              "id": 139625,
+              "name": "Ihrer gefragten Wohnlage,"
+            },
+            {
+              "id": 139627,
+              "name": "Ihrer guten Wohnlage,"
+            },
+            {
+              "id": 139624,
+              "name": "Ihrer zentralen Wohnlage,"
+            }
+          ]
+        },
+        {
+          "id": 250689,
+          "name": "mwa_resume_2",
+          "pretty_name": "mwa Resume2",
+          "field_type": "Dropdown",
+          "position": 86,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139631,
+              "name": "Ihres Entwicklungspotenzials"
+            },
+            {
+              "id": 139628,
+              "name": "Ihres gepflegten Zustands "
+            },
+            {
+              "id": 139632,
+              "name": "Ihres neuwertigen Zustands "
+            },
+            {
+              "id": 139629,
+              "name": "Ihres neuwertigen Zustands "
+            },
+            {
+              "id": 139630,
+              "name": "Ihres sanierten Zustands "
+            },
+            {
+              "id": 139633,
+              "name": "Ihres sanierungsbedürftigen Zustands "
+            }
+          ]
+        },
+        {
+          "id": 250690,
+          "name": "mwa_resume_2_erw",
+          "pretty_name": "mwa Resume2_erw",
+          "field_type": "Dropdown",
+          "position": 87,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139634,
+              "name": "mit vielseitigen Nutzungsmöglichkeiten,"
+            },
+            {
+              "id": 139635,
+              "name": "mit weiteren Entwicklungsmöglichkeiten,"
+            }
+          ]
+        },
+        {
+          "id": 250691,
+          "name": "mwa_real_preis_von",
+          "pretty_name": "mwa Real Preis von",
+          "field_type": "Number",
+          "position": 88,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250695,
+          "name": "mwa_m_2_preis_von",
+          "pretty_name": "mwa m2_Preis_von",
+          "field_type": "Number",
+          "position": 89,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250692,
+          "name": "mwa_real_preis_bis",
+          "pretty_name": "mwa Real Preis bis",
+          "field_type": "Number",
+          "position": 90,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250696,
+          "name": "mwa_m_2_preis_bis",
+          "pretty_name": "mwa m2_Preis_bis",
+          "field_type": "Number",
+          "position": 91,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250697,
+          "name": "mwa_angebot_preis",
+          "pretty_name": "mwa Angebot_Preis",
+          "field_type": "Number",
+          "position": 92,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250699,
+          "name": "mwa_m_2_angebot",
+          "pretty_name": "mwa m2_Angebot",
+          "field_type": "Number",
+          "position": 93,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 250700,
+          "name": "mwa_notizen",
+          "pretty_name": "mwa Notizen",
+          "field_type": "Text",
+          "position": 94,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 250972,
+          "name": "mwa_fenster_2",
+          "pretty_name": "mwa Fenster2",
+          "field_type": "Dropdown",
+          "position": 95,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139763,
+              "name": "Bodentiefe Fenster "
+            },
+            {
+              "id": 139760,
+              "name": "Brandschutzfenster"
+            },
+            {
+              "id": 139754,
+              "name": "Doppelkastenfenster"
+            },
+            {
+              "id": 139758,
+              "name": "Doppeltverglast"
+            },
+            {
+              "id": 139759,
+              "name": "Dreifachverglast"
+            },
+            {
+              "id": 139752,
+              "name": "Holzfenster"
+            },
+            {
+              "id": 139756,
+              "name": "Isolierglasfenster"
+            },
+            {
+              "id": 139764,
+              "name": "Kippfenster"
+            },
+            {
+              "id": 139753,
+              "name": "Kunststofffenster"
+            },
+            {
+              "id": 139761,
+              "name": "Lärmschutzfenster"
+            },
+            {
+              "id": 139755,
+              "name": "Panoramafenster"
+            },
+            {
+              "id": 139766,
+              "name": "Schallschutz-Fenster"
+            },
+            {
+              "id": 139762,
+              "name": "Schiebefenster"
+            },
+            {
+              "id": 139765,
+              "name": "Sonnenschutz-Fenster"
+            },
+            {
+              "id": 139757,
+              "name": "Velux Fenster"
+            }
+          ]
+        },
+        {
+          "id": 250973,
+          "name": "mwa_boden_2",
+          "pretty_name": "mwa Boden2",
+          "field_type": "Dropdown",
+          "position": 96,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139767,
+              "name": "Echtholzparkett"
+            },
+            {
+              "id": 139783,
+              "name": "Epoxidharz"
+            },
+            {
+              "id": 139769,
+              "name": "Fischgrätparkett"
+            },
+            {
+              "id": 139774,
+              "name": "Fliesen"
+            },
+            {
+              "id": 139777,
+              "name": "Granit "
+            },
+            {
+              "id": 139768,
+              "name": "Holzdielen"
+            },
+            {
+              "id": 139778,
+              "name": "Kork"
+            },
+            {
+              "id": 139771,
+              "name": "Laminat"
+            },
+            {
+              "id": 139781,
+              "name": "Marmor "
+            },
+            {
+              "id": 139776,
+              "name": "Naturstein "
+            },
+            {
+              "id": 139782,
+              "name": "Pressspan"
+            },
+            {
+              "id": 139773,
+              "name": "PVC"
+            },
+            {
+              "id": 139770,
+              "name": "Stäbchenparkett"
+            },
+            {
+              "id": 139775,
+              "name": "Steinfliesen"
+            },
+            {
+              "id": 139780,
+              "name": "Steinteppich "
+            },
+            {
+              "id": 139779,
+              "name": "Teppich "
+            },
+            {
+              "id": 139772,
+              "name": "Vinyl"
+            }
+          ]
+        },
+        {
+          "id": 250974,
+          "name": "mwa_ausstattung_toil_wcs_2",
+          "pretty_name": "mwa Ausstattung Toil./WCs2",
+          "field_type": "Dropdown",
+          "position": 97,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139787,
+              "name": "Bidet"
+            },
+            {
+              "id": 139784,
+              "name": "Dusche"
+            },
+            {
+              "id": 139791,
+              "name": "Fenster"
+            },
+            {
+              "id": 139790,
+              "name": "Innenliegend"
+            },
+            {
+              "id": 139788,
+              "name": "Urinal "
+            },
+            {
+              "id": 139785,
+              "name": "Wanne"
+            },
+            {
+              "id": 139789,
+              "name": "Whirpool "
+            }
+          ]
+        },
+        {
+          "id": 250975,
+          "name": "mwa_pkw_stellplatz_2",
+          "pretty_name": "mwa PKW_Stellplatz2",
+          "field_type": "Dropdown",
+          "position": 98,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 139799,
+              "name": "anmietbar"
+            },
+            {
+              "id": 139797,
+              "name": "Außenstellplatz"
+            },
+            {
+              "id": 139794,
+              "name": "Carport"
+            },
+            {
+              "id": 139795,
+              "name": "Doppelcarport"
+            },
+            {
+              "id": 139793,
+              "name": "Doppelgarage"
+            },
+            {
+              "id": 139792,
+              "name": "Garage"
+            },
+            {
+              "id": 139798,
+              "name": "nicht vorhanden"
+            },
+            {
+              "id": 139796,
+              "name": "Tiefgarage"
+            }
+          ]
+        },
+        {
+          "id": 251327,
+          "name": "mwa_erstellen",
+          "pretty_name": "mwa erstellen",
+          "field_type": "Boolean",
+          "position": 99,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 253604,
+          "name": "mwa_anrede",
+          "pretty_name": "mwa_anrede",
+          "field_type": "Dropdown",
+          "position": 100,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 144349,
+              "name": "Damen und Herren"
+            },
+            {
+              "id": 144350,
+              "name": "Eheleute"
+            },
+            {
+              "id": 144352,
+              "name": "Erbengemeinschaft"
+            },
+            {
+              "id": 144351,
+              "name": "Familie"
+            },
+            {
+              "id": 144344,
+              "name": "Frau"
+            },
+            {
+              "id": 144348,
+              "name": "Frau Dr."
+            },
+            {
+              "id": 144346,
+              "name": "Frau Prof."
+            },
+            {
+              "id": 144343,
+              "name": "Herr"
+            },
+            {
+              "id": 144347,
+              "name": "Herr Dr."
+            },
+            {
+              "id": 144345,
+              "name": "Herr Prof."
+            }
+          ]
+        },
+        {
+          "id": 253605,
+          "name": "mwa_geehrte",
+          "pretty_name": "mwa_geehrte",
+          "field_type": "Dropdown",
+          "position": 101,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 144353,
+              "name": "geehrte"
+            },
+            {
+              "id": 144354,
+              "name": "geehrter"
+            }
+          ]
+        },
+        {
+          "id": 253606,
+          "name": "mwa_vorname",
+          "pretty_name": "mwa_vorname",
+          "field_type": "String",
+          "position": 102,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 253607,
+          "name": "mwa_nachname",
+          "pretty_name": "mwa_nachname",
+          "field_type": "String",
+          "position": 103,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 253608,
+          "name": "mwa_email",
+          "pretty_name": "mwa_email",
+          "field_type": "String",
+          "position": 104,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 254283,
+          "name": "mwa_ausstattung_toil_wcs_3",
+          "pretty_name": "mwa Ausstattung Toil./WCs3",
+          "field_type": "Dropdown",
+          "position": 105,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 144936,
+              "name": "Bidet"
+            },
+            {
+              "id": 144933,
+              "name": "Dusche"
+            },
+            {
+              "id": 144935,
+              "name": "Fenster"
+            },
+            {
+              "id": 144939,
+              "name": "Innenliegend"
+            },
+            {
+              "id": 144937,
+              "name": "Urinal "
+            },
+            {
+              "id": 144934,
+              "name": "Wanne"
+            },
+            {
+              "id": 144938,
+              "name": "Whirpool "
+            }
+          ]
+        },
+        {
+          "id": 254284,
+          "name": "mwa_fenster_3",
+          "pretty_name": "mwa Fenster3",
+          "field_type": "Dropdown",
+          "position": 106,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 144951,
+              "name": "Bodentiefe Fenster "
+            },
+            {
+              "id": 144948,
+              "name": "Brandschutzfenster"
+            },
+            {
+              "id": 144942,
+              "name": "Doppelkastenfenster"
+            },
+            {
+              "id": 144946,
+              "name": "Doppeltverglast"
+            },
+            {
+              "id": 144947,
+              "name": "Dreifachverglast"
+            },
+            {
+              "id": 144940,
+              "name": "Holzfenster"
+            },
+            {
+              "id": 144944,
+              "name": "Isolierglasfenster"
+            },
+            {
+              "id": 144952,
+              "name": "Kippfenster"
+            },
+            {
+              "id": 144941,
+              "name": "Kunststofffenster"
+            },
+            {
+              "id": 144949,
+              "name": "Lärmschutzfenster"
+            },
+            {
+              "id": 144943,
+              "name": "Panoramafenster"
+            },
+            {
+              "id": 144954,
+              "name": "Schallschutz-Fenster"
+            },
+            {
+              "id": 144950,
+              "name": "Schiebefenster"
+            },
+            {
+              "id": 144953,
+              "name": "Sonnenschutz-Fenster"
+            },
+            {
+              "id": 144945,
+              "name": "Velux Fenster"
+            }
+          ]
+        },
+        {
+          "id": 254285,
+          "name": "mwa_boden_3",
+          "pretty_name": "mwa Boden3",
+          "field_type": "Dropdown",
+          "position": 107,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 144955,
+              "name": "Echtholzparkett"
+            },
+            {
+              "id": 144971,
+              "name": "Epoxidharz"
+            },
+            {
+              "id": 144957,
+              "name": "Fischgrätparkett"
+            },
+            {
+              "id": 144962,
+              "name": "Fliesen"
+            },
+            {
+              "id": 144965,
+              "name": "Granit "
+            },
+            {
+              "id": 144956,
+              "name": "Holzdielen"
+            },
+            {
+              "id": 144966,
+              "name": "Kork"
+            },
+            {
+              "id": 144959,
+              "name": "Laminat"
+            },
+            {
+              "id": 144969,
+              "name": "Marmor "
+            },
+            {
+              "id": 144964,
+              "name": "Naturstein "
+            },
+            {
+              "id": 144970,
+              "name": "Pressspan"
+            },
+            {
+              "id": 144961,
+              "name": "PVC"
+            },
+            {
+              "id": 144958,
+              "name": "Stäbchenparkett"
+            },
+            {
+              "id": 144963,
+              "name": "Steinfliesen"
+            },
+            {
+              "id": 144968,
+              "name": "Steinteppich "
+            },
+            {
+              "id": 144967,
+              "name": "Teppich "
+            },
+            {
+              "id": 144960,
+              "name": "Vinyl"
+            }
+          ]
+        },
+        {
+          "id": 254693,
+          "name": "mwa_test_check",
+          "pretty_name": "mwa_test_check",
+          "field_type": "Boolean",
+          "position": 108,
+          "unit": null,
+          "custom_options": []
+        }
+      ]
+    },
+    {
+      "id": 5202,
+      "name": "Zusatzinformationen",
+      "entity": "for_properties",
+      "custom_fields": [
+        {
+          "id": 7622,
+          "name": "einheit_nr",
+          "pretty_name": "Einheit Nr.",
+          "field_type": "String",
+          "position": 1,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 32967,
+          "name": "beschreibung",
+          "pretty_name": "Beschreibung",
+          "field_type": "String",
+          "position": 2,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 33296,
+          "name": "angebotspreis",
+          "pretty_name": "Angebotspreis",
+          "field_type": "Number",
+          "position": 3,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 35111,
+          "name": "mehrere_eigentumer",
+          "pretty_name": "Mehrere Eigentümer",
+          "field_type": "String",
+          "position": 4,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 163745,
+          "name": "we_nr",
+          "pretty_name": "WE-Nr.",
+          "field_type": "String",
+          "position": 5,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 164141,
+          "name": "wochentlicher_eigentumer_report",
+          "pretty_name": "Wöchentlicher Eigentümer-Report",
+          "field_type": "Boolean",
+          "position": 6,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 248644,
+          "name": "objektschlussel_vorhanden",
+          "pretty_name": "Zugang zum Objekt",
+          "field_type": "String",
+          "position": 7,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 254865,
+          "name": "akquise_ma",
+          "pretty_name": "Akquise MA",
+          "field_type": "Broker",
+          "position": 8,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 254866,
+          "name": "realistischen_preis",
+          "pretty_name": "Realistischen Preis",
+          "field_type": "Number",
+          "position": 9,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 254867,
+          "name": "lead_quelle",
+          "pretty_name": "Lead Quelle",
+          "field_type": "Dropdown",
+          "position": 10,
+          "unit": null,
+          "custom_options": [
+            {
+              "id": 145267,
+              "name": "andere"
+            },
+            {
+              "id": 147881,
+              "name": "AroundHome"
+            },
+            {
+              "id": 159585,
+              "name": "Batucom CC"
+            },
+            {
+              "id": 145265,
+              "name": "Bestandkunde"
+            },
+            {
+              "id": 181035,
+              "name": "Brief"
+            },
+            {
+              "id": 145768,
+              "name": "Hausfrage"
+            },
+            {
+              "id": 145264,
+              "name": "Immoscout"
+            },
+            {
+              "id": 145767,
+              "name": "Immowelt"
+            },
+            {
+              "id": 145266,
+              "name": "Intern"
+            },
+            {
+              "id": 145263,
+              "name": "Kalt"
+            },
+            {
+              "id": 165063,
+              "name": "MallorcaPartner"
+            },
+            {
+              "id": 148632,
+              "name": "Webseite "
+            }
+          ]
+        },
+        {
+          "id": 254868,
+          "name": "verkauft_durch",
+          "pretty_name": "Verkauft durch",
+          "field_type": "Broker",
+          "position": 11,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 256024,
+          "name": "in_einigung",
+          "pretty_name": "in Einigung",
+          "field_type": "Boolean",
+          "position": 12,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 271433,
+          "name": "preis_pro_m_2_kaufpreis_vermietbare_flaeche",
+          "pretty_name": "Preis pro m2 (kaufpreis/vermietbare flaeche)",
+          "field_type": "Number",
+          "position": 13,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 271589,
+          "name": "bodenrichtwert",
+          "pretty_name": "Bodenrichtwert",
+          "field_type": "Number",
+          "position": 14,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 272216,
+          "name": "besichtigt_am",
+          "pretty_name": "Besichtigt am",
+          "field_type": "Date",
+          "position": 15,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 276743,
+          "name": "qualicall_ma",
+          "pretty_name": "QualiCall MA",
+          "field_type": "Broker",
+          "position": 16,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 294359,
+          "name": "fnp",
+          "pretty_name": "FNP",
+          "field_type": "String",
+          "position": 17,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 294360,
+          "name": "bebauungsplan",
+          "pretty_name": "Bebauungsplan",
+          "field_type": "String",
+          "position": 18,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 296086,
+          "name": "vermietungssituation",
+          "pretty_name": "Vermietungssituation",
+          "field_type": "String",
+          "position": 19,
+          "unit": null,
+          "custom_options": []
+        }
+      ]
+    },
+    {
+      "id": 146113,
+      "name": "Kundenqualifizierung",
+      "entity": "for_clients",
+      "custom_fields": []
+    },
+    {
+      "id": 166440,
+      "name": "Reservierung",
+      "entity": "for_properties",
+      "custom_fields": [
+        {
+          "id": 292676,
+          "name": "reservierungsdatum",
+          "pretty_name": "Reservierungsdatum von",
+          "field_type": "Date",
+          "position": 1,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 292677,
+          "name": "reservierungsdatum_bis",
+          "pretty_name": "Reservierungsdatum bis",
+          "field_type": "Date",
+          "position": 2,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 292678,
+          "name": "anzahlung_kaufer",
+          "pretty_name": "Anzahlung Käufer",
+          "field_type": "Number",
+          "position": 3,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 292679,
+          "name": "anzahlung_verkaufer",
+          "pretty_name": "Anzahlung Verkäufer",
+          "field_type": "Number",
+          "position": 4,
+          "unit": "euro",
+          "custom_options": []
+        }
+      ]
+    },
+    {
+      "id": 171126,
+      "name": "Investment",
+      "entity": "for_properties",
+      "custom_fields": [
+        {
+          "id": 299999,
+          "name": "flurnummer",
+          "pretty_name": "flurnummer",
+          "field_type": "String",
+          "position": 1,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300000,
+          "name": "flurstucknummer",
+          "pretty_name": "Flurstücknummer",
+          "field_type": "String",
+          "position": 2,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300001,
+          "name": "grundstucksgrosse",
+          "pretty_name": "Grundstücksgröße",
+          "field_type": "Number",
+          "position": 3,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300002,
+          "name": "bodenrichtwert_1",
+          "pretty_name": "bodenrichtwert",
+          "field_type": "String",
+          "position": 4,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300003,
+          "name": "brw_summe",
+          "pretty_name": "brw_summe",
+          "field_type": "Number",
+          "position": 5,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300004,
+          "name": "bebauungsplan_1",
+          "pretty_name": "bebauungsplan",
+          "field_type": "String",
+          "position": 6,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300005,
+          "name": "alkis_link",
+          "pretty_name": "alkis_link",
+          "field_type": "String",
+          "position": 7,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300006,
+          "name": "datenraum_link",
+          "pretty_name": "datenraum_link",
+          "field_type": "String",
+          "position": 8,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300007,
+          "name": "aufgeteilt",
+          "pretty_name": "aufgeteilt",
+          "field_type": "Boolean",
+          "position": 9,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300008,
+          "name": "grundflaeche_bestand",
+          "pretty_name": "grundflaeche_bestand",
+          "field_type": "Number",
+          "position": 10,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 300009,
+          "name": "bgf_bestand",
+          "pretty_name": "bgf_bestand",
+          "field_type": "String",
+          "position": 11,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300010,
+          "name": "wohnflache_bestand",
+          "pretty_name": "wohnflache_bestand",
+          "field_type": "String",
+          "position": 12,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300011,
+          "name": "annahme_miete",
+          "pretty_name": "annahme_miete",
+          "field_type": "Number",
+          "position": 13,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300012,
+          "name": "jnkm_bestand",
+          "pretty_name": "jnkm_bestand",
+          "field_type": "Number",
+          "position": 14,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300013,
+          "name": "nachweis_miete",
+          "pretty_name": "nachweis_miete",
+          "field_type": "String",
+          "position": 15,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300014,
+          "name": "m_2_wfl_bestand",
+          "pretty_name": "m_2_wfl_bestand",
+          "field_type": "Number",
+          "position": 16,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300015,
+          "name": "faktor_bestand",
+          "pretty_name": "faktor_bestand",
+          "field_type": "Number",
+          "position": 17,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300016,
+          "name": "preis_bestand",
+          "pretty_name": "preis_bestand",
+          "field_type": "Number",
+          "position": 18,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300017,
+          "name": "grundflache_neubau",
+          "pretty_name": "grundflache_neubau",
+          "field_type": "Number",
+          "position": 19,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 300018,
+          "name": "etagenanzahl_neubau",
+          "pretty_name": "etagenanzahl_neubau",
+          "field_type": "Number",
+          "position": 20,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300019,
+          "name": "bgf_neubaupot",
+          "pretty_name": "bgf_neubaupot",
+          "field_type": "Number",
+          "position": 21,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 300020,
+          "name": "wohnfl_neubaupot",
+          "pretty_name": "wohnfl_neubaupot",
+          "field_type": "Number",
+          "position": 22,
+          "unit": "sqm",
+          "custom_options": []
+        },
+        {
+          "id": 300021,
+          "name": "m_2_neubau",
+          "pretty_name": "€/m2/Neubau",
+          "field_type": "Number",
+          "position": 23,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300023,
+          "name": "preis_neubau",
+          "pretty_name": "preis_neubau",
+          "field_type": "Number",
+          "position": 24,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300025,
+          "name": "kaufpreis_haus_abzuglich_grundstuck",
+          "pretty_name": "kaufpreis_haus_abzuglich_grundstuck",
+          "field_type": "Number",
+          "position": 25,
+          "unit": "euro",
+          "custom_options": []
+        },
+        {
+          "id": 300027,
+          "name": "faktor_nach_grundstuckabzug",
+          "pretty_name": "faktor_nach_grundstuckabzug",
+          "field_type": "Number",
+          "position": 26,
+          "unit": null,
+          "custom_options": []
+        },
+        {
+          "id": 300028,
+          "name": "angebot_fur_et",
+          "pretty_name": "angebot_fur_et",
+          "field_type": "Number",
+          "position": 27,
+          "unit": "euro",
+          "custom_options": []
+        }
+      ]
+    }
+  ]
+}

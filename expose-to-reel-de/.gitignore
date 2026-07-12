@@ -1,0 +1,9 @@
+node_modules/
+.next/
+dist/
+.data/
+.env
+*.tsbuildinfo
+coverage/
+__pycache__/
+.pytest_cache/
