@@ -23,10 +23,24 @@ import {
 let ctx: TestContext;
 let projectId: string;
 
+// Alle Provider-Variablen leeren — die lokale .env (via Prisma geladen) darf
+// die „nicht konfiguriert“-Assertions nicht kippen. Danach wiederherstellen.
+const PROVIDER_ENV = [
+  "ANTHROPIC_API_KEY",
+  "MINIMAX_API_KEY",
+  "LLM_PROVIDER",
+  "OPENAI_API_KEY",
+  "ELEVENLABS_API_KEY",
+  "TTS_PROVIDER",
+  "MUSIC_TRACK_PATH",
+] as const;
+const savedEnv = new Map<string, string | undefined>();
+
 beforeAll(async () => {
-  delete process.env.ANTHROPIC_API_KEY;
-  delete process.env.OPENAI_API_KEY;
-  delete process.env.MUSIC_TRACK_PATH;
+  for (const key of PROVIDER_ENV) {
+    savedEnv.set(key, process.env[key]);
+    delete process.env[key];
+  }
   ctx = await createTestContext();
   const response = await createProjectRoute(
     jsonRequest("/api/projects", "POST", ctx, { title: "KI-Optionen-Test" })
@@ -35,6 +49,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  for (const key of PROVIDER_ENV) {
+    const value = savedEnv.get(key);
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
   await cleanupTestContext(ctx);
 });
 

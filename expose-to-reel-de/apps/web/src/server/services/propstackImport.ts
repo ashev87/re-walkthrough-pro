@@ -224,9 +224,15 @@ export async function importPropstackProject(
       const urlName = decodeURIComponent(
         new URL(image.url).pathname.split("/").pop() ?? `propstack-${image.id}.jpg`
       );
+      // CRM-Bildtitel („Wohnzimmer“, „Grundriss“, …) als Dateiname nutzen —
+      // besser lesbar und Futter für die Raum-Label-Heuristik.
+      const extension = urlName.match(/\.(jpe?g|png|webp)$/i)?.[0] ?? ".jpg";
+      const filename = image.title?.trim()
+        ? `${image.title.trim()}${extension}`
+        : urlName;
       const asset = await uploadPhoto(user, project.id, {
         buffer,
-        filename: urlName,
+        filename,
         mimeType: contentType,
         caption: image.title ?? undefined,
       });

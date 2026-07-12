@@ -15,34 +15,61 @@ import type {
  * — niedrige Auflösung über Mindestabmessungen
  */
 
+// Bild-Titel/Dateinamen → Raum-Label. Deckt neben den Taxonomie-Begriffen
+// auch übliche CRM-Benennungen ab (z. B. Propstack-Bildtitel wie
+// „Luftaufnahme“, „Treppenhaus“, „Keller“) — ein expliziter Treffer gilt
+// als verlässlicher als die Bildstatistik (siehe Grundriss-Heuristik unten).
 const KEYWORDS: Array<[RoomLabel, RegExp]> = [
-  ["GRUNDRISS", /grundriss|floor.?plan|\bplan\b|lageplan/i],
-  ["AUSSENANSICHT", /aussen|außen|fassade|exterior|front|haus.?ansicht|strasse|straße/i],
-  ["EINGANG", /eingang|entree|entrance|haust(ü|u)r|foyer/i],
-  ["FLUR", /flur|diele|hallway|corridor|gang/i],
-  ["WOHNZIMMER", /wohnzimmer|wohnen|living|lounge|wohnbereich/i],
+  ["GRUNDRISS", /grundriss|floor.?plan|\bplan\b|lageplan|schnitt/i],
+  [
+    "AUSSENANSICHT",
+    /aussen|außen|fassade|exterior|front|haus.?ansicht|strasse|straße|luftaufnahme|luftbild|drohne|vogelperspektive|carport|garage|r(ü|u)ckansicht|seitenansicht|giebel/i,
+  ],
+  ["EINGANG", /eingang|entree|entrance|haust(ü|u)r|foyer|windfang/i],
+  ["FLUR", /flur|diele|hallway|corridor|gang|treppenhaus|treppe|galerie/i],
+  ["WOHNZIMMER", /wohnzimmer|wohnen|living|lounge|wohnbereich|kaminzimmer|wintergarten|salon/i],
   ["KUECHE", /k(ü|ue|u)che|kitchen|kochbereich/i],
   ["ESSBEREICH", /essbereich|esszimmer|dining|essen/i],
-  ["SCHLAFZIMMER", /schlafzimmer|schlafen|bedroom|kinderzimmer|gästezimmer|gaestezimmer/i],
+  [
+    "SCHLAFZIMMER",
+    /schlafzimmer|schlafen|bedroom|kinderzimmer|g(ä|ae)stezimmer|elternschlafzimmer|ankleide/i,
+  ],
   ["ARBEITSZIMMER", /arbeitszimmer|b(ü|u)ro|office|homeoffice|arbeiten/i],
-  ["BAD", /\bbad\b|badezimmer|bathroom|dusche|wc|g(ä|a)ste.?wc|sanit(ä|a)r/i],
+  [
+    "BAD",
+    /\bbad\b|badezimmer|bathroom|dusche|wc|g(ä|a)ste.?wc|sanit(ä|a)r|sauna|wellness/i,
+  ],
   ["BALKON_TERRASSE", /balkon|terrasse|balcony|terrace|loggia|dachterrasse/i],
-  ["GARTEN", /garten|garden|backyard|aussenanlage|außenanlage/i],
+  ["GARTEN", /garten|garden|backyard|aussenanlage|außenanlage|pool|\bhof\b|innenhof|hinterhof/i],
   ["AUSSICHT", /aussicht|ausblick|view|panorama|blick/i],
+  // Explizite Neben-/Funktionsräume: bewusst SONSTIGES, aber als
+  // Keyword-Treffer — verhindert Fehl-Flags durch die Weißanteil-Statistik.
+  [
+    "SONSTIGES",
+    /keller|dachboden|speicher|abstellraum|hauswirtschaftsraum|\bhwr\b|waschk(ü|ue|u)che|heizung|technikraum|vorratsraum/i,
+  ],
 ];
 
 export const DUPLICATE_HAMMING_THRESHOLD = 6;
 export const FLOORPLAN_WHITE_RATIO = 0.78;
 
-export function proposeRoomLabel(
+/** Raum-Label aus Titel/Dateiname; null, wenn kein Stichwort passt. */
+export function matchRoomKeyword(
   filename: string,
   caption?: string | null
-): RoomLabel {
+): RoomLabel | null {
   const haystack = `${caption ?? ""} ${filename}`;
   for (const [label, pattern] of KEYWORDS) {
     if (pattern.test(haystack)) return label;
   }
-  return "SONSTIGES";
+  return null;
+}
+
+export function proposeRoomLabel(
+  filename: string,
+  caption?: string | null
+): RoomLabel {
+  return matchRoomKeyword(filename, caption) ?? "SONSTIGES";
 }
 
 export class HeuristicImageAnalysisProvider implements ImageAnalysisProvider {
@@ -54,10 +81,15 @@ export class HeuristicImageAnalysisProvider implements ImageAnalysisProvider {
     const seen: ImageAnalysisInput[] = [];
 
     for (const image of ordered) {
-      const roomLabel = proposeRoomLabel(image.filename, image.caption);
+      const keywordLabel = matchRoomKeyword(image.filename, image.caption);
+      const roomLabel = keywordLabel ?? "SONSTIGES";
+      // Weißanteil-Heuristik nur ohne expliziten Namens-Treffer: ein Titel
+      // wie „Luftaufnahme“ oder „Keller“ ist verlässlicher als die Statistik.
       const isLikelyFloorplan =
         roomLabel === "GRUNDRISS" ||
-        (image.whiteRatio != null && image.whiteRatio >= FLOORPLAN_WHITE_RATIO);
+        (keywordLabel === null &&
+          image.whiteRatio != null &&
+          image.whiteRatio >= FLOORPLAN_WHITE_RATIO);
 
       let duplicateOfId: string | null = null;
       for (const earlier of seen) {

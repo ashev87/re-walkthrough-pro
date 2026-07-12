@@ -35,6 +35,19 @@ describe("Heuristische Bildanalyse", () => {
     );
   });
 
+  test("typische CRM-Bildtitel (Propstack) werden erkannt", () => {
+    expect(proposeRoomLabel("Luftaufnahme.jpg")).toBe("AUSSENANSICHT");
+    expect(proposeRoomLabel("IMG_1.jpg", "Drohnenaufnahme")).toBe("AUSSENANSICHT");
+    expect(proposeRoomLabel("Treppenhaus.png")).toBe("FLUR");
+    expect(proposeRoomLabel("Ankleide.jpg")).toBe("SCHLAFZIMMER");
+    expect(proposeRoomLabel("Wintergarten.jpg")).toBe("WOHNZIMMER");
+    expect(proposeRoomLabel("Sauna.jpg")).toBe("BAD");
+    expect(proposeRoomLabel("Keller.jpg")).toBe("SONSTIGES");
+    expect(proposeRoomLabel("Dachboden.jpg")).toBe("SONSTIGES");
+    // \bhof\b greift nicht in zusammengesetzten Wörtern
+    expect(proposeRoomLabel("Bahnhofstrasse-ansicht.jpg")).toBe("AUSSENANSICHT");
+  });
+
   test("identische SHA-256 ⇒ Duplikat", async () => {
     const provider = new HeuristicImageAnalysisProvider();
     const first = input({ sha256: "same" });
@@ -60,6 +73,18 @@ describe("Heuristische Bildanalyse", () => {
     const proposals = await provider.analyze([plan]);
     expect(proposals[0]?.isLikelyFloorplan).toBe(true);
     expect(proposals[0]?.roomLabel).toBe("GRUNDRISS");
+  });
+
+  test("expliziter Raum-Titel schlägt die Weißanteil-Statistik", async () => {
+    const provider = new HeuristicImageAnalysisProvider();
+    // Helle Luftaufnahme / heller Keller: Titel gewinnt, kein Grundriss-Flag.
+    const aerial = input({ caption: "Luftaufnahme", whiteRatio: 0.9 });
+    const cellar = input({ caption: "Keller", whiteRatio: 0.9 });
+    const proposals = await provider.analyze([aerial, cellar]);
+    expect(proposals.find((p) => p.id === aerial.id)?.roomLabel).toBe("AUSSENANSICHT");
+    expect(proposals.find((p) => p.id === aerial.id)?.isLikelyFloorplan).toBe(false);
+    expect(proposals.find((p) => p.id === cellar.id)?.roomLabel).toBe("SONSTIGES");
+    expect(proposals.find((p) => p.id === cellar.id)?.isLikelyFloorplan).toBe(false);
   });
 
   test("kleine Bilder ⇒ niedrige Auflösung", async () => {
