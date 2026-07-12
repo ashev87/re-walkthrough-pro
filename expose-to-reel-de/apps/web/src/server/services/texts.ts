@@ -82,35 +82,47 @@ export async function generateTextsForProject(
         })),
       });
       const updates = mapSceneLinesToShots(project.shots, lines);
-      await prisma.$transaction(
-        updates.map((update) =>
-          prisma.shot.update({
-            where: { id: update.id },
-            data: { narration: update.narration },
-          })
-        )
-      );
+      if (updates.length > 0) {
+        await prisma.$transaction(
+          updates.map((update) =>
+            prisma.shot.update({
+              where: { id: update.id },
+              data: { narration: update.narration },
+            })
+          )
+        );
+      }
     } catch (error) {
       console.warn(
-        "[texts] Szenen-Skript fehlgeschlagen — Texte ohne Szenenzeilen:",
+        `[texts] Szenen-Skript fehlgeschlagen (Projekt ${projectId}) — Texte ohne Szenenzeilen:`,
         error
       );
+      // Dauerhafte Spur im Audit-Log — darf selbst nie werfen.
+      await recordAudit(prisma, {
+        organizationId: user.organizationId,
+        projectId,
+        userId: user.id,
+        type: "texts.sceneLines.failed",
+        data: { error: error instanceof Error ? error.message : String(error) },
+      }).catch(() => {});
     }
   }
 
   return texts;
 }
 
-/** sceneLines (per sortIndex) auf Shot-IDs mappen; ohne Zeile → null. */
+/** sceneLines (per sortIndex) auf Shot-IDs mappen — nur Shots mit neuer,
+ *  nicht-leerer Zeile werden aktualisiert; bestehende narration bleibt sonst
+ *  unangetastet (kein stilles Nullen bei leerer/partieller LLM-Antwort). */
 export function mapSceneLinesToShots(
   shots: Array<{ id: string; sortIndex: number }>,
   lines: Array<{ sortIndex: number; text: string }>
-): Array<{ id: string; narration: string | null }> {
+): Array<{ id: string; narration: string }> {
   const byIndex = new Map(lines.map((line) => [line.sortIndex, line.text.trim()]));
-  return shots.map((shot) => ({
-    id: shot.id,
-    narration: byIndex.get(shot.sortIndex) || null,
-  }));
+  return shots.flatMap((shot) => {
+    const narration = byIndex.get(shot.sortIndex);
+    return narration ? [{ id: shot.id, narration }] : [];
+  });
 }
 
 /** LLM-API-Fehler in verständliche, deutschsprachige Antworten übersetzen. */
