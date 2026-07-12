@@ -43,7 +43,15 @@ export const GET = withApi(async (request: Request, context: Context) => {
     where: { storageKey: key },
     select: { mimeType: true, filename: true },
   });
+  // mimeType stammt aus der Upload-Validierung (Whitelist + Magic-Bytes) bzw.
+  // aus fest kodierten Worker-Typen — nie ungeprüft vom Client. Die Header
+  // unten sind Defense-in-Depth gegen MIME-Sniffing/aktive Inhalte.
   const contentType = asset?.mimeType ?? "application/octet-stream";
+  const securityHeaders = {
+    "x-content-type-options": "nosniff",
+    "content-security-policy": "sandbox; default-src 'none'",
+    "cross-origin-resource-policy": "same-origin",
+  } as const;
 
   // Range-Support für Video-Seeking im Browser.
   const range = request.headers.get("range");
@@ -56,6 +64,7 @@ export const GET = withApi(async (request: Request, context: Context) => {
         return new NextResponse(new Uint8Array(data.subarray(start, end + 1)), {
           status: 206,
           headers: {
+            ...securityHeaders,
             "content-type": contentType,
             "content-range": `bytes ${start}-${end}/${data.length}`,
             "accept-ranges": "bytes",
@@ -69,6 +78,7 @@ export const GET = withApi(async (request: Request, context: Context) => {
 
   return new NextResponse(new Uint8Array(data), {
     headers: {
+      ...securityHeaders,
       "content-type": contentType,
       "content-length": String(data.length),
       "accept-ranges": "bytes",
