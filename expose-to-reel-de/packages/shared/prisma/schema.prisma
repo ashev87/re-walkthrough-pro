@@ -220,6 +220,8 @@ model Shot {
   preferAiVideo Boolean   @default(false)
   cameraMove   String
   prompt       String
+  // Szenentext (eine kurze Zeile) — Quelle für Voiceover-Segment, Overlay und SRT.
+  narration    String?
   durationSec  Float      @default(4)
   status       ShotStatus @default(PENDING)
   sceneAssetId String?
