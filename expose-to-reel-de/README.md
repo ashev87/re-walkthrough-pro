@@ -83,7 +83,8 @@ Alle Variablen inkl. Beschreibung: [.env.example](.env.example). Kernpunkte:
 | `FFMPEG_PATH` / `FFPROBE_PATH` | Nur nötig, wenn nicht im PATH |
 | `VIDEO_PROVIDER` | `foto_motion` (Standard, ohne Wasserzeichen) · `mock` (gleicher Renderer mit MOCK-Label) · `external` (fällt ohne Konfiguration auf foto_motion zurück) |
 | `IS24_IMPORT_ENABLED` / `IS24_PUBLISH_ENABLED` | Feature-Flags der ImmoScout24-Scaffolds (Standard: aus) |
-| `ANTHROPIC_API_KEY` | Opt-in: KI-Bildanalyse (`IMAGE_ANALYSIS_PROVIDER=ai`) + KI-Marketing-Texte |
+| `LLM_PROVIDER` | LLM für die KI-Optionen: `anthropic` (Standard) oder `minimax` (MiniMax M3) |
+| `ANTHROPIC_API_KEY` / `MINIMAX_API_KEY` | Key des gewählten Providers — aktiviert KI-Bildanalyse (`IMAGE_ANALYSIS_PROVIDER=ai`) + KI-Marketing-Texte |
 | `OPENAI_API_KEY` | Opt-in: Voiceover per TTS |
 | `MUSIC_TRACK_PATH` | Opt-in: Hintergrundmusik (lizenzierte Audiodatei des Betreibers) |
 
@@ -138,17 +139,23 @@ den Basis-Funktionen weiter.
 
 | Option | Aktivierung | Verhalten |
 |---|---|---|
-| **KI-Bildanalyse** | `IMAGE_ANALYSIS_PROVIDER=ai` + `ANTHROPIC_API_KEY` | Claude-Vision klassifiziert Uploads gegen die Raum-Taxonomie und erkennt Grundrisse; bei jedem Fehler stiller Rückfall auf die Heuristik |
-| **KI-Marketing-Texte** | `ANTHROPIC_API_KEY` | Abschnitt „Texte“: Caption, Objektbeschreibung, Voiceover-Skript — strikt aus den freigegebenen Fakten, immer als prüfbarer Entwurf |
+| **KI-Bildanalyse** | `IMAGE_ANALYSIS_PROVIDER=ai` + LLM-Key | Das Vision-Modell klassifiziert Uploads gegen die Raum-Taxonomie und erkennt Grundrisse; bei jedem Fehler stiller Rückfall auf die Heuristik |
+| **KI-Marketing-Texte** | LLM-Key | Abschnitt „Texte“: Caption, Objektbeschreibung, Voiceover-Skript — strikt aus den freigegebenen Fakten, immer als prüfbarer Entwurf |
 | **Text-Overlays** | Checkbox bei der Generierung | Raum-Name dezent in jeder Szene |
 | **Endkarte** | Checkbox bei der Generierung | 3-s-Abschluss-Karte mit Titel, Lage, Eckdaten und Firmenname |
 | **Hintergrundmusik** | `MUSIC_TRACK_PATH` + Checkbox | Lizenzierter Track des Betreibers, geloopt/leise gemischt, Ausblendung am Ende |
 | **Voiceover** | `OPENAI_API_KEY` + gespeichertes Skript + Checkbox | TTS spricht das geprüfte Skript ein; wird mit ggf. abgesenkter Musik gemischt und als MP3-Asset gespeichert |
 | **Hybrid-KI-Video** | Externer Video-Provider konfiguriert | Pro Shot wählbar („KI-Video“-Spalte): Hero-Szenen über den KI-Provider, Rest Foto-Motion — ohne Provider unsichtbar |
 
-Modell-Standard für die KI-Optionen ist `claude-opus-4-8`; über
-`ANTHROPIC_VISION_MODEL` / `ANTHROPIC_TEXT_MODEL` lässt sich z. B.
-`claude-haiku-4-5` für die günstige Bildklassifikation setzen.
+**LLM-Provider:** `LLM_PROVIDER=anthropic` (Standard, `ANTHROPIC_API_KEY`,
+Modell `claude-opus-4-8`) oder `LLM_PROVIDER=minimax` (`MINIMAX_API_KEY`,
+Modell `MiniMax-M3`). MiniMax wird über deren Anthropic-kompatiblen Endpunkt
+(`https://api.minimax.io/anthropic`) mit demselben SDK angesprochen; M3
+unterstützt auch die Bild-Eingabe der KI-Bildanalyse. Da MiniMax keine
+Structured Outputs dokumentiert, erzwingt der Code dort das JSON-Format per
+Prompt und parst tolerant. Modelle sind über `LLM_VISION_MODEL` /
+`LLM_TEXT_MODEL` überschreibbar (z. B. `claude-haiku-4-5` für günstige
+Bildklassifikation).
 
 ### Propstack-Import (eigenes CRM)
 

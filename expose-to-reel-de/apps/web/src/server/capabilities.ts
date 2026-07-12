@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import {
   ExternalImageToVideoProvider,
   getTtsProvider,
-  isAnthropicConfigured,
+  isLlmConfigured,
   resolveFromWorkspaceRoot,
 } from "@e2r/shared";
 
@@ -12,7 +12,7 @@ import {
  * zusätzlich selbst.
  */
 export interface Capabilities {
-  /** KI-Texte + KI-Bildanalyse (ANTHROPIC_API_KEY). */
+  /** KI-Texte + KI-Bildanalyse (Key des gewählten LLM-Providers: Anthropic oder MiniMax). */
   aiTexts: boolean;
   /** Voiceover per TTS (OPENAI_API_KEY). */
   tts: boolean;
@@ -25,7 +25,7 @@ export interface Capabilities {
 export function getCapabilities(): Capabilities {
   const musicTrack = process.env.MUSIC_TRACK_PATH;
   return {
-    aiTexts: isAnthropicConfigured(),
+    aiTexts: isLlmConfigured(),
     tts: getTtsProvider().isEnabled(),
     music: Boolean(
       musicTrack && existsSync(resolveFromWorkspaceRoot(musicTrack))

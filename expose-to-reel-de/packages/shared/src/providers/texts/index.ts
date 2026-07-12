@@ -1,9 +1,11 @@
 import { z } from "zod";
 import {
-  anthropicTextModel,
-  getAnthropicClient,
-  isAnthropicConfigured,
-} from "../../anthropicClient";
+  extractJsonObject,
+  getLlmClient,
+  isLlmConfigured,
+  llmTextModel,
+  supportsJsonSchemaOutput,
+} from "../../llmClient";
 import {
   buildFactLine,
   buildLocationLine,
@@ -11,11 +13,12 @@ import {
 } from "../../domain/format";
 
 /**
- * KI-Marketing-Texte (Opt-in: ANTHROPIC_API_KEY). Erzeugt Caption,
- * Objektbeschreibung und Voiceover-Skript — ausschließlich aus den
- * freigegebenen Exposé-Fakten. Die Texte sind Entwürfe: sie werden in der UI
- * angezeigt, vom Nutzer geprüft/bearbeitet und erst danach verwendet
- * (Voiceover nutzt nur das gespeicherte, geprüfte Skript).
+ * KI-Marketing-Texte (Opt-in: Key des gewählten LLM-Providers — Anthropic
+ * oder MiniMax M3, siehe llmClient.ts). Erzeugt Caption, Objektbeschreibung
+ * und Voiceover-Skript — ausschließlich aus den freigegebenen Exposé-Fakten.
+ * Die Texte sind Entwürfe: sie werden in der UI angezeigt, vom Nutzer
+ * geprüft/bearbeitet und erst danach verwendet (Voiceover nutzt nur das
+ * gespeicherte, geprüfte Skript).
  */
 
 export const marketingTextsSchema = z.object({
@@ -74,7 +77,7 @@ export interface MarketingTextsInput {
 }
 
 export function isTextGenerationEnabled(): boolean {
-  return isAnthropicConfigured();
+  return isLlmConfigured();
 }
 
 /**
@@ -110,7 +113,10 @@ export function buildFactsBlock(input: MarketingTextsInput): string {
   return lines.join("\n");
 }
 
-export function buildMarketingPrompt(input: MarketingTextsInput): string {
+export function buildMarketingPrompt(
+  input: MarketingTextsInput,
+  withJsonInstruction = false
+): string {
   return (
     "Du schreibst Marketing-Texte für ein Immobilien-Walkthrough-Video. " +
     "Verwende AUSSCHLIESSLICH die folgenden freigegebenen Fakten. Erfinde " +
@@ -129,26 +135,42 @@ export function buildMarketingPrompt(input: MarketingTextsInput): string {
     "3. voiceoverScript — Sprechertext für ein 20–35-Sekunden-Voiceover " +
     "(ca. 50–90 Wörter): einladend, ruhig, folgt grob der Raumreihenfolge, " +
     "endet mit einem neutralen Hinweis auf Besichtigung/Kontakt (ohne " +
-    "konkrete Kontaktdaten)."
+    "konkrete Kontaktdaten)." +
+    (withJsonInstruction
+      ? '\n\nAntworte AUSSCHLIESSLICH mit einem JSON-Objekt in exakt diesem ' +
+        'Format, ohne Markdown und ohne weitere Erklärungen:\n' +
+        '{"caption": "...", "beschreibung": "...", "voiceoverScript": "..."}'
+      : "")
   );
 }
 
 export async function generateMarketingTexts(
   input: MarketingTextsInput
 ): Promise<MarketingTexts> {
-  const client = getAnthropicClient();
+  const client = getLlmClient();
+  // Anthropic garantiert das JSON-Format über output_config; Provider ohne
+  // Structured Outputs (MiniMax) erhalten die JSON-Anweisung im Prompt.
+  const useJsonSchema = supportsJsonSchemaOutput();
   const response = await client.messages.create({
-    model: anthropicTextModel(),
+    model: llmTextModel(),
     max_tokens: 4096,
-    output_config: {
-      format: {
-        type: "json_schema",
-        schema: TEXTS_JSON_SCHEMA as unknown as Record<string, unknown>,
-      },
-    },
-    messages: [{ role: "user", content: buildMarketingPrompt(input) }],
+    ...(useJsonSchema
+      ? {
+          output_config: {
+            format: {
+              type: "json_schema" as const,
+              schema: TEXTS_JSON_SCHEMA as unknown as Record<string, unknown>,
+            },
+          },
+        }
+      : {}),
+    messages: [
+      { role: "user", content: buildMarketingPrompt(input, !useJsonSchema) },
+    ],
   });
   const text = response.content.find((block) => block.type === "text")?.text;
   if (!text) throw new Error("Marketing-Texte: Antwort ohne Textblock.");
-  return marketingTextsSchema.parse(JSON.parse(text));
+  return marketingTextsSchema.parse(
+    useJsonSchema ? JSON.parse(text) : extractJsonObject(text)
+  );
 }

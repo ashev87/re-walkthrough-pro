@@ -14,7 +14,7 @@ export * from "./domain/format";
 export * from "./domain/listing";
 export * from "./domain/propstack";
 export * from "./domain/generationOptions";
-export * from "./anthropicClient";
+export * from "./llmClient";
 
 export * from "./storage/index";
 

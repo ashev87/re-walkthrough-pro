@@ -96,15 +96,15 @@ export function TextsSection({ projectId, texts, aiEnabled, hasListing }: Props)
           title={
             aiEnabled
               ? undefined
-              : "Nicht konfiguriert — ANTHROPIC_API_KEY in .env setzen (siehe README)."
+              : "Nicht konfiguriert — ANTHROPIC_API_KEY oder LLM_PROVIDER=minimax + MINIMAX_API_KEY setzen (siehe README)."
           }
         >
           {busy ? "Erzeuge…" : "Mit KI vorschlagen"}
         </button>
         {!aiEnabled && (
           <span className="muted small">
-            KI-Texte deaktiviert (kein ANTHROPIC_API_KEY) — manuelle Eingabe
-            funktioniert weiterhin.
+            KI-Texte deaktiviert (kein LLM-Key: ANTHROPIC_API_KEY oder
+            MINIMAX_API_KEY) — manuelle Eingabe funktioniert weiterhin.
           </span>
         )}
         {aiEnabled && !hasListing && (

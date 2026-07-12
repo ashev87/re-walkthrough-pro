@@ -4,7 +4,15 @@ import {
   generationOptionsSchema,
   parseGenerationOptions,
 } from "../src/domain/generationOptions";
-import { isAnthropicConfigured } from "../src/anthropicClient";
+import {
+  DEFAULT_ANTHROPIC_MODEL,
+  DEFAULT_MINIMAX_MODEL,
+  extractJsonObject,
+  getLlmProviderKey,
+  isLlmConfigured,
+  llmTextModel,
+  supportsJsonSchemaOutput,
+} from "../src/llmClient";
 import {
   buildFactsBlock,
   buildMarketingPrompt,
@@ -12,7 +20,14 @@ import {
 } from "../src/providers/texts/index";
 import { OpenAiTtsProvider } from "../src/providers/tts/index";
 
-const ENV_KEYS = ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"] as const;
+const ENV_KEYS = [
+  "ANTHROPIC_API_KEY",
+  "OPENAI_API_KEY",
+  "MINIMAX_API_KEY",
+  "LLM_PROVIDER",
+  "LLM_TEXT_MODEL",
+  "ANTHROPIC_TEXT_MODEL",
+] as const;
 const saved = new Map<string, string | undefined>();
 for (const key of ENV_KEYS) saved.set(key, process.env[key]);
 
@@ -46,7 +61,8 @@ describe("KI-Opt-in-Schalter", () => {
   test("ohne Keys sind KI-Funktionen deaktiviert", () => {
     delete process.env.ANTHROPIC_API_KEY;
     delete process.env.OPENAI_API_KEY;
-    expect(isAnthropicConfigured()).toBe(false);
+    delete process.env.LLM_PROVIDER;
+    expect(isLlmConfigured()).toBe(false);
     expect(isTextGenerationEnabled()).toBe(false);
     expect(new OpenAiTtsProvider().isEnabled()).toBe(false);
   });
@@ -54,8 +70,87 @@ describe("KI-Opt-in-Schalter", () => {
   test("mit Keys aktiviert", () => {
     process.env.ANTHROPIC_API_KEY = "sk-test";
     process.env.OPENAI_API_KEY = "sk-test";
-    expect(isAnthropicConfigured()).toBe(true);
+    expect(isLlmConfigured()).toBe(true);
     expect(new OpenAiTtsProvider().isEnabled()).toBe(true);
+  });
+});
+
+describe("LLM-Provider-Auswahl (Anthropic / MiniMax)", () => {
+  test("Standard ist Anthropic mit claude-opus-4-8 und Structured Outputs", () => {
+    delete process.env.LLM_PROVIDER;
+    delete process.env.LLM_TEXT_MODEL;
+    delete process.env.ANTHROPIC_TEXT_MODEL;
+    expect(getLlmProviderKey()).toBe("anthropic");
+    expect(llmTextModel()).toBe(DEFAULT_ANTHROPIC_MODEL);
+    expect(supportsJsonSchemaOutput()).toBe(true);
+  });
+
+  test("LLM_PROVIDER=minimax nutzt MiniMax-M3 und Prompt-JSON", () => {
+    process.env.LLM_PROVIDER = "minimax";
+    delete process.env.LLM_TEXT_MODEL;
+    delete process.env.ANTHROPIC_TEXT_MODEL;
+    expect(getLlmProviderKey()).toBe("minimax");
+    expect(llmTextModel()).toBe(DEFAULT_MINIMAX_MODEL);
+    expect(supportsJsonSchemaOutput()).toBe(false);
+  });
+
+  test("MiniMax gilt nur mit MINIMAX_API_KEY als konfiguriert", () => {
+    process.env.LLM_PROVIDER = "minimax";
+    process.env.ANTHROPIC_API_KEY = "sk-anthropic"; // falscher Key zählt nicht
+    delete process.env.MINIMAX_API_KEY;
+    expect(isLlmConfigured()).toBe(false);
+    process.env.MINIMAX_API_KEY = "mm-test";
+    expect(isLlmConfigured()).toBe(true);
+  });
+
+  test("Modell-Override gilt providerübergreifend", () => {
+    process.env.LLM_PROVIDER = "minimax";
+    process.env.LLM_TEXT_MODEL = "MiniMax-M2.7";
+    expect(llmTextModel()).toBe("MiniMax-M2.7");
+  });
+
+  test("unbekannter Provider fällt auf Anthropic zurück", () => {
+    process.env.LLM_PROVIDER = "quatsch";
+    expect(getLlmProviderKey()).toBe("anthropic");
+  });
+});
+
+describe("extractJsonObject (Provider ohne Structured Outputs)", () => {
+  test("parst reines JSON", () => {
+    expect(extractJsonObject('{"a": 1}')).toEqual({ a: 1 });
+  });
+
+  test("entfernt Markdown-Zäune", () => {
+    expect(extractJsonObject('```json\n{"a": 1}\n```')).toEqual({ a: 1 });
+  });
+
+  test("schneidet umgebenden Text ab", () => {
+    expect(
+      extractJsonObject('Hier ist das Ergebnis:\n{"caption": "Hallo"}\nViel Erfolg!')
+    ).toEqual({ caption: "Hallo" });
+  });
+
+  test("wirft bei Antworten ohne JSON", () => {
+    expect(() => extractJsonObject("kein json hier")).toThrow();
+  });
+});
+
+describe("Prompt-JSON-Anweisung", () => {
+  test("JSON-Anweisung nur wenn angefordert (MiniMax-Pfad)", () => {
+    const input = {
+      facts: {
+        marketingType: "KAUF" as const,
+        objectType: "Haus",
+        titel: "Testhaus",
+        plz: "14482",
+        ort: "Potsdam",
+        addressVisibility: "CITY_ONLY" as const,
+        kaufpreis: 500000,
+      },
+      roomNames: [],
+    };
+    expect(buildMarketingPrompt(input, false)).not.toContain("AUSSCHLIESSLICH mit einem JSON-Objekt");
+    expect(buildMarketingPrompt(input, true)).toContain("AUSSCHLIESSLICH mit einem JSON-Objekt");
   });
 });
 

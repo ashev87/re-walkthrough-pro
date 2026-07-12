@@ -26,7 +26,7 @@ export async function generateTextsForProject(
   if (!isTextGenerationEnabled()) {
     throw new ApiError(
       501,
-      "KI-Texte sind nicht konfiguriert (ANTHROPIC_API_KEY in .env setzen, siehe README)."
+      "KI-Texte sind nicht konfiguriert (ANTHROPIC_API_KEY setzen — oder LLM_PROVIDER=minimax mit MINIMAX_API_KEY; siehe README)."
     );
   }
   const project = await prisma.propertyProject.findFirst({
