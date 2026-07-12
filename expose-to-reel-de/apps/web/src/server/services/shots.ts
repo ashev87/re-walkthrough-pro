@@ -110,6 +110,8 @@ export interface ShotUpdate {
   roomLabel?: RoomLabel;
   /** Hybrid-Modus: Szene über den externen KI-Video-Provider rendern. */
   preferAiVideo?: boolean;
+  /** Szenentext (null/leer = entfernen). */
+  narration?: string | null;
 }
 
 /** Einzel-Updates (Auswahl, Raum-Label → Prompt/Kamera neu). */
@@ -133,6 +135,10 @@ export async function updateShots(
         data: {
           selected: update.selected,
           preferAiVideo: update.preferAiVideo,
+          narration:
+            update.narration === undefined
+              ? undefined
+              : update.narration?.trim() || null,
           ...(update.roomLabel
             ? { roomLabel: update.roomLabel, ...shotFieldsForRoom(update.roomLabel) }
             : {}),

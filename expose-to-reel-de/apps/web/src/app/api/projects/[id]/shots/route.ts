@@ -37,6 +37,7 @@ const patchSchema = z.object({
         selected: z.boolean().optional(),
         roomLabel: z.enum(ROOM_LABELS).optional(),
         preferAiVideo: z.boolean().optional(),
+        narration: z.string().max(160).nullable().optional(),
       })
     )
     .min(1),

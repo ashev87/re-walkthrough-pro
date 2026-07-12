@@ -51,6 +51,7 @@ export function ShotsSection({
       selected?: boolean;
       roomLabel?: string;
       preferAiVideo?: boolean;
+      narration?: string | null;
     }>
   ) {
     const result = await apiRequest(
@@ -125,6 +126,7 @@ export function ShotsSection({
                 <th>Bild</th>
                 <th>Raum</th>
                 <th>Kamerabewegung</th>
+                <th>Szenentext</th>
                 <th>Dauer</th>
                 <th>Im Video</th>
                 {externalVideoEnabled && <th title="Szene über den externen KI-Video-Provider rendern">KI-Video</th>}
@@ -164,6 +166,23 @@ export function ShotsSection({
                   </td>
                   <td className="muted small" title={shot.prompt}>
                     {shot.cameraMoveLabel}
+                  </td>
+                  <td>
+                    {editable ? (
+                      <input
+                        defaultValue={shot.narration ?? ""}
+                        placeholder="z. B. Die offene Küche mit Kochinsel."
+                        maxLength={160}
+                        style={{ minWidth: 220 }}
+                        onBlur={(e) => {
+                          if ((shot.narration ?? "") !== e.target.value) {
+                            patch([{ id: shot.id, narration: e.target.value || null }]);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <span className="muted small">{shot.narration ?? "—"}</span>
+                    )}
                   </td>
                   <td className="muted small">{shot.durationSec.toLocaleString("de-DE")} s</td>
                   <td>

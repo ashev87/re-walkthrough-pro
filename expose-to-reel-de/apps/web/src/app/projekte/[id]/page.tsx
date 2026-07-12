@@ -87,6 +87,7 @@ export default async function ProjectPage({
       preferAiVideo: shot.preferAiVideo,
       cameraMoveLabel: CAMERA_MOVES[shot.cameraMove]?.label ?? shot.cameraMove,
       prompt: shot.prompt,
+      narration: shot.narration,
       durationSec: shot.durationSec,
       status: shot.status,
       errorMessage: shot.errorMessage,
@@ -231,6 +232,7 @@ export default async function ProjectPage({
         shotCount={shots.filter((s) => s.selected).length}
         capabilities={{ music: capabilities.music, tts: capabilities.tts }}
         hasVoiceoverScript={Boolean(marketingTexts?.voiceoverScript?.trim())}
+        hasNarration={shots.some((shot) => shot.selected && Boolean(shot.narration))}
       />
       <ReviewSection
         projectId={project.id}
