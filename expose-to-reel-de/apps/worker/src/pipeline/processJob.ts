@@ -235,6 +235,7 @@ export async function processGenerationJob(
 
     if (useSegmentedVoiceover) {
       for (const shot of shots) {
+        if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
         const line = shot.narration?.trim();
         if (!line) continue;
         try {
@@ -365,9 +366,10 @@ export async function processGenerationJob(
           }
 
           completedRenders++;
+          // Sockel 4 % (Voiceover-Phase) — bleibt monoton, Ende weiterhin 72 %.
           await updateProgress(
             generationJobId,
-            (completedRenders / totalRenderSteps) * 72,
+            4 + (completedRenders / totalRenderSteps) * 68,
             `Szene ${roomName} (${target.suffix}) gerendert`,
             hooks
           );

@@ -275,6 +275,8 @@ describe("Mock-Generierungsjob-Lebenszyklus", () => {
       expect(stream?.width).toBe(width);
       expect(stream?.height).toBe(height);
       expect(Number(probe.format.duration)).toBeGreaterThanOrEqual(minDuration);
+      // Voiceover muss im finalen MP4 landen (Audio-Stream vorhanden).
+      expect(probe.streams.some((s) => s.codec_type === "audio")).toBe(true);
     }
 
     // SRT trägt den Szenentext (Cue 1 bleibt die Fakten-Einblendung).
