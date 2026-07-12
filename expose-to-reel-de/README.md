@@ -124,8 +124,11 @@ Alle externen Systeme liegen hinter Interfaces in
 Image-to-Video-Dienst erfinden wir keine API-Endpunkte. Foto-Motion ist der
 kostenfreie Produktionspfad: eine geglättete virtuelle Kamerafahrt über das
 Originalfoto (Ease-in/out statt linear), kurze Überblendungen zwischen den
-Räumen, ein dezenter Farb-Look und strafferes 9:16-Pacing (max. 3 s pro
-Szene) — es wird nichts hinzuerfunden, daher kein Wasserzeichen nötig.
+Räumen und ein dezenter Farb-Look — es wird nichts hinzuerfunden, daher kein
+Wasserzeichen nötig. Im 9:16-Reel werden Querformat-Fotos nicht beschnitten,
+sondern per horizontalem Kameraschwenk vollständig gezeigt; Grundrisse und
+Hochformat-Bilder bekommen einen unscharfen Füll-Hintergrund (Blur-Pad).
+Beide Formate teilen sich dieselbe Szenen-Timeline.
 `VIDEO_PROVIDER=mock` nutzt denselben Renderer mit deutlichem MOCK-Label für
 Demos. Die Prompts für einen späteren echten KI-Provider sind bereits
 enthalten und verbieten explizit das Hinzufügen von Objekten, Personen,
@@ -140,11 +143,11 @@ den Basis-Funktionen weiter.
 | Option | Aktivierung | Verhalten |
 |---|---|---|
 | **KI-Bildanalyse** | `IMAGE_ANALYSIS_PROVIDER=ai` + LLM-Key | Das Vision-Modell klassifiziert Uploads gegen die Raum-Taxonomie und erkennt Grundrisse; bei jedem Fehler stiller Rückfall auf die Heuristik |
-| **KI-Marketing-Texte** | LLM-Key | Abschnitt „Texte“: Caption, Objektbeschreibung, Voiceover-Skript — strikt aus den freigegebenen Fakten, immer als prüfbarer Entwurf |
-| **Text-Overlays** | Checkbox bei der Generierung | Raum-Name dezent in jeder Szene |
+| **KI-Marketing-Texte** | LLM-Key | Abschnitt „Texte“: Caption, Objektbeschreibung, Voiceover-Skript und Szenentexte (eine Zeile pro Shot, editierbar in der Shotliste) — strikt aus den freigegebenen Fakten, immer als prüfbarer Entwurf |
+| **Text-Overlays** | Checkbox bei der Generierung | Raum-Name dezent in jeder Szene; mit Szenentext zusätzlich eine kurze Beschreibungszeile darüber |
 | **Endkarte** | Checkbox bei der Generierung | 3-s-Abschluss-Karte mit Titel, Lage, Eckdaten und Firmenname |
 | **Hintergrundmusik** | `MUSIC_TRACK_PATH` + Checkbox | Lizenzierter Track des Betreibers, geloopt/leise gemischt, Ausblendung am Ende |
-| **Voiceover** | `OPENAI_API_KEY` *oder* `ELEVENLABS_API_KEY` + gespeichertes Skript + Checkbox | TTS spricht das geprüfte Skript ein (ElevenLabs: `eleven_multilingual_v2`, erkennt Deutsch automatisch; Stimme via `ELEVENLABS_VOICE_ID`); wird mit ggf. abgesenkter Musik gemischt und als MP3-Asset gespeichert |
+| **Voiceover** | `OPENAI_API_KEY` *oder* `ELEVENLABS_API_KEY` + Szenentexte *oder* gespeichertes Skript + Checkbox | Szenentexte haben Vorrang: jede Zeile wird einzeln eingesprochen und synchron zu ihrer Szene platziert (Szenen verlängern sich automatisch um max. 2 s, wenn die Sprechzeit es braucht; SRT-Untertitel folgen denselben Zeilen). Ohne Szenentexte wird das gespeicherte Skript wie bisher als durchgehende Spur eingesprochen. ElevenLabs: `eleven_multilingual_v2`, Stimme via `ELEVENLABS_VOICE_ID`; Mischung mit ggf. abgesenkter Musik |
 | **Hybrid-KI-Video** | Externer Video-Provider konfiguriert | Pro Shot wählbar („KI-Video“-Spalte): Hero-Szenen über den KI-Provider, Rest Foto-Motion — ohne Provider unsichtbar |
 
 **LLM-Provider:** `LLM_PROVIDER=anthropic` (Standard, `ANTHROPIC_API_KEY`,
