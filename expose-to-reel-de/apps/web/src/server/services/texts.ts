@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import {
   generateMarketingTexts,
+  generateSceneLines,
   getLlmProviderKey,
   isTextGenerationEnabled,
   marketingTextsSchema,
@@ -8,6 +9,7 @@ import {
   recordAudit,
   ROOM_LABEL_NAMES,
   type MarketingTexts,
+  type MarketingTextsInput,
 } from "@e2r/shared";
 import { ApiError } from "../api";
 import type { SessionUser } from "../session";
@@ -38,7 +40,7 @@ export async function generateTextsForProject(
       shots: {
         where: { selected: true },
         orderBy: { sortIndex: "asc" },
-        select: { roomLabel: true },
+        select: { id: true, sortIndex: true, durationSec: true, roomLabel: true },
       },
     },
   });
@@ -65,7 +67,50 @@ export async function generateTextsForProject(
     userId: user.id,
     type: "texts.generated",
   });
+
+  // Szenen-Skript: eine Zeile pro Shot — best effort, Texte bleiben auch
+  // ohne Zeilen nutzbar (Fallback: durchgehendes Voiceover-Skript).
+  if (project.shots.length > 0) {
+    try {
+      const lines = await generateSceneLines({
+        facts: buildFactsInput(listing),
+        roomNames: project.shots.map((shot) => ROOM_LABEL_NAMES[shot.roomLabel]),
+        shots: project.shots.map((shot) => ({
+          sortIndex: shot.sortIndex,
+          roomName: ROOM_LABEL_NAMES[shot.roomLabel],
+          durationSec: shot.durationSec,
+        })),
+      });
+      const updates = mapSceneLinesToShots(project.shots, lines);
+      await prisma.$transaction(
+        updates.map((update) =>
+          prisma.shot.update({
+            where: { id: update.id },
+            data: { narration: update.narration },
+          })
+        )
+      );
+    } catch (error) {
+      console.warn(
+        "[texts] Szenen-Skript fehlgeschlagen — Texte ohne Szenenzeilen:",
+        error
+      );
+    }
+  }
+
   return texts;
+}
+
+/** sceneLines (per sortIndex) auf Shot-IDs mappen; ohne Zeile → null. */
+export function mapSceneLinesToShots(
+  shots: Array<{ id: string; sortIndex: number }>,
+  lines: Array<{ sortIndex: number; text: string }>
+): Array<{ id: string; narration: string | null }> {
+  const byIndex = new Map(lines.map((line) => [line.sortIndex, line.text.trim()]));
+  return shots.map((shot) => ({
+    id: shot.id,
+    narration: byIndex.get(shot.sortIndex) || null,
+  }));
 }
 
 /** LLM-API-Fehler in verständliche, deutschsprachige Antworten übersetzen. */
@@ -101,34 +146,41 @@ function mapLlmError(error: unknown): unknown {
   return error;
 }
 
-type ProjectWithShots = { shots: Array<{ roomLabel: keyof typeof ROOM_LABEL_NAMES }> };
+type ProjectWithShots = {
+  shots: Array<{ id: string; sortIndex: number; durationSec: number; roomLabel: keyof typeof ROOM_LABEL_NAMES }>;
+};
 type ListingRow = NonNullable<
   Awaited<ReturnType<typeof prisma.listingData.findFirst>>
 >;
+
+/** Freigegebene Fakten aus den Exposé-Daten — Basis für alle Text-Prompts. */
+function buildFactsInput(listing: ListingRow): MarketingTextsInput["facts"] {
+  return {
+    marketingType: listing.marketingType,
+    objectType: listing.objectType,
+    titel: listing.titel,
+    plz: listing.plz,
+    ort: listing.ort,
+    strasse: listing.strasse,
+    hausnummer: listing.hausnummer,
+    addressVisibility: listing.addressVisibility,
+    kaufpreis: asNumber(listing.kaufpreis),
+    kaltmiete: asNumber(listing.kaltmiete),
+    zimmer: asNumber(listing.zimmer),
+    wohnflaeche: asNumber(listing.wohnflaeche),
+    baujahr: listing.baujahr,
+    provision: listing.provision,
+    beschreibung: listing.beschreibung,
+    energieklasse: listing.energieklasse,
+  };
+}
 
 async function generateMarketingTextsSafe(
   project: ProjectWithShots,
   listing: ListingRow
 ): Promise<MarketingTexts> {
   return generateMarketingTexts({
-    facts: {
-      marketingType: listing.marketingType,
-      objectType: listing.objectType,
-      titel: listing.titel,
-      plz: listing.plz,
-      ort: listing.ort,
-      strasse: listing.strasse,
-      hausnummer: listing.hausnummer,
-      addressVisibility: listing.addressVisibility,
-      kaufpreis: asNumber(listing.kaufpreis),
-      kaltmiete: asNumber(listing.kaltmiete),
-      zimmer: asNumber(listing.zimmer),
-      wohnflaeche: asNumber(listing.wohnflaeche),
-      baujahr: listing.baujahr,
-      provision: listing.provision,
-      beschreibung: listing.beschreibung,
-      energieklasse: listing.energieklasse,
-    },
+    facts: buildFactsInput(listing),
     roomNames: project.shots.map((shot) => ROOM_LABEL_NAMES[shot.roomLabel]),
   });
 }
