@@ -112,7 +112,7 @@ export function ReviewSection({
 
   return (
     <section className="card" id="freigabe">
-      <h2>5 · Prüfung, Freigabe & Export</h2>
+      <h2>6 · Prüfung, Freigabe & Export</h2>
 
       {latestVersion ? (
         <div className="video-row">

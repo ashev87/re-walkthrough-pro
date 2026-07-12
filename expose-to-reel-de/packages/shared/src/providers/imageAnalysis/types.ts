@@ -16,6 +16,12 @@ export interface ImageAnalysisInput {
   perceptualHash: string | null;
   whiteRatio: number | null;
   sortIndex: number;
+  /**
+   * Bildinhalt für Vision-Provider (nur für frisch hochgeladene Bilder
+   * gesetzt). Provider ohne Vision ignorieren diese Felder.
+   */
+  bytes?: Buffer;
+  mimeType?: string;
 }
 
 export interface ImageAnalysisProposal {

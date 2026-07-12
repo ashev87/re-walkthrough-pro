@@ -90,7 +90,10 @@ export async function uploadPhoto(
     },
   });
 
-  await applyAnalysisProposal(projectId, asset.id);
+  await applyAnalysisProposal(projectId, asset.id, {
+    bytes: file.buffer,
+    mimeType: validated.mimeType,
+  });
   await recordAudit(prisma, {
     organizationId: user.organizationId,
     projectId,
@@ -109,7 +112,8 @@ export async function uploadPhoto(
  */
 async function applyAnalysisProposal(
   projectId: string,
-  newAssetId: string
+  newAssetId: string,
+  newImageContent?: { bytes: Buffer; mimeType: string }
 ): Promise<void> {
   const images = await prisma.mediaAsset.findMany({
     where: { projectId, kind: "SOURCE_IMAGE" },
@@ -127,6 +131,9 @@ async function applyAnalysisProposal(
       perceptualHash: img.perceptualHash,
       whiteRatio: img.whiteRatio,
       sortIndex: img.sortIndex,
+      // Bildinhalt nur für das frisch hochgeladene Bild — genutzt vom
+      // optionalen Vision-Provider (IMAGE_ANALYSIS_PROVIDER=ai).
+      ...(img.id === newAssetId ? newImageContent : {}),
     }))
   );
   const proposal = proposals.find((p) => p.id === newAssetId);

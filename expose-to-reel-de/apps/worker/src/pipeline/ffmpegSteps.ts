@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
+import { resolveFontPath } from "@e2r/shared";
 
 /**
  * ffmpeg-Bausteine der Generierungs-Pipeline: Bildnormalisierung,
@@ -134,6 +135,156 @@ export async function extractPoster(
     posterPath,
   ]);
   return readFile(posterPath);
+}
+
+/** ffmpeg-Filter-Escaping (Windows-Doppelpunkte, Quotes). */
+function escapeFilterValue(value: string): string {
+  return value.replace(/\\/g, "/").replace(/:/g, "\\:").replace(/'/g, "\\'");
+}
+
+export interface EndCardLine {
+  text: string;
+  /** Relative Schriftgröße (Anteil der Videohöhe). */
+  scale: number;
+}
+
+/**
+ * Abschluss-Karte (Opt-in „Endkarte“): dunkler Hintergrund mit den
+ * freigegebenen Fakten. Liefert false, wenn keine Schrift verfügbar ist —
+ * dann wird die Option übersprungen statt eine leere Karte anzuhängen.
+ */
+export async function renderEndCard(
+  lines: EndCardLine[],
+  outputPath: string,
+  options: { width: number; height: number; durationSec: number; fps: number }
+): Promise<boolean> {
+  const font = resolveFontPath();
+  if (!font) return false;
+
+  const { width, height, durationSec, fps } = options;
+  const gap = height * 0.035;
+  // Schrift schrumpfen, wenn eine Zeile sonst über den Rand liefe
+  // (Näherung: mittlere Zeichenbreite ≈ 0,55 × Schriftgröße).
+  const fittedSize = (line: EndCardLine) =>
+    Math.max(
+      12,
+      Math.round(
+        Math.min(line.scale * height, (width * 0.92) / (line.text.length * 0.55))
+      )
+    );
+  const totalTextHeight = lines.reduce((sum, line) => sum + fittedSize(line), 0);
+  let cursor = (height - (totalTextHeight + gap * (lines.length - 1))) / 2;
+
+  const drawFilters = lines.map((line) => {
+    const size = fittedSize(line);
+    const y = Math.round(cursor);
+    cursor += size + gap;
+    return (
+      `drawtext=fontfile='${escapeFilterValue(font)}'` +
+      `:text='${escapeFilterValue(line.text)}'` +
+      `:fontcolor=0xF2F0EA:fontsize=${size}` +
+      `:x=(w-text_w)/2:y=${y}` +
+      `:alpha='min(1,t/0.8)'`
+    );
+  });
+
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await runFfmpeg([
+    "-f",
+    "lavfi",
+    "-i",
+    `color=c=0x14181f:s=${width}x${height}:d=${durationSec}:r=${fps}`,
+    "-vf",
+    [...drawFilters, "format=yuv420p"].join(","),
+    "-c:v",
+    "libx264",
+    "-preset",
+    "veryfast",
+    "-crf",
+    "20",
+    "-movflags",
+    "+faststart",
+    "-an",
+    outputPath,
+  ]);
+  return true;
+}
+
+export interface AudioMixInput {
+  musicPath?: string | null;
+  voiceoverPath?: string | null;
+  videoDurationSec: number;
+}
+
+/**
+ * Hintergrundmusik und/oder Voiceover unter das fertige Video mischen.
+ * Musik wird geloopt, leiser gemischt (stärker abgesenkt, wenn ein
+ * Voiceover dabei ist) und am Ende ausgeblendet; das Video bleibt unberührt
+ * (Streamcopy).
+ */
+export async function mixAudio(
+  videoPath: string,
+  outputPath: string,
+  input: AudioMixInput
+): Promise<void> {
+  const { musicPath, voiceoverPath, videoDurationSec } = input;
+  if (!musicPath && !voiceoverPath) {
+    throw new Error("mixAudio ohne Audioquellen aufgerufen.");
+  }
+
+  const args: string[] = ["-i", videoPath];
+  const filters: string[] = [];
+  let audioIndex = 1;
+  let musicLabel: string | null = null;
+  let voiceLabel: string | null = null;
+
+  if (musicPath) {
+    args.push("-stream_loop", "-1", "-i", musicPath);
+    const volume = voiceoverPath ? 0.16 : 0.3;
+    const fadeStart = Math.max(0, videoDurationSec - 2);
+    filters.push(
+      `[${audioIndex}:a]volume=${volume},afade=t=in:d=1,afade=t=out:st=${fadeStart.toFixed(2)}:d=2[music]`
+    );
+    musicLabel = "[music]";
+    audioIndex++;
+  }
+  if (voiceoverPath) {
+    args.push("-i", voiceoverPath);
+    // Leichter Vorlauf, damit das Voiceover nicht auf dem ersten Frame startet.
+    filters.push(`[${audioIndex}:a]adelay=600|600[voice]`);
+    voiceLabel = "[voice]";
+  }
+
+  let outLabel: string;
+  if (musicLabel && voiceLabel) {
+    filters.push(
+      `${musicLabel}${voiceLabel}amix=inputs=2:duration=longest:normalize=0[aout]`
+    );
+    outLabel = "[aout]";
+  } else {
+    outLabel = (musicLabel ?? voiceLabel)!;
+  }
+
+  await runFfmpeg([
+    ...args,
+    "-filter_complex",
+    filters.join(";"),
+    "-map",
+    "0:v",
+    "-map",
+    outLabel,
+    "-c:v",
+    "copy",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "160k",
+    "-t",
+    videoDurationSec.toFixed(3),
+    "-movflags",
+    "+faststart",
+    outputPath,
+  ]);
 }
 
 function srtTimestamp(totalSeconds: number): string {

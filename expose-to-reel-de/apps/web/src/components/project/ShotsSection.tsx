@@ -12,9 +12,17 @@ interface Props {
   status: ProjectStatusDto;
   shots: ShotDto[];
   photoCount: number;
+  /** Externer KI-Video-Provider konfiguriert → Hybrid-Spalte anzeigen. */
+  externalVideoEnabled: boolean;
 }
 
-export function ShotsSection({ projectId, status, shots, photoCount }: Props) {
+export function ShotsSection({
+  projectId,
+  status,
+  shots,
+  photoCount,
+  externalVideoEnabled,
+}: Props) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -37,7 +45,14 @@ export function ShotsSection({ projectId, status, shots, photoCount }: Props) {
     router.refresh();
   }
 
-  async function patch(updates: Array<{ id: string; selected?: boolean; roomLabel?: string }>) {
+  async function patch(
+    updates: Array<{
+      id: string;
+      selected?: boolean;
+      roomLabel?: string;
+      preferAiVideo?: boolean;
+    }>
+  ) {
     const result = await apiRequest(
       `/api/projects/${projectId}/shots`,
       jsonInit("PATCH", { updates })
@@ -112,6 +127,7 @@ export function ShotsSection({ projectId, status, shots, photoCount }: Props) {
                 <th>Kamerabewegung</th>
                 <th>Dauer</th>
                 <th>Im Video</th>
+                {externalVideoEnabled && <th title="Szene über den externen KI-Video-Provider rendern">KI-Video</th>}
                 {editable && <th>Reihenfolge</th>}
               </tr>
             </thead>
@@ -160,6 +176,18 @@ export function ShotsSection({ projectId, status, shots, photoCount }: Props) {
                       }
                     />
                   </td>
+                  {externalVideoEnabled && (
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={shot.preferAiVideo}
+                        disabled={!editable}
+                        onChange={(e) =>
+                          patch([{ id: shot.id, preferAiVideo: e.target.checked }])
+                        }
+                      />
+                    </td>
+                  )}
                   {editable && (
                     <td>
                       <button type="button" className="btn sm" disabled={index === 0} onClick={() => move(shot.id, -1)}>

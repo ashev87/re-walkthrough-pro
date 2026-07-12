@@ -16,6 +16,11 @@ export interface SceneRenderSpec {
   fps: number;
   /** Sichtbares Label (z. B. „MOCK-VORSCHAU“); leer = kein Overlay. */
   overlayLabel?: string;
+  /**
+   * Dezentes Szenen-Label (Raum-Name) unten links — Opt-in-Option
+   * „Text-Overlays“ der Generierung.
+   */
+  sceneLabel?: string;
 }
 
 export interface SceneRenderResult {

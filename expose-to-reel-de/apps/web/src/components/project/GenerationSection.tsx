@@ -36,19 +36,48 @@ const SCENE_LABELS: Record<SceneStatus["status"], string> = {
   FAILED: "Fehler",
 };
 
+export interface GenerationCapabilities {
+  music: boolean;
+  tts: boolean;
+}
+
+interface GenerationOptionsState {
+  withMusic: boolean;
+  withTextOverlays: boolean;
+  withEndCard: boolean;
+  withVoiceover: boolean;
+}
+
 interface Props {
   projectId: string;
   status: ProjectStatusDto;
   latestJob: JobDto | null;
   shotCount: number;
+  capabilities: GenerationCapabilities;
+  hasVoiceoverScript: boolean;
 }
 
-export function GenerationSection({ projectId, status, latestJob, shotCount }: Props) {
+const OPTION_DEFAULTS: GenerationOptionsState = {
+  withMusic: false,
+  withTextOverlays: false,
+  withEndCard: false,
+  withVoiceover: false,
+};
+
+export function GenerationSection({
+  projectId,
+  status,
+  latestJob,
+  shotCount,
+  capabilities,
+  hasVoiceoverScript,
+}: Props) {
   const router = useRouter();
   const [job, setJob] = useState<JobDto | null>(latestJob);
   const [scenes, setScenes] = useState<SceneStatus[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [options, setOptions] = useState<GenerationOptionsState>(OPTION_DEFAULTS);
   // Idempotency-Key pro Ansicht — Doppelklicks erzeugen keinen zweiten Job.
   const idempotencyKey = useRef(
     typeof crypto !== "undefined" && "randomUUID" in crypto
@@ -92,7 +121,11 @@ export function GenerationSection({ projectId, status, latestJob, shotCount }: P
       `/api/projects/${projectId}/generate`,
       {
         method: "POST",
-        headers: { "idempotency-key": idempotencyKey.current },
+        headers: {
+          "idempotency-key": idempotencyKey.current,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ options }),
       }
     );
     setBusy(false);
@@ -123,13 +156,85 @@ export function GenerationSection({ projectId, status, latestJob, shotCount }: P
 
   return (
     <section className="card" id="generierung">
-      <h2>4 · Generierung</h2>
+      <h2>5 · Generierung</h2>
       <p className="muted small">
         Pro ausgewähltem Bild entsteht eine kurze Szene (Foto-Motion: sanfte
         Kamerafahrt über das Originalfoto, mit Überblendungen und dezentem
         Farb-Grading — es wird nichts hinzuerfunden). Ausgabe: 16:9-Master,
         9:16-Reel (straffer geschnitten), Posterbild und Untertitel.
       </p>
+
+      <fieldset style={{ border: "none", padding: 0, margin: "0 0 0.75rem" }}>
+        <legend className="small" style={{ fontWeight: 600, color: "var(--text-muted)" }}>
+          Optionen
+        </legend>
+        <div className="checkbox-row">
+          <input
+            id="opt-overlays"
+            type="checkbox"
+            checked={options.withTextOverlays}
+            onChange={(e) =>
+              setOptions((prev) => ({ ...prev, withTextOverlays: e.target.checked }))
+            }
+          />
+          <label htmlFor="opt-overlays" className="small">
+            <strong>Text-Overlays</strong> — Raum-Name dezent in jeder Szene einblenden.
+          </label>
+        </div>
+        <div className="checkbox-row">
+          <input
+            id="opt-endcard"
+            type="checkbox"
+            checked={options.withEndCard}
+            onChange={(e) =>
+              setOptions((prev) => ({ ...prev, withEndCard: e.target.checked }))
+            }
+          />
+          <label htmlFor="opt-endcard" className="small">
+            <strong>Endkarte</strong> — Abschluss-Karte mit Titel, Lage und Eckdaten (3 s).
+          </label>
+        </div>
+        <div className="checkbox-row">
+          <input
+            id="opt-music"
+            type="checkbox"
+            disabled={!capabilities.music}
+            checked={options.withMusic}
+            onChange={(e) =>
+              setOptions((prev) => ({ ...prev, withMusic: e.target.checked }))
+            }
+          />
+          <label htmlFor="opt-music" className="small" style={{ opacity: capabilities.music ? 1 : 0.6 }}>
+            <strong>Hintergrundmusik</strong>{" "}
+            {capabilities.music
+              ? "— Track aus MUSIC_TRACK_PATH, leise gemischt mit Ausblendung."
+              : "— nicht konfiguriert (MUSIC_TRACK_PATH in .env auf eine lizenzierte Audiodatei setzen)."}
+          </label>
+        </div>
+        <div className="checkbox-row">
+          <input
+            id="opt-voiceover"
+            type="checkbox"
+            disabled={!capabilities.tts || !hasVoiceoverScript}
+            checked={options.withVoiceover}
+            onChange={(e) =>
+              setOptions((prev) => ({ ...prev, withVoiceover: e.target.checked }))
+            }
+          />
+          <label
+            htmlFor="opt-voiceover"
+            className="small"
+            style={{ opacity: capabilities.tts && hasVoiceoverScript ? 1 : 0.6 }}
+          >
+            <strong>Voiceover</strong>{" "}
+            {!capabilities.tts
+              ? "— nicht konfiguriert (OPENAI_API_KEY für TTS setzen)."
+              : !hasVoiceoverScript
+                ? "— zuerst ein Voiceover-Skript in Abschnitt 4 speichern."
+                : "— gespeichertes Skript wird eingesprochen und eingemischt."}
+          </label>
+        </div>
+      </fieldset>
 
       <div className="actions-row">
         <button

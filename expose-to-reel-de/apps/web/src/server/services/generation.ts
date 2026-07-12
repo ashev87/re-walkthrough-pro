@@ -1,4 +1,5 @@
 import {
+  DEFAULT_GENERATION_OPTIONS,
   env,
   GENERATION_JOB_ATTEMPTS,
   GENERATION_JOB_BACKOFF_MS,
@@ -6,9 +7,11 @@ import {
   prisma,
   recordAudit,
   redisConnectionOptions,
+  type GenerationOptions,
 } from "@e2r/shared";
 import { Queue } from "bullmq";
 import { ApiError } from "../api";
+import { getCapabilities } from "../capabilities";
 import type { SessionUser } from "../session";
 import { transitionOrConflict } from "./projects";
 
@@ -30,12 +33,31 @@ function getQueue(): Queue {
 export async function startGeneration(
   user: SessionUser,
   projectId: string,
-  idempotencyKey: string | null
+  idempotencyKey: string | null,
+  options: GenerationOptions = DEFAULT_GENERATION_OPTIONS
 ) {
   const project = await prisma.propertyProject.findFirst({
     where: { id: projectId, organizationId: user.organizationId },
   });
   if (!project) throw new ApiError(404, "Projekt nicht gefunden.");
+
+  // Opt-in-Optionen server-seitig gegen die Konfiguration prüfen.
+  const capabilities = getCapabilities();
+  if (options.withMusic && !capabilities.music) {
+    throw new ApiError(422, "Musik-Option: kein MUSIC_TRACK_PATH konfiguriert.");
+  }
+  if (options.withVoiceover) {
+    if (!capabilities.tts) {
+      throw new ApiError(422, "Voiceover-Option: TTS ist nicht konfiguriert (OPENAI_API_KEY).");
+    }
+    const texts = project.marketingTexts as { voiceoverScript?: string } | null;
+    if (!texts?.voiceoverScript?.trim()) {
+      throw new ApiError(
+        422,
+        "Voiceover-Option: bitte zuerst ein Voiceover-Skript erstellen und speichern (Abschnitt Texte)."
+      );
+    }
+  }
 
   // Idempotenz: gleicher Schlüssel ⇒ vorhandenen Job zurückgeben.
   if (idempotencyKey) {
@@ -66,7 +88,7 @@ export async function startGeneration(
   }
 
   const job = await prisma.generationJob.create({
-    data: { projectId, idempotencyKey, status: "QUEUED" },
+    data: { projectId, idempotencyKey, status: "QUEUED", options },
   });
   await prisma.propertyProject.update({
     where: { id: projectId },

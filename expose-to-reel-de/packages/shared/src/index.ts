@@ -13,6 +13,8 @@ export * from "./domain/shotSelection";
 export * from "./domain/format";
 export * from "./domain/listing";
 export * from "./domain/propstack";
+export * from "./domain/generationOptions";
+export * from "./anthropicClient";
 
 export * from "./storage/index";
 
@@ -27,6 +29,8 @@ export {
   FLOORPLAN_WHITE_RATIO,
 } from "./providers/imageAnalysis/heuristic";
 export * from "./providers/videoGeneration/index";
+export * from "./providers/texts/index";
+export * from "./providers/tts/index";
 export * from "./providers/publishing/types";
 export { LocalDownloadPublisher } from "./providers/publishing/localExport";
 export { ImmoScout24PublishingAdapter } from "./providers/publishing/immoscout24";

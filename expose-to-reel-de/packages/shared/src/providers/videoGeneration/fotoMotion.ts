@@ -104,6 +104,21 @@ export class FotoMotionVideoProvider implements VideoGenerationProvider {
       ...GRADE_FILTERS,
     ];
 
+    if (spec.sceneLabel) {
+      const font = resolveFontPath();
+      if (font) {
+        const size = Math.round(spec.height * 0.032);
+        const margin = Math.round(spec.height * 0.045);
+        filters.push(
+          `drawtext=fontfile='${escapeFilterValue(font)}'` +
+            `:text='${escapeFilterValue(spec.sceneLabel)}'` +
+            `:fontcolor=white:fontsize=${size}` +
+            `:box=1:boxcolor=black@0.35:boxborderw=${Math.round(size * 0.45)}` +
+            `:x=${margin}:y=h-${margin + size}`
+        );
+      }
+    }
+
     const overlayLabel = spec.overlayLabel ?? this.watermarkLabel;
     if (overlayLabel) {
       const font = resolveFontPath();

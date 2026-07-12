@@ -65,6 +65,10 @@ model PropertyProject {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
+  // KI-generierte, vom Nutzer geprüfte Marketing-Texte (Caption, Beschreibung,
+  // Voiceover-Skript) — ausschließlich aus freigegebenen Fakten erzeugt.
+  marketingTexts Json?
+
   organization       Organization        @relation(fields: [organizationId], references: [id])
   listingData        ListingData?
   mediaAssets        MediaAsset[]
@@ -140,6 +144,7 @@ enum MediaKind {
   FINAL_VIDEO
   POSTER
   CAPTIONS
+  VOICEOVER
 }
 
 enum RoomLabel {
@@ -210,6 +215,9 @@ model Shot {
   roomLabel    RoomLabel
   sortIndex    Int
   selected     Boolean    @default(true)
+  // Opt-in: Szene über den externen KI-Video-Provider rendern, sobald einer
+  // konfiguriert ist; ohne Konfiguration fällt der Worker auf Foto-Motion zurück.
+  preferAiVideo Boolean   @default(false)
   cameraMove   String
   prompt       String
   durationSec  Float      @default(4)
@@ -238,6 +246,9 @@ model GenerationJob {
   projectId      String
   idempotencyKey String?   @unique
   queueJobId     String?
+  // Generierungs-Optionen (Musik, Text-Overlays, Endkarte, Voiceover) — siehe
+  // GenerationOptions in packages/shared/src/domain/generationOptions.ts
+  options        Json?
   status         JobStatus @default(QUEUED)
   progress       Int       @default(0) // 0–100
   currentStep    String?

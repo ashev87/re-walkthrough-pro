@@ -36,6 +36,7 @@ const patchSchema = z.object({
         id: z.string(),
         selected: z.boolean().optional(),
         roomLabel: z.enum(ROOM_LABELS).optional(),
+        preferAiVideo: z.boolean().optional(),
       })
     )
     .min(1),

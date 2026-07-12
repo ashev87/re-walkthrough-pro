@@ -71,6 +71,7 @@ export interface ShotDto {
   roomLabel: RoomLabelDto;
   sortIndex: number;
   selected: boolean;
+  preferAiVideo: boolean;
   cameraMoveLabel: string;
   prompt: string;
   durationSec: number;

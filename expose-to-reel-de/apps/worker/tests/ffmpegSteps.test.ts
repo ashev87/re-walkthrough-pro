@@ -1,5 +1,14 @@
+import { mkdtemp, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { describe, expect, test } from "vitest";
-import { buildSrt, totalDurationWithCrossfade } from "../src/pipeline/ffmpegSteps";
+import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
+import {
+  buildSrt,
+  mixAudio,
+  renderEndCard,
+  totalDurationWithCrossfade,
+} from "../src/pipeline/ffmpegSteps";
 
 describe("Crossfade-Timing", () => {
   test("Gesamtdauer schrumpft um (n−1)·Blende", () => {
@@ -31,5 +40,65 @@ describe("Crossfade-Timing", () => {
     ]);
     expect(srt).toContain("00:00:00,000 --> 00:00:01,900\nA");
     expect(srt).toContain("00:00:02,000 --> 00:00:03,900\nB");
+  });
+});
+
+describe("Endkarte & Audio-Mix (ffmpeg)", () => {
+  test("rendert eine Endkarte mit korrekter Auflösung und Dauer", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
+    try {
+      const outputPath = path.join(tempDir, "endcard.mp4");
+      const rendered = await renderEndCard(
+        [
+          { text: "Helle 3-Zimmer-Wohnung", scale: 0.055 },
+          { text: "04155 Leipzig", scale: 0.035 },
+          { text: "Demo Immobilien GmbH", scale: 0.027 },
+        ],
+        outputPath,
+        { width: 1280, height: 720, durationSec: 2, fps: 25 }
+      );
+      expect(rendered).toBe(true);
+      const probe = await ffprobe(outputPath);
+      const video = probe.streams.find((s) => s.codec_type === "video");
+      expect(video?.codec_name).toBe("h264");
+      expect(video?.width).toBe(1280);
+      expect(Number(probe.format.duration)).toBeCloseTo(2, 1);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("mischt einen Musik-Track unter ein Video (Audio-Stream vorhanden)", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
+    try {
+      const videoPath = path.join(tempDir, "video.mp4");
+      const musicPath = path.join(tempDir, "ton.wav");
+      // Stummes Testvideo + Sinuston als „Musik“ erzeugen.
+      await runFfmpeg([
+        "-f", "lavfi", "-i", "color=c=blue:s=640x360:d=4:r=25",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-an", videoPath,
+      ]);
+      await runFfmpeg([
+        "-f", "lavfi", "-i", "sine=frequency=440:duration=1",
+        musicPath,
+      ]);
+
+      const mixedPath = path.join(tempDir, "mixed.mp4");
+      await mixAudio(videoPath, mixedPath, {
+        musicPath,
+        voiceoverPath: null,
+        videoDurationSec: 4,
+      });
+
+      const probe = await ffprobe(mixedPath);
+      const video = probe.streams.find((s) => s.codec_type === "video");
+      const audio = probe.streams.find((s) => s.codec_type === "audio");
+      expect(video?.codec_name).toBe("h264");
+      expect(audio?.codec_name).toBe("aac");
+      // Loop + -t: Audio läuft über die volle Videolänge trotz 1-s-Quelle.
+      expect(Number(probe.format.duration)).toBeCloseTo(4, 0);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 });

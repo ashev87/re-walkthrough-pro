@@ -7,6 +7,7 @@ import {
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getSessionUser } from "@/server/session";
+import { getCapabilities } from "@/server/capabilities";
 import { getPublishingProvidersStatus } from "@/server/services/approval";
 import type {
   ApprovalDto,
@@ -19,6 +20,7 @@ import type {
 import { ListingSection } from "@/components/project/ListingSection";
 import { PhotosSection } from "@/components/project/PhotosSection";
 import { ShotsSection } from "@/components/project/ShotsSection";
+import { TextsSection, type MarketingTextsDto } from "@/components/project/TextsSection";
 import { GenerationSection } from "@/components/project/GenerationSection";
 import { ReviewSection } from "@/components/project/ReviewSection";
 
@@ -82,6 +84,7 @@ export default async function ProjectPage({
       roomLabel: shot.roomLabel,
       sortIndex: shot.sortIndex,
       selected: shot.selected,
+      preferAiVideo: shot.preferAiVideo,
       cameraMoveLabel: CAMERA_MOVES[shot.cameraMove]?.label ?? shot.cameraMove,
       prompt: shot.prompt,
       durationSec: shot.durationSec,
@@ -168,6 +171,8 @@ export default async function ProjectPage({
 
   const status = project.status;
   const hasAttestation = project.rightsAttestations.length > 0;
+  const capabilities = getCapabilities();
+  const marketingTexts = (project.marketingTexts as MarketingTextsDto | null) ?? null;
 
   return (
     <main className="container">
@@ -211,12 +216,21 @@ export default async function ProjectPage({
         status={status}
         shots={shots}
         photoCount={photos.length}
+        externalVideoEnabled={capabilities.externalVideo}
+      />
+      <TextsSection
+        projectId={project.id}
+        texts={marketingTexts}
+        aiEnabled={capabilities.aiTexts}
+        hasListing={listing !== null}
       />
       <GenerationSection
         projectId={project.id}
         status={status}
         latestJob={latestJob}
         shotCount={shots.filter((s) => s.selected).length}
+        capabilities={{ music: capabilities.music, tts: capabilities.tts }}
+        hasVoiceoverScript={Boolean(marketingTexts?.voiceoverScript?.trim())}
       />
       <ReviewSection
         projectId={project.id}

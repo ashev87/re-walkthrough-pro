@@ -1,27 +1,36 @@
+import { existsSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import {
   buildFactLine,
   buildLocationLine,
+  ExternalImageToVideoProvider,
   getStorage,
+  getTtsProvider,
   getVideoProvider,
+  parseGenerationOptions,
   prisma,
   projectStorageKey,
   recordAudit,
+  resolveFromWorkspaceRoot,
   ROOM_LABEL_NAMES,
   sha256Hex,
+  type GenerationOptions,
 } from "@e2r/shared";
 import type { MediaKind, Prisma, Shot } from "@prisma/client";
 import {
   buildSrt,
   concatClips,
   extractPoster,
+  mixAudio,
   normalizeImage,
+  renderEndCard,
   totalDurationWithCrossfade,
   validateOutput,
   type CaptionCue,
   type ClipInput,
+  type EndCardLine,
 } from "./ffmpegSteps";
 
 /**
@@ -39,6 +48,21 @@ export const CROSSFADE_SEC = 0.35;
 
 /** Reel-Pacing: 9:16-Szenen sind kürzer geschnitten als der 16:9-Master. */
 export const REEL_MAX_SCENE_SEC = 3;
+
+/** Länge der optionalen Abschluss-Karte. */
+export const END_CARD_SEC = 3;
+
+/** MUSIC_TRACK_PATH auflösen (relativ zum Monorepo-Root); null wenn unbrauchbar. */
+function resolveMusicPath(): string | null {
+  const configured = process.env.MUSIC_TRACK_PATH;
+  if (!configured) return null;
+  const resolved = resolveFromWorkspaceRoot(configured);
+  if (!existsSync(resolved)) {
+    console.warn(`[worker] MUSIC_TRACK_PATH nicht gefunden: ${resolved} — Musik übersprungen.`);
+    return null;
+  }
+  return resolved;
+}
 
 type AspectTarget = typeof MASTER | typeof REEL;
 
@@ -146,6 +170,7 @@ export async function processGenerationJob(
     include: {
       project: {
         include: {
+          organization: { select: { name: true } },
           listingData: true,
           shots: {
             where: { selected: true },
@@ -158,6 +183,7 @@ export async function processGenerationJob(
   });
   const { project } = job;
   const shots = project.shots;
+  const options: GenerationOptions = parseGenerationOptions(job.options);
   if (shots.length === 0) {
     const message = "Keine ausgewählten Shots — Generierung nicht möglich.";
     await prisma.generationJob.update({
@@ -182,6 +208,12 @@ export async function processGenerationJob(
 
   const storage = getStorage();
   const provider = getVideoProvider();
+  const externalProvider = new ExternalImageToVideoProvider();
+  /** Pro Shot: KI-Video nur, wenn gewünscht UND ein externer Provider konfiguriert ist. */
+  const providerFor = (shot: Shot) =>
+    shot.preferAiVideo && externalProvider.isEnabled()
+      ? externalProvider
+      : provider;
   const overlayLabel = provider.watermarkLabel;
 
   const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-job-"));
@@ -228,7 +260,7 @@ export async function processGenerationJob(
           if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
 
           const durationSec = sceneDurationFor(shot.durationSec, target);
-          const clipBytes = await renderSceneWithRetry(provider, {
+          const clipBytes = await renderSceneWithRetry(providerFor(shot), {
             imageBytes: normalizedBytes,
             prompt: shot.prompt,
             cameraMoveKey: shot.cameraMove,
@@ -237,6 +269,9 @@ export async function processGenerationJob(
             height: target.height,
             fps: FPS,
             overlayLabel,
+            sceneLabel: options.withTextOverlays
+              ? ROOM_LABEL_NAMES[shot.roomLabel]
+              : undefined,
           });
 
           const sceneFilename = `szene-${String(shot.sortIndex + 1).padStart(2, "0")}-${shot.roomLabel.toLowerCase()}-${target.suffix}.mp4`;
@@ -302,19 +337,122 @@ export async function processGenerationJob(
         _max: { version: true },
       }))._max.version ?? 0) + 1;
 
+    // Option „Endkarte“: Abschluss-Karte mit freigegebenen Fakten pro Format.
+    if (options.withEndCard && project.listingData) {
+      const listing = project.listingData;
+      const endCardLines: EndCardLine[] = [
+        { text: listing.titel, scale: 0.055 },
+        {
+          text: buildLocationLine(
+            {
+              plz: listing.plz,
+              ort: listing.ort,
+              strasse: listing.strasse,
+              hausnummer: listing.hausnummer,
+            },
+            listing.addressVisibility
+          ),
+          scale: 0.035,
+        },
+      ];
+      const factLine = buildFactLine({
+        marketingType: listing.marketingType,
+        objectType: listing.objectType,
+        titel: listing.titel,
+        plz: listing.plz,
+        ort: listing.ort,
+        kaufpreis: toNumber(listing.kaufpreis),
+        kaltmiete: toNumber(listing.kaltmiete),
+        zimmer: toNumber(listing.zimmer),
+        wohnflaeche: toNumber(listing.wohnflaeche),
+      });
+      if (factLine) endCardLines.push({ text: factLine, scale: 0.035 });
+      endCardLines.push({ text: project.organization.name, scale: 0.027 });
+
+      for (const target of [MASTER, REEL]) {
+        const endCardPath = path.join(tempDir, `endcard-${target.suffix}.mp4`);
+        const rendered = await renderEndCard(endCardLines, endCardPath, {
+          width: target.width,
+          height: target.height,
+          durationSec: END_CARD_SEC,
+          fps: FPS,
+        });
+        if (rendered) {
+          clips[target.suffix]!.push({
+            path: endCardPath,
+            durationSec: END_CARD_SEC,
+          });
+        } else {
+          console.warn(
+            "[worker] Keine Schrift für die Endkarte gefunden — Option übersprungen."
+          );
+          break;
+        }
+      }
+      await updateProgress(generationJobId, 74, "Endkarte erstellt", hooks);
+    }
+
+    // Option „Voiceover“: gespeichertes, geprüftes Skript per TTS einsprechen.
+    let voiceoverPath: string | null = null;
+    if (options.withVoiceover) {
+      const texts = project.marketingTexts as { voiceoverScript?: string } | null;
+      const script = texts?.voiceoverScript?.trim();
+      const tts = getTtsProvider();
+      if (!script) {
+        console.warn(
+          "[worker] Voiceover-Option ohne gespeichertes Skript — übersprungen."
+        );
+      } else if (!tts.isEnabled()) {
+        console.warn("[worker] Voiceover-Option ohne TTS-Konfiguration — übersprungen.");
+      } else {
+        const audioBytes = await tts.synthesize(script);
+        voiceoverPath = path.join(tempDir, "voiceover.mp3");
+        await writeFile(voiceoverPath, audioBytes);
+        await upsertAsset({
+          projectId: project.id,
+          kind: "VOICEOVER",
+          storageKey: projectStorageKey(
+            project.organizationId,
+            project.id,
+            "final",
+            `voiceover-v${version}.mp3`
+          ),
+          filename: `voiceover-v${version}.mp3`,
+          mimeType: "audio/mpeg",
+          data: audioBytes,
+        });
+        await updateProgress(generationJobId, 76, "Voiceover erzeugt", hooks);
+      }
+    }
+
+    // Option „Musik“: Track aus MUSIC_TRACK_PATH.
+    const musicPath = options.withMusic ? resolveMusicPath() : null;
+
     const finals: Record<string, { assetId: string; durationSec: number }> = {};
     for (const target of [MASTER, REEL]) {
       if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
       const targetClips = clips[target.suffix]!;
       const outputPath = path.join(tempDir, `walkthrough-${target.suffix}.mp4`);
       await concatClips(targetClips, outputPath, CROSSFADE_SEC);
-      const validation = await validateOutput(outputPath, {
+
+      const expectedDuration = totalDurationWithCrossfade(
+        targetClips.map((clip) => clip.durationSec),
+        CROSSFADE_SEC
+      );
+      let deliveryPath = outputPath;
+      if (musicPath || voiceoverPath) {
+        deliveryPath = path.join(tempDir, `walkthrough-${target.suffix}-audio.mp4`);
+        await mixAudio(outputPath, deliveryPath, {
+          musicPath,
+          voiceoverPath,
+          videoDurationSec: expectedDuration,
+        });
+      }
+
+      const validation = await validateOutput(deliveryPath, {
         width: target.width,
         height: target.height,
-        durationSec: totalDurationWithCrossfade(
-          targetClips.map((clip) => clip.durationSec),
-          CROSSFADE_SEC
-        ),
+        durationSec: expectedDuration,
       });
       const filename = `walkthrough-${target.suffix}-v${version}.mp4`;
       const finalKey = projectStorageKey(
@@ -324,7 +462,7 @@ export async function processGenerationJob(
         filename
       );
       const { readFile } = await import("node:fs/promises");
-      const finalBytes = await readFile(outputPath);
+      const finalBytes = await readFile(deliveryPath);
       const assetId = await upsertAsset({
         projectId: project.id,
         kind: "FINAL_VIDEO",
@@ -441,7 +579,7 @@ export async function processGenerationJob(
       organizationId: project.organizationId,
       projectId: project.id,
       type: "generation.completed",
-      data: { generationJobId, version },
+      data: { generationJobId, version, options },
     });
   } catch (error) {
     if (error instanceof JobCancelledError) {
