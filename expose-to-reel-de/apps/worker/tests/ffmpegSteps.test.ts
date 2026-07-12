@@ -54,7 +54,8 @@ describe("Endkarte & Audio-Mix (ffmpeg)", () => {
         [
           { text: "Helle 3-Zimmer-Wohnung", scale: 0.055 },
           { text: "04155 Leipzig", scale: 0.035 },
-          { text: "Demo Immobilien GmbH", scale: 0.027 },
+          // Apostroph im Titel: Regression für das Filter-Quote-Escaping.
+          { text: "Käufer's Traum: Demo Immobilien GmbH", scale: 0.027 },
         ],
         outputPath,
         { width: 1280, height: 720, durationSec: 2, fps: 25 }

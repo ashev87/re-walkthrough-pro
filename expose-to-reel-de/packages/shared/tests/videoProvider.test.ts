@@ -137,7 +137,8 @@ describe("buildSceneFilters", () => {
       },
       { font: "C:/Windows/Fonts/arial.ttf" }
     ).join(",");
-    expect(graph).toContain("Highlight\\: Kamin im \\'Herzstück\\'");
+    // Korrekte ffmpeg-Quote-Form: Quote schließen, escapen, wieder öffnen.
+    expect(graph).toContain("Highlight\\: Kamin im '\\''Herzstück'\\''");
   });
 
   test("narrationText wird als zusätzliche drawtext-Zeile gezeichnet", () => {
@@ -184,6 +185,18 @@ describe("FotoMotion 9:16-Rendering (ffmpeg)", () => {
       await rm(tempDir, { recursive: true, force: true });
     }
   }
+
+  test("Apostroph im narrationText rendert real (Quote-Escaping)", async () => {
+    const provider = new FotoMotionVideoProvider();
+    const img = await makeLandscapeTestImage();
+    const result = await provider.renderScene({
+      imageBytes: img, prompt: "", cameraMoveKey: "still",
+      durationSec: 1, width: 640, height: 360, fps: 25,
+      sceneLabel: "Test",
+      narrationText: "Hier lässt sich's leben",
+    });
+    expect(result.videoBytes.length).toBeGreaterThan(1000);
+  }, 60_000);
 
   test("Sweep-Szene rendert real in 1080x1920", async () => {
     const provider = new FotoMotionVideoProvider();

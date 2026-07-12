@@ -37,9 +37,16 @@ export function resolveFontPath(): string | null {
   return FONT_CANDIDATES.find((candidate) => existsSync(candidate)) ?? null;
 }
 
-/** ffmpeg-Filter-Escaping für Pfade/Texte (Windows-Doppelpunkte!). */
+/**
+ * ffmpeg-Filter-Escaping für Pfade/Texte (Windows-Doppelpunkte!).
+ * Apostroph innerhalb eines '-gequoteten Werts: Quote schließen, escaptes
+ * Literal einfügen, wieder öffnen ('\'') — \' allein bricht den Filtergraphen.
+ */
 function escapeFilterValue(value: string): string {
-  return value.replace(/\\/g, "/").replace(/:/g, "\\:").replace(/'/g, "\\'");
+  return value
+    .replace(/\\/g, "/")
+    .replace(/:/g, "\\:")
+    .replace(/'/g, "'\\''");
 }
 
 /**

@@ -137,9 +137,16 @@ export async function extractPoster(
   return readFile(posterPath);
 }
 
-/** ffmpeg-Filter-Escaping (Windows-Doppelpunkte, Quotes). */
+/**
+ * ffmpeg-Filter-Escaping (Windows-Doppelpunkte, Quotes).
+ * Apostroph innerhalb eines '-gequoteten Werts: Quote schließen, escaptes
+ * Literal einfügen, wieder öffnen ('\'') — \' allein bricht den Filtergraphen.
+ */
 function escapeFilterValue(value: string): string {
-  return value.replace(/\\/g, "/").replace(/:/g, "\\:").replace(/'/g, "\\'");
+  return value
+    .replace(/\\/g, "/")
+    .replace(/:/g, "\\:")
+    .replace(/'/g, "'\\''");
 }
 
 export interface EndCardLine {
