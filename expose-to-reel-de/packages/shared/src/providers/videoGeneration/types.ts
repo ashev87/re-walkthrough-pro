@@ -21,6 +21,14 @@ export interface SceneRenderSpec {
    * „Text-Overlays“ der Generierung.
    */
   sceneLabel?: string;
+  /** Szenentext (Option „Text-Overlays“) — wird über dem Raum-Label gezeichnet. */
+  narrationText?: string;
+  /** Breite/Höhe des Quellbilds (für die 9:16-Moduswahl). */
+  sourceAspect?: number;
+  /** Grundriss → Blur-Pad statt Sweep im Portrait-Format. */
+  isFloorplan?: boolean;
+  /** Schwenkrichtung im 9:16-Sweep: 1 = links→rechts, −1 = rechts→links. */
+  sweepDirection?: 1 | -1;
 }
 
 export interface SceneRenderResult {
