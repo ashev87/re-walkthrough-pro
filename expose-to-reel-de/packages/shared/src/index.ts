@@ -12,6 +12,7 @@ export * from "./domain/cameraMoves";
 export * from "./domain/shotSelection";
 export * from "./domain/format";
 export * from "./domain/listing";
+export { wrapText } from "./domain/textWrap";
 export * from "./domain/propstack";
 export * from "./domain/generationOptions";
 export * from "./llmClient";
