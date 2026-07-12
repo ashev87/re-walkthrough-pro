@@ -110,7 +110,9 @@ export function buildSceneFilters(
   const filters: string[] = [];
   if (useSweep) {
     // Volle Bildhöhe zeigen, Fenster schwenkt horizontal (Smoothstep in t).
-    const eased = easedProgressT(spec.durationSec);
+    // Dauer auf mindestens einen Frame klemmen — sonst stünde (t/0) → NaN im crop-x.
+    const safeDuration = Math.max(spec.durationSec, 1 / spec.fps);
+    const eased = easedProgressT(safeDuration);
     const x =
       (spec.sweepDirection ?? 1) > 0
         ? `(iw-ow)*${eased}`
