@@ -210,10 +210,89 @@ export async function renderEndCard(
   return true;
 }
 
+/** Audiodauer (Sekunden) per ffprobe. */
+export async function audioDurationSec(audioPath: string): Promise<number> {
+  const probe = await ffprobe(audioPath);
+  const duration = Number(
+    probe.format.duration ??
+      probe.streams.find((s) => s.codec_type === "audio")?.duration ??
+      0
+  );
+  if (!Number.isFinite(duration) || duration <= 0) {
+    throw new Error(`Keine Audiodauer ermittelbar: ${audioPath}`);
+  }
+  return duration;
+}
+
+export interface VoiceoverSegment {
+  path: string;
+  /** Startzeit im Gesamtvideo (Sekunden). */
+  startSec: number;
+  /** Hartes Limit — Segment wird darauf gekürzt und ausgeblendet (0,3 s). */
+  maxDurationSec?: number;
+}
+
+/**
+ * Szenen-Voiceover: TTS-Segmente an ihren Szenenstart legen (adelay), zu
+ * kürzende Segmente mit Fade-out kappen, alles mischen und exakt auf die
+ * Videolänge bringen (apad + atrim). Ausgabe AAC (m4a).
+ */
+export async function buildSegmentedVoiceover(
+  segments: readonly VoiceoverSegment[],
+  totalDurationSec: number,
+  outputPath: string
+): Promise<void> {
+  if (segments.length === 0) {
+    throw new Error("buildSegmentedVoiceover ohne Segmente aufgerufen.");
+  }
+  await mkdir(path.dirname(outputPath), { recursive: true });
+
+  const args: string[] = [];
+  const filters: string[] = [];
+  segments.forEach((segment, index) => {
+    args.push("-i", segment.path);
+    const steps: string[] = [];
+    if (segment.maxDurationSec != null) {
+      const fadeStart = Math.max(0, segment.maxDurationSec - 0.3);
+      steps.push(
+        `atrim=0:${segment.maxDurationSec.toFixed(3)}`,
+        `afade=t=out:st=${fadeStart.toFixed(3)}:d=0.3`
+      );
+    }
+    const delayMs = Math.max(0, Math.round(segment.startSec * 1000));
+    steps.push(`adelay=${delayMs}|${delayMs}`);
+    filters.push(`[${index}:a]${steps.join(",")}[s${index}]`);
+  });
+  const inputLabels = segments.map((_, index) => `[s${index}]`).join("");
+  const mix =
+    segments.length === 1
+      ? `${inputLabels}anull[mixed]`
+      : `${inputLabels}amix=inputs=${segments.length}:duration=longest:normalize=0[mixed]`;
+  filters.push(
+    mix,
+    `[mixed]apad,atrim=0:${totalDurationSec.toFixed(3)}[aout]`
+  );
+
+  await runFfmpeg([
+    ...args,
+    "-filter_complex",
+    filters.join(";"),
+    "-map",
+    "[aout]",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "160k",
+    outputPath,
+  ]);
+}
+
 export interface AudioMixInput {
   musicPath?: string | null;
   voiceoverPath?: string | null;
   videoDurationSec: number;
+  /** Verzögerung der Voiceover-Spur; 0 für bereits fertig getimte Spuren. */
+  voiceoverDelayMs?: number;
 }
 
 /**
@@ -250,8 +329,14 @@ export async function mixAudio(
   }
   if (voiceoverPath) {
     args.push("-i", voiceoverPath);
-    // Leichter Vorlauf, damit das Voiceover nicht auf dem ersten Frame startet.
-    filters.push(`[${audioIndex}:a]adelay=600|600[voice]`);
+    // Leichter Vorlauf, damit das Voiceover nicht auf dem ersten Frame startet;
+    // 0 für bereits fertig getimte Spuren (Szenen-Voiceover).
+    const delayMs = input.voiceoverDelayMs ?? 600;
+    filters.push(
+      delayMs > 0
+        ? `[${audioIndex}:a]adelay=${delayMs}|${delayMs}[voice]`
+        : `[${audioIndex}:a]anull[voice]`
+    );
     voiceLabel = "[voice]";
   }
 

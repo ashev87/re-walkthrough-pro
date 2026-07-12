@@ -4,6 +4,8 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
 import {
+  audioDurationSec,
+  buildSegmentedVoiceover,
   buildSrt,
   mixAudio,
   renderEndCard,
@@ -101,4 +103,63 @@ describe("Endkarte & Audio-Mix (ffmpeg)", () => {
       await rm(tempDir, { recursive: true, force: true });
     }
   });
+
+  test("mischt eine fertig getimte Voiceover-Spur ohne Verzögerung (voiceoverDelayMs: 0)", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
+    try {
+      const videoPath = path.join(tempDir, "video.mp4");
+      const voiceoverPath = path.join(tempDir, "voice.wav");
+      await runFfmpeg([
+        "-f", "lavfi", "-i", "color=c=blue:s=640x360:d=2:r=25",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-an", videoPath,
+      ]);
+      await runFfmpeg([
+        "-f", "lavfi", "-i", "sine=frequency=440:duration=1",
+        voiceoverPath,
+      ]);
+
+      const mixedPath = path.join(tempDir, "mixed.mp4");
+      await mixAudio(videoPath, mixedPath, {
+        musicPath: null,
+        voiceoverPath,
+        videoDurationSec: 2,
+        voiceoverDelayMs: 0,
+      });
+
+      const probe = await ffprobe(mixedPath);
+      const audio = probe.streams.find((s) => s.codec_type === "audio");
+      expect(audio?.codec_name).toBe("aac");
+      // Audio bleibt trotz 1-s-Quelle im Rahmen der Videolänge.
+      expect(Number(probe.format.duration)).toBeCloseTo(2, 0);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("buildSegmentedVoiceover", () => {
+  test("setzt Segmente an ihre Startzeiten und füllt auf Gesamtlänge auf", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "e2r-vo-"));
+    try {
+      const seg = path.join(dir, "seg.wav");
+      await runFfmpeg([
+        "-f", "lavfi", "-i", "sine=frequency=440:duration=1",
+        "-c:a", "pcm_s16le", seg,
+      ]);
+      expect(await audioDurationSec(seg)).toBeCloseTo(1, 1);
+
+      const out = path.join(dir, "voiceover.m4a");
+      await buildSegmentedVoiceover(
+        [
+          { path: seg, startSec: 0.3 },
+          { path: seg, startSec: 4.0, maxDurationSec: 0.5 },
+        ],
+        8,
+        out
+      );
+      expect(await audioDurationSec(out)).toBeCloseTo(8, 0);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  }, 120_000);
 });
