@@ -14,14 +14,52 @@ import type { RoomLabel } from "@prisma/client";
 import { mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { afterAll, beforeAll, describe, expect, test } from "vitest";
-import { processGenerationJob } from "../src/pipeline/processJob";
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
+import { CROSSFADE_SEC, processGenerationJob } from "../src/pipeline/processJob";
 import { roomImage } from "../../../packages/shared/prisma/seedImages";
 
 /**
  * Mock-Generierungsjob, kompletter Lebenszyklus — ohne Redis, direkt gegen
  * die Pipeline. Benötigt Postgres (docker compose) und ffmpeg.
  */
+
+/** Fake-TTS: 1-Sekunden-Sinuston als MP3 (echte, ffprobe-lesbare Datei). */
+const fakeTts = vi.hoisted(() => {
+  let cached: Buffer | null = null;
+  return {
+    key: "fake",
+    displayName: "Fake TTS",
+    isEnabled: () => true,
+    async synthesize(): Promise<Buffer> {
+      if (!cached) {
+        const { runFfmpeg } = await import("@e2r/shared/ffmpeg");
+        const { stdout } = await runFfmpeg(
+          [
+            "-f",
+            "lavfi",
+            "-i",
+            "sine=frequency=440:duration=1",
+            "-c:a",
+            "libmp3lame",
+            "-b:a",
+            "96k",
+            "-f",
+            "mp3",
+            "pipe:1",
+          ],
+          { timeoutMs: 60_000 }
+        );
+        cached = stdout;
+      }
+      return cached;
+    },
+  };
+});
+
+vi.mock("@e2r/shared", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@e2r/shared")>()),
+  getTtsProvider: () => fakeTts,
+}));
 
 let organizationId: string;
 let userId: string;
@@ -49,7 +87,10 @@ afterAll(async () => {
   await prisma.organization.delete({ where: { id: organizationId } });
 });
 
-async function createReadyProject(shotRooms: RoomLabel[]) {
+async function createReadyProject(
+  shotRooms: RoomLabel[],
+  shotOptions: { narrations?: string[]; durationSec?: number } = {}
+) {
   const project = await prisma.propertyProject.create({
     data: {
       organizationId,
@@ -106,7 +147,8 @@ async function createReadyProject(shotRooms: RoomLabel[]) {
         roomLabel,
         sortIndex: index,
         selected: true,
-        durationSec: 2,
+        durationSec: shotOptions.durationSec ?? 2,
+        narration: shotOptions.narrations?.[index],
         cameraMove: move.key,
         prompt: buildShotPrompt({
           roomLabel,
@@ -187,6 +229,69 @@ describe("Mock-Generierungsjob-Lebenszyklus", () => {
     expect(srt).toContain("04155 Leipzig");
     expect(srt).toContain("84,5 m²");
     expect(srt).toContain("Wohnzimmer");
+  });
+
+  test("Szenen-Voiceover: gemeinsame Timeline, Narration im SRT, Voiceover-Asset", async () => {
+    const project = await createReadyProject(["AUSSENANSICHT", "WOHNZIMMER"], {
+      durationSec: 4,
+      narrations: ["Erste Szene.", "Zweite Szene."],
+    });
+    const job = await prisma.generationJob.create({
+      data: {
+        projectId: project.id,
+        status: "QUEUED",
+        options: { withVoiceover: true },
+      },
+    });
+
+    await processGenerationJob(job.id);
+
+    const finished = await prisma.generationJob.findUniqueOrThrow({
+      where: { id: job.id },
+    });
+    expect(finished.status).toBe("COMPLETED");
+
+    const version = await prisma.videoVersion.findFirstOrThrow({
+      where: { projectId: project.id },
+    });
+
+    // Beide Formate teilen die volle Szenendauer — der alte Reel-Cap (3 s)
+    // würde das 9:16-Video auf ~5,65 s kürzen.
+    const minDuration = 4 + 4 - CROSSFADE_SEC - 0.4; // Toleranz für Rundung
+    const storage = getStorage();
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-verify-vo-"));
+    const expectations: Array<[string, number, number]> = [
+      [version.master16x9AssetId, 1920, 1080],
+      [version.reel9x16AssetId, 1080, 1920],
+    ];
+    for (const [assetId, width, height] of expectations) {
+      const asset = await prisma.mediaAsset.findUniqueOrThrow({
+        where: { id: assetId },
+      });
+      const filePath = path.join(tempDir, asset.filename);
+      await writeFile(filePath, await storage.get(asset.storageKey));
+      const probe = await ffprobe(filePath);
+      const stream = probe.streams.find((s) => s.codec_type === "video");
+      expect(stream?.width).toBe(width);
+      expect(stream?.height).toBe(height);
+      expect(Number(probe.format.duration)).toBeGreaterThanOrEqual(minDuration);
+      // Voiceover muss im finalen MP4 landen (Audio-Stream vorhanden).
+      expect(probe.streams.some((s) => s.codec_type === "audio")).toBe(true);
+    }
+
+    // SRT trägt den Szenentext (Cue 1 bleibt die Fakten-Einblendung).
+    const captions = await prisma.mediaAsset.findUniqueOrThrow({
+      where: { id: version.captionsAssetId! },
+    });
+    expect(captions.filename).toBe("untertitel-v1.srt");
+    const srt = (await storage.get(captions.storageKey)).toString("utf8");
+    expect(srt).toContain("Zweite Szene.");
+
+    // Synchronisierte Voiceover-Spur wird als Asset abgelegt.
+    const voiceover = await prisma.mediaAsset.findFirst({
+      where: { projectId: project.id, kind: "VOICEOVER" },
+    });
+    expect(voiceover?.filename).toBe("voiceover-v1.m4a");
   });
 
   test("Abbruch: cancelRequested beendet Job als CANCELLED", async () => {

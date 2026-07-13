@@ -12,6 +12,7 @@ export * from "./domain/cameraMoves";
 export * from "./domain/shotSelection";
 export * from "./domain/format";
 export * from "./domain/listing";
+export { wrapText } from "./domain/textWrap";
 export * from "./domain/propstack";
 export * from "./domain/generationOptions";
 export * from "./llmClient";
@@ -30,6 +31,13 @@ export {
 } from "./providers/imageAnalysis/heuristic";
 export * from "./providers/videoGeneration/index";
 export * from "./providers/texts/index";
+export {
+  generateSceneLines,
+  sceneLinesSchema,
+  SCENE_LINE_MAX_CHARS,
+  type SceneLines,
+  type SceneLineShot,
+} from "./providers/texts/sceneLines";
 export * from "./providers/tts/index";
 export * from "./providers/publishing/types";
 export { LocalDownloadPublisher } from "./providers/publishing/localExport";

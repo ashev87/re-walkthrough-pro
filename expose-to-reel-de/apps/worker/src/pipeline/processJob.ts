@@ -1,10 +1,11 @@
 import { existsSync } from "node:fs";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import {
   buildFactLine,
   buildLocationLine,
+  CAMERA_MOVES,
   ExternalImageToVideoProvider,
   getStorage,
   getTtsProvider,
@@ -20,6 +21,8 @@ import {
 } from "@e2r/shared";
 import type { MediaKind, Prisma, Shot } from "@prisma/client";
 import {
+  audioDurationSec,
+  buildSegmentedVoiceover,
   buildSrt,
   concatClips,
   extractPoster,
@@ -32,6 +35,11 @@ import {
   type ClipInput,
   type EndCardLine,
 } from "./ffmpegSteps";
+import {
+  NARRATION_LEAD_SEC,
+  resolveSceneDuration,
+  sceneStartTimes,
+} from "./sceneTimeline";
 
 /**
  * Verarbeitet einen GenerationJob vollständig: Normalisierung → Szenen
@@ -46,9 +54,6 @@ export const REEL = { width: 1080, height: 1920, suffix: "9x16" } as const;
 /** Kurze Überblendung zwischen Szenen — knackig, kein „Screensaver“-Effekt. */
 export const CROSSFADE_SEC = 0.35;
 
-/** Reel-Pacing: 9:16-Szenen sind kürzer geschnitten als der 16:9-Master. */
-export const REEL_MAX_SCENE_SEC = 3;
-
 /** Länge der optionalen Abschluss-Karte. */
 export const END_CARD_SEC = 3;
 
@@ -62,14 +67,6 @@ function resolveMusicPath(): string | null {
     return null;
   }
   return resolved;
-}
-
-type AspectTarget = typeof MASTER | typeof REEL;
-
-function sceneDurationFor(shotDurationSec: number, target: AspectTarget): number {
-  return target.suffix === REEL.suffix
-    ? Math.min(shotDurationSec, REEL_MAX_SCENE_SEC)
-    : shotDurationSec;
 }
 
 export class JobCancelledError extends Error {
@@ -197,6 +194,20 @@ export async function processGenerationJob(
     throw new Error(message);
   }
 
+  // Szenen-Voiceover: pro Shot mit Szenentext ein eigenes TTS-Segment —
+  // gewinnt gegenüber dem durchgehenden Skript, sobald Narration existiert.
+  interface NarrationSegment {
+    shotId: string;
+    path: string;
+    durationSec: number;
+  }
+  const narrationSegments = new Map<string, NarrationSegment>();
+  const tts = getTtsProvider();
+  const useSegmentedVoiceover =
+    options.withVoiceover &&
+    tts.isEnabled() &&
+    shots.some((shot) => shot.narration?.trim());
+
   await prisma.generationJob.update({
     where: { id: generationJobId },
     data: { status: "RUNNING", startedAt: new Date(), errorMessage: null },
@@ -221,6 +232,41 @@ export async function processGenerationJob(
     const totalRenderSteps = shots.length * 2;
     let completedRenders = 0;
     const clips: Record<string, ClipInput[]> = { "16x9": [], "9x16": [] };
+
+    if (useSegmentedVoiceover) {
+      for (const shot of shots) {
+        if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
+        const line = shot.narration?.trim();
+        if (!line) continue;
+        try {
+          const audio = await tts.synthesize(line);
+          const segmentPath = path.join(tempDir, `narration-${shot.id}.mp3`);
+          await writeFile(segmentPath, audio);
+          narrationSegments.set(shot.id, {
+            shotId: shot.id,
+            path: segmentPath,
+            durationSec: await audioDurationSec(segmentPath),
+          });
+        } catch (error) {
+          console.warn(
+            `[worker] Narration-Segment für Shot ${shot.id} fehlgeschlagen — Szene ohne Sprecher:`,
+            error
+          );
+        }
+      }
+      await updateProgress(generationJobId, 4, "Szenen-Voiceover erzeugt", hooks);
+    }
+
+    // Finale Szenendauern (Auto-Extend, gilt für 16:9 UND 9:16).
+    const resolvedDurations = new Map(
+      shots.map((shot) => [
+        shot.id,
+        resolveSceneDuration(
+          shot.durationSec,
+          narrationSegments.get(shot.id)?.durationSec ?? null
+        ),
+      ])
+    );
 
     for (const shot of shots) {
       if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
@@ -259,7 +305,7 @@ export async function processGenerationJob(
         for (const target of [MASTER, REEL]) {
           if (await isCancelRequested(generationJobId)) throw new JobCancelledError();
 
-          const durationSec = sceneDurationFor(shot.durationSec, target);
+          const durationSec = resolvedDurations.get(shot.id)!.durationSec;
           const clipBytes = await renderSceneWithRetry(providerFor(shot), {
             imageBytes: normalizedBytes,
             prompt: shot.prompt,
@@ -272,6 +318,22 @@ export async function processGenerationJob(
             sceneLabel: options.withTextOverlays
               ? ROOM_LABEL_NAMES[shot.roomLabel]
               : undefined,
+            narrationText:
+              options.withTextOverlays && shot.narration?.trim()
+                ? shot.narration.trim()
+                : undefined,
+            sourceAspect:
+              shot.mediaAsset.width && shot.mediaAsset.height
+                ? shot.mediaAsset.width / shot.mediaAsset.height
+                : undefined,
+            isFloorplan:
+              shot.roomLabel === "GRUNDRISS" || shot.mediaAsset.isLikelyFloorplan,
+            sweepDirection:
+              (CAMERA_MOVES[shot.cameraMove]?.kenBurns.panX ?? 0) !== 0
+                ? (CAMERA_MOVES[shot.cameraMove]!.kenBurns.panX as 1 | -1)
+                : shot.sortIndex % 2 === 0
+                  ? 1
+                  : -1,
           });
 
           const sceneFilename = `szene-${String(shot.sortIndex + 1).padStart(2, "0")}-${shot.roomLabel.toLowerCase()}-${target.suffix}.mp4`;
@@ -304,9 +366,10 @@ export async function processGenerationJob(
           }
 
           completedRenders++;
+          // Sockel 4 % (Voiceover-Phase) — bleibt monoton, Ende weiterhin 72 %.
           await updateProgress(
             generationJobId,
-            (completedRenders / totalRenderSteps) * 72,
+            4 + (completedRenders / totalRenderSteps) * 68,
             `Szene ${roomName} (${target.suffix}) gerendert`,
             hooks
           );
@@ -392,12 +455,55 @@ export async function processGenerationJob(
       await updateProgress(generationJobId, 74, "Endkarte erstellt", hooks);
     }
 
-    // Option „Voiceover“: gespeichertes, geprüftes Skript per TTS einsprechen.
+    // Option „Voiceover“: Szenen-Segmente auf der gemeinsamen Timeline —
+    // Fallback bleibt das durchgehende, gespeicherte Skript.
     let voiceoverPath: string | null = null;
-    if (options.withVoiceover) {
+    let voiceoverDelayMs = 600;
+    if (useSegmentedVoiceover && narrationSegments.size > 0) {
+      const durations = shots.map(
+        (shot) => resolvedDurations.get(shot.id)!.durationSec
+      );
+      const starts = sceneStartTimes(durations, CROSSFADE_SEC);
+      const segments = shots.flatMap((shot, index) => {
+        const segment = narrationSegments.get(shot.id);
+        if (!segment) return [];
+        const resolved = resolvedDurations.get(shot.id)!;
+        return [
+          {
+            path: segment.path,
+            startSec: starts[index]! + NARRATION_LEAD_SEC,
+            maxDurationSec: resolved.fadeOutNarration
+              ? resolved.durationSec - NARRATION_LEAD_SEC
+              : undefined,
+          },
+        ];
+      });
+      // Gesamtlänge inkl. optionaler Endkarte — Segmentstarts bleiben davon
+      // unberührt (die Karte hängt hinter den Szenen), Rest wird Stille.
+      const totalSec = totalDurationWithCrossfade(
+        clips[MASTER.suffix]!.map((clip) => clip.durationSec),
+        CROSSFADE_SEC
+      );
+      voiceoverPath = path.join(tempDir, "voiceover.m4a");
+      await buildSegmentedVoiceover(segments, totalSec, voiceoverPath);
+      voiceoverDelayMs = 0;
+      await upsertAsset({
+        projectId: project.id,
+        kind: "VOICEOVER",
+        storageKey: projectStorageKey(
+          project.organizationId,
+          project.id,
+          "final",
+          `voiceover-v${version}.m4a`
+        ),
+        filename: `voiceover-v${version}.m4a`,
+        mimeType: "audio/mp4",
+        data: await readFile(voiceoverPath),
+      });
+      await updateProgress(generationJobId, 76, "Voiceover synchronisiert", hooks);
+    } else if (options.withVoiceover) {
       const texts = project.marketingTexts as { voiceoverScript?: string } | null;
       const script = texts?.voiceoverScript?.trim();
-      const tts = getTtsProvider();
       if (!script) {
         console.warn(
           "[worker] Voiceover-Option ohne gespeichertes Skript — übersprungen."
@@ -446,6 +552,7 @@ export async function processGenerationJob(
           musicPath,
           voiceoverPath,
           videoDurationSec: expectedDuration,
+          voiceoverDelayMs,
         });
       }
 
@@ -461,7 +568,6 @@ export async function processGenerationJob(
         "final",
         filename
       );
-      const { readFile } = await import("node:fs/promises");
       const finalBytes = await readFile(deliveryPath);
       const assetId = await upsertAsset({
         projectId: project.id,
@@ -535,8 +641,8 @@ export async function processGenerationJob(
         text:
           index === 0
             ? `${introParts.join("\n")}`
-            : ROOM_LABEL_NAMES[shot.roomLabel],
-        durationSec: shot.durationSec,
+            : shot.narration?.trim() || ROOM_LABEL_NAMES[shot.roomLabel],
+        durationSec: resolvedDurations.get(shot.id)!.durationSec,
       }));
       const srt = buildSrt(cues, CROSSFADE_SEC);
       captionsAssetId = await upsertAsset({

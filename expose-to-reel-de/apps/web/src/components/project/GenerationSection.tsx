@@ -55,6 +55,7 @@ interface Props {
   shotCount: number;
   capabilities: GenerationCapabilities;
   hasVoiceoverScript: boolean;
+  hasNarration: boolean;
 }
 
 const OPTION_DEFAULTS: GenerationOptionsState = {
@@ -71,6 +72,7 @@ export function GenerationSection({
   shotCount,
   capabilities,
   hasVoiceoverScript,
+  hasNarration,
 }: Props) {
   const router = useRouter();
   const [job, setJob] = useState<JobDto | null>(latestJob);
@@ -86,6 +88,17 @@ export function GenerationSection({
   );
 
   const active = job && (job.status === "QUEUED" || job.status === "RUNNING");
+  const voiceoverAvailable =
+    capabilities.tts && (hasVoiceoverScript || hasNarration);
+
+  // Option zurücksetzen, wenn die Voraussetzung wegfällt (z. B. letzter
+  // Szenentext entfernt) — sonst bliebe die Checkbox „angehakt, aber gesperrt“
+  // und der Start würde server-seitig mit 422 scheitern.
+  useEffect(() => {
+    if (!voiceoverAvailable && options.withVoiceover) {
+      setOptions((prev) => ({ ...prev, withVoiceover: false }));
+    }
+  }, [voiceoverAvailable, options.withVoiceover]);
 
   const poll = useCallback(async () => {
     if (!job) return;
@@ -215,7 +228,7 @@ export function GenerationSection({
           <input
             id="opt-voiceover"
             type="checkbox"
-            disabled={!capabilities.tts || !hasVoiceoverScript}
+            disabled={!voiceoverAvailable}
             checked={options.withVoiceover}
             onChange={(e) =>
               setOptions((prev) => ({ ...prev, withVoiceover: e.target.checked }))
@@ -224,14 +237,16 @@ export function GenerationSection({
           <label
             htmlFor="opt-voiceover"
             className="small"
-            style={{ opacity: capabilities.tts && hasVoiceoverScript ? 1 : 0.6 }}
+            style={{ opacity: voiceoverAvailable ? 1 : 0.6 }}
           >
             <strong>Voiceover</strong>{" "}
             {!capabilities.tts
               ? "— nicht konfiguriert (OPENAI_API_KEY oder ELEVENLABS_API_KEY für TTS setzen)."
-              : !hasVoiceoverScript
-                ? "— zuerst ein Voiceover-Skript in Abschnitt 4 speichern."
-                : "— gespeichertes Skript wird eingesprochen und eingemischt."}
+              : !hasVoiceoverScript && !hasNarration
+                ? "— zuerst Szenentexte generieren (Abschnitt 3/4) oder ein Voiceover-Skript speichern."
+                : hasNarration
+                  ? "— Szenentexte werden synchron zur jeweiligen Szene eingesprochen."
+                  : "— gespeichertes Skript wird eingesprochen und eingemischt."}
           </label>
         </div>
       </fieldset>

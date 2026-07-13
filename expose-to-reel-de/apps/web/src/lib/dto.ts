@@ -74,6 +74,7 @@ export interface ShotDto {
   preferAiVideo: boolean;
   cameraMoveLabel: string;
   prompt: string;
+  narration: string | null;
   durationSec: number;
   status: "PENDING" | "RENDERING" | "DONE" | "FAILED";
   errorMessage: string | null;
