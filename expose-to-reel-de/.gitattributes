@@ -1,0 +1,3 @@
+# Shell-Skripte laufen im Linux-Container: LF erzwingen, sonst zerlegt ein
+# Windows-Checkout (core.autocrlf) die Shebang-Zeile von docker-entrypoint.sh.
+*.sh text eol=lf
