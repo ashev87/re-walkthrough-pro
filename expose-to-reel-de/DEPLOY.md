@@ -1,6 +1,6 @@
 # Deployment auf Railway
 
-Kurzes Runbook für den Produktivbetrieb von **Exposé-to-Reel DE**. Ein einziges
+Runbook für den Produktivbetrieb von **Exposé-to-Reel DE**. Ein einziges
 Docker-Image (`expose-to-reel-de/Dockerfile`) bedient **beide** Dienste — Web
 und Worker unterscheiden sich nur im Start-Command.
 
