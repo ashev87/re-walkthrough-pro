@@ -5,5 +5,10 @@
     "moduleResolution": "Bundler",
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "prisma/seed.ts", "tests/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "prisma/seed.ts",
+    "prisma/createAdminUser.ts",
+    "tests/**/*.ts"
+  ]
 }

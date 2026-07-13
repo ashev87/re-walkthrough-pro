@@ -1,0 +1,37 @@
+# Abhängigkeiten & Build-Artefakte (werden im Image neu erzeugt)
+node_modules
+**/node_modules
+.next
+**/.next
+dist
+**/dist
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Lokale Daten & Secrets — NIEMALS ins Image
+.data
+.env
+.env.*
+!.env.example
+
+# VCS, Editor, Logs
+.git
+.gitignore
+.vscode
+.idea
+*.log
+.playwright-mcp
+
+# Tests, Coverage, Doku (zur Laufzeit nicht nötig)
+**/tests
+coverage
+**/coverage
+vitest.workspace.ts
+**/vitest.config.ts
+docs
+*.md
+!README.md
+
+# Python-Caches (services/propstack selbst wird gebraucht!)
+**/__pycache__
+.pytest_cache
