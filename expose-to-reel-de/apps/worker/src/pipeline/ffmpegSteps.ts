@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
-import { resolveFontPath } from "@e2r/shared";
+import { resolveFontPath, wrapText, wrapTextFits } from "@e2r/shared";
 
 /**
  * ffmpeg-Bausteine der Generierungs-Pipeline: Bildnormalisierung,
@@ -155,6 +155,87 @@ export interface EndCardLine {
   scale: number;
 }
 
+/** Fertiges Layout eines Endkarten-Blocks (ggf. mehrzeilig via \n). */
+export interface EndCardBlockLayout {
+  text: string;
+  fontSize: number;
+  y: number;
+}
+
+/** Zeilenhöhe innerhalb eines mehrzeiligen Blocks (≈ 1,25 × Schriftgröße). */
+const END_CARD_LINE_HEIGHT = 1.25;
+/** Untergrenze beim Nachschrumpfen: nie unter 60 % der Wunschgröße. */
+const END_CARD_MIN_SHRINK = 0.6;
+/** Maximale Zeilen pro Endkarten-Block, bevor die Ellipse greift. */
+const END_CARD_MAX_LINES = 3;
+
+/**
+ * Layout der Endkarten-Zeilen (pur, testbar): Zu lange Zeilen werden
+ * umbrochen (max. 3 Zeilen) statt auf Mini-Schrift geschrumpft. Passt der
+ * komplette Text bei der Wunschgröße nicht, wird die Schrift schrittweise
+ * verkleinert (mehr Zeichen pro Zeile), bis er vollständig unterkommt —
+ * nie unter 60 % der Wunschgröße; erst darunter greift die „…“-Kappung.
+ * Der Gesamtblock bleibt vertikal zentriert.
+ * Näherung der Zeichenbreite: ≈ 0,55 × Schriftgröße.
+ */
+export function layoutEndCardLines(
+  lines: EndCardLine[],
+  width: number,
+  height: number
+): EndCardBlockLayout[] {
+  const gap = height * 0.035;
+  const maxTextWidth = width * 0.92;
+  const maxCharsAt = (size: number) => Math.floor(maxTextWidth / (size * 0.55));
+
+  const blocks = lines.map((line) => {
+    const desired = Math.max(12, Math.round(line.scale * height));
+    if (line.text.length <= maxCharsAt(desired)) {
+      return { text: line.text, fontSize: desired };
+    }
+    // Größte Schrift ≥ 60 %-Untergrenze suchen, bei der der komplette Text
+    // in max. 3 Zeilen passt; sonst Untergrenze mit Ellipsen-Fallback.
+    const minSize = Math.max(12, Math.round(desired * END_CARD_MIN_SHRINK));
+    let fontSize = minSize;
+    for (let size = desired; size >= minSize; size--) {
+      if (wrapTextFits(line.text, maxCharsAt(size), END_CARD_MAX_LINES)) {
+        fontSize = size;
+        break;
+      }
+    }
+    const wrapped = wrapText(line.text, maxCharsAt(fontSize), END_CARD_MAX_LINES);
+    // Sicherung gegen einzelne überlange Wörter (wrapText zerschneidet nie):
+    // notfalls unter die Schätzbreite schrumpfen, aber nie unter die Untergrenze.
+    const longest = Math.max(
+      ...wrapped.split("\n").map((wrappedLine) => wrappedLine.length)
+    );
+    if (longest * fontSize * 0.55 > maxTextWidth) {
+      fontSize = Math.max(
+        minSize,
+        Math.floor(maxTextWidth / (longest * 0.55))
+      );
+    }
+    return { text: wrapped, fontSize };
+  });
+
+  const blockHeight = (block: { text: string; fontSize: number }) => {
+    const lineCount = block.text.split("\n").length;
+    return (
+      block.fontSize +
+      (lineCount - 1) * Math.round(block.fontSize * END_CARD_LINE_HEIGHT)
+    );
+  };
+  const totalHeight =
+    blocks.reduce((sum, block) => sum + blockHeight(block), 0) +
+    gap * Math.max(0, blocks.length - 1);
+
+  let cursor = (height - totalHeight) / 2;
+  return blocks.map((block) => {
+    const y = Math.round(cursor);
+    cursor += blockHeight(block) + gap;
+    return { ...block, y };
+  });
+}
+
 /**
  * Abschluss-Karte (Opt-in „Endkarte“): dunkler Hintergrund mit den
  * freigegebenen Fakten. Liefert false, wenn keine Schrift verfügbar ist —
@@ -169,28 +250,17 @@ export async function renderEndCard(
   if (!font) return false;
 
   const { width, height, durationSec, fps } = options;
-  const gap = height * 0.035;
-  // Schrift schrumpfen, wenn eine Zeile sonst über den Rand liefe
-  // (Näherung: mittlere Zeichenbreite ≈ 0,55 × Schriftgröße).
-  const fittedSize = (line: EndCardLine) =>
-    Math.max(
-      12,
-      Math.round(
-        Math.min(line.scale * height, (width * 0.92) / (line.text.length * 0.55))
-      )
-    );
-  const totalTextHeight = lines.reduce((sum, line) => sum + fittedSize(line), 0);
-  let cursor = (height - (totalTextHeight + gap * (lines.length - 1))) / 2;
+  const layout = layoutEndCardLines(lines, width, height);
 
-  const drawFilters = lines.map((line) => {
-    const size = fittedSize(line);
-    const y = Math.round(cursor);
-    cursor += size + gap;
+  const drawFilters = layout.map((block) => {
+    // Zusätzlicher Zeilenabstand für mehrzeilige Blöcke (drawtext rendert \n).
+    const lineSpacing = Math.round(block.fontSize * (END_CARD_LINE_HEIGHT - 1));
     return (
       `drawtext=fontfile='${escapeFilterValue(font)}'` +
-      `:text='${escapeFilterValue(line.text)}'` +
-      `:fontcolor=0xF2F0EA:fontsize=${size}` +
-      `:x=(w-text_w)/2:y=${y}` +
+      `:text='${escapeFilterValue(block.text)}'` +
+      `:fontcolor=0xF2F0EA:fontsize=${block.fontSize}` +
+      `:line_spacing=${lineSpacing}` +
+      `:x=(w-text_w)/2:y=${block.y}` +
       `:alpha='min(1,t/0.8)'`
     );
   });

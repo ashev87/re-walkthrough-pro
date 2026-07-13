@@ -49,6 +49,22 @@ export const ROOM_LABEL_OPTIONS: Array<{ value: string; label: string }> = [
   { value: "SONSTIGES", label: "Sonstiges" },
 ];
 
+/**
+ * Kamerabewegungen für das Shotlisten-Dropdown — Werte/Labels gespiegelt aus
+ * packages/shared/src/domain/cameraMoves.ts (Client-Bundle ohne Shared-Import,
+ * gleiches Muster wie ROOM_LABEL_OPTIONS).
+ */
+export const CAMERA_MOVE_OPTIONS: Array<{ value: string; label: string }> = [
+  { value: "approach", label: "Dezente Annäherung" },
+  { value: "forward", label: "Langsame Vorwärtsbewegung" },
+  { value: "orbit", label: "Sanfter Orbit/Push-in" },
+  { value: "lateral", label: "Langsame Seitwärtsfahrt" },
+  { value: "pushIn", label: "Ruhiger Push-in" },
+  { value: "reveal", label: "Langsames Aufdecken" },
+  { value: "outwardReveal", label: "Sanftes Öffnen nach außen" },
+  { value: "still", label: "Nahezu statisch" },
+];
+
 export function roomLabelName(value: string | null): string {
   return (
     ROOM_LABEL_OPTIONS.find((option) => option.value === value)?.label ??

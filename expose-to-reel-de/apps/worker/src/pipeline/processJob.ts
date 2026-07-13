@@ -322,6 +322,7 @@ export async function processGenerationJob(
               options.withTextOverlays && shot.narration?.trim()
                 ? shot.narration.trim()
                 : undefined,
+            narrationStyle: options.overlayStyle,
             sourceAspect:
               shot.mediaAsset.width && shot.mediaAsset.height
                 ? shot.mediaAsset.width / shot.mediaAsset.height

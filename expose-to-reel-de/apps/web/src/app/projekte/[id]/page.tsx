@@ -85,6 +85,7 @@ export default async function ProjectPage({
       sortIndex: shot.sortIndex,
       selected: shot.selected,
       preferAiVideo: shot.preferAiVideo,
+      cameraMove: shot.cameraMove,
       cameraMoveLabel: CAMERA_MOVES[shot.cameraMove]?.label ?? shot.cameraMove,
       prompt: shot.prompt,
       narration: shot.narration,

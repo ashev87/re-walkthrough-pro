@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { wrapText } from "../src/domain/textWrap";
+import { wrapText, wrapTextFits } from "../src/domain/textWrap";
 
 describe("wrapText", () => {
   test("kurzer Text bleibt eine Zeile", () => {
@@ -45,5 +45,25 @@ describe("wrapText", () => {
     expect(wrapText("Donaudampfschifffahrtsgesellschaft", 10)).toBe(
       "Donaudampfschifffahrtsgesellschaft"
     );
+  });
+});
+
+describe("wrapTextFits", () => {
+  test("meldet true, wenn der komplette Text ohne Ellipse passt", () => {
+    expect(
+      wrapTextFits("Großzügiger Wohnbereich mit Kamin und Süd-Terrasse", 30, 2)
+    ).toBe(true);
+    expect(wrapTextFits("Helles Wohnzimmer", 34)).toBe(true);
+  });
+
+  test("meldet false, wenn wrapText mit „…“ kappen müsste", () => {
+    const long =
+      "Dieser wirklich sehr lange Szenentext passt niemals in zwei kurze Zeilen und muss deshalb am Ende gekappt werden";
+    expect(wrapTextFits(long, 20, 2)).toBe(false);
+    expect(wrapTextFits(long, 20, 6)).toBe(true);
+  });
+
+  test("normalisiert Mehrfach-Leerzeichen beim Vergleich", () => {
+    expect(wrapTextFits("  Helles   Wohnzimmer  mit Kamin ", 20, 2)).toBe(true);
   });
 });

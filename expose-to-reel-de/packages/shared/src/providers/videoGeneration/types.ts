@@ -23,6 +23,12 @@ export interface SceneRenderSpec {
   sceneLabel?: string;
   /** Szenentext (Option „Text-Overlays“) — wird über dem Raum-Label gezeichnet. */
   narrationText?: string;
+  /**
+   * Darstellung des Szenentexts: „klein“ (Standard) = dezente Zeile über dem
+   * Raum-Label; „gross“ = großer zentrierter Textblock im unteren Drittel,
+   * gut lesbar ohne Ton (Social Media). Das Raum-Label bleibt in beiden Fällen.
+   */
+  narrationStyle?: "klein" | "gross";
   /** Breite/Höhe des Quellbilds (für die 9:16-Moduswahl). */
   sourceAspect?: number;
   /** Grundriss → Blur-Pad statt Sweep im Portrait-Format. */
