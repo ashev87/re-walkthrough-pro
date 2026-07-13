@@ -12,25 +12,38 @@ und Worker unterscheiden sich nur im Start-Command.
 | Objektspeicher (MinIO, S3-API) | https://storage-production-b843.up.railway.app |
 | Railway-Projekt | `expose-to-reel-de` (Dienste: web, worker, storage, Postgres, Redis) |
 
-Neu ausrollen nach einem Merge auf `main`:
+### Auto-Deploy
 
-```bash
-cd expose-to-reel-de
-railway up --service web      # migriert beim Start automatisch
-railway up --service worker
-```
+Alle drei Dienste hängen am GitHub-Repo `ashev87/re-walkthrough-pro`, Branch
+`main` — **ein Push auf `main` deployt automatisch** (Web migriert beim Start
+selbst). Manuell geht weiterhin `railway up --service web|worker`.
 
-Hinweise aus der Ersteinrichtung (Railway-CLI-Eigenheiten):
+| Dienst | Root-Verzeichnis | Dockerfile | Baut neu bei Änderungen an |
+|---|---|---|---|
+| web | `expose-to-reel-de` | `Dockerfile` | `expose-to-reel-de/**` (ohne `*.md`, `docs/**`) |
+| worker | `expose-to-reel-de` | `Dockerfile` | dito |
+| storage | `expose-to-reel-de` | `deploy/minio/Dockerfile` | nur `deploy/minio/**` |
 
-- Der Dienst **storage** baut nicht das Haupt-Dockerfile, sondern
-  `deploy/minio/Dockerfile` — gesetzt über die Variable
-  `RAILWAY_DOCKERFILE_PATH=deploy/minio/Dockerfile`.
+### Wo liegen die Videos?
+
+Im **MinIO-Dienst auf Railway**, auf dessen Volume (`/data`, Bucket
+`expose-to-reel`) — also nicht bei einem externen Anbieter. Postgres speichert
+nur Metadaten und den Storage-Key; die Dateien selbst (Quellfotos,
+normalisierte Bilder, Szenen-Clips, finale MP4s, Poster, SRT, Voiceover) liegen
+im Bucket unter `org/<orgId>/project/<projectId>/…`. Das Volume überlebt
+Redeploys (verifiziert). Ein Objekt wird nur über **signierte, ablaufende URLs**
+ausgeliefert.
+
+### Hinweise aus der Ersteinrichtung (Railway-Eigenheiten)
+
 - Öffentliche Domains brauchen einen **expliziten Ziel-Port**
   (`web` → 3000, `storage` → 9000). Ohne Port-Angabe rät Railway falsch
   (bei MinIO die Konsole auf 9001) und die Domain liefert 502.
 - `S3_ENDPOINT` muss die **öffentliche** MinIO-Domain sein: Die signierten
   URLs werden im Browser geöffnet; ein interner `*.railway.internal`-Endpunkt
   wäre von dort nicht erreichbar.
+- Die Railway-**CLI** kann weder Start-Command noch Root-Verzeichnis setzen —
+  beides steckt im Image (`E2R_ROLE`) bzw. wurde über die Railway-API gesetzt.
 
 ## 1. Dienste
 
@@ -200,3 +213,33 @@ Web-Log muss zeigen: `[entrypoint] Starte Rolle: web` → `prisma migrate deploy
 Worker-Log muss zeigen: `[entrypoint] Starte Rolle: worker` →
 `[worker] Bereit — Queue "video-generation" auf …`.
 Danach: einloggen, Projekt anlegen, Fotos hochladen, Video generieren.
+
+## 6. Kosten (Railway, Stand Juli 2026)
+
+Railway-Tarife: **Hobby 5 $/Monat** (inkl. 5 $ Nutzungsguthaben), Pro 20 $/Monat
+(inkl. 20 $). Verbrauch obendrauf: **RAM 10 $/GB/Monat**, **CPU 20 $/vCPU/Monat**,
+**Volume 0,15 $/GB/Monat**, **Egress 0,05 $/GB**.
+
+Gemessener Leerlauf dieses Projekts (alle fünf Dienste, 20-Minuten-Mittel):
+
+| Dienst | RAM | CPU (Leerlauf) |
+|---|---|---|
+| web | 0,18 GB | ~0,01 vCPU |
+| worker | 0,23 GB | ~0,01 vCPU (nur beim Rendern hoch) |
+| storage (MinIO) | 0,19 GB | ~0,00 vCPU |
+| Postgres | 0,09 GB | ~0,00 vCPU |
+| Redis | 0,01 GB | ~0,00 vCPU |
+| **Summe** | **≈ 0,70 GB** | |
+
+→ **≈ 7 $/Monat RAM** + wenige Cent CPU im Leerlauf, plus Volumes (aktuell
+< 0,1 GB Medien ⇒ Cent-Beträge) und Egress (0,05 $/GB — ein 30-MB-Reel 100×
+angesehen ≈ 0,15 $). Realistisch **≈ 8–12 $/Monat** inkl. Hobby-Grundgebühr,
+solange alles durchläuft.
+
+Pro Video zusätzlich: der Worker rechnet ~2–4 Minuten mit ~1 vCPU
+⇒ **< 1 Cent Rechenzeit** + ~30 MB Speicher pro Version.
+
+Sparoptionen: Web-Dienst „App Sleeping" aktivieren (schläft ohne Requests, wacht
+bei Aufruf auf); den Worker **nicht** schlafen legen (er würde keine Jobs mehr
+annehmen). Wird das Projekt nicht gebraucht: Dienste pausieren oder Projekt
+löschen — Volumes werden dabei mitgelöscht.
