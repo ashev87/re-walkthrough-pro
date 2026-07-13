@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1
 # ---------------------------------------------------------------------------
 # Exposé-to-Reel DE — ein Image für BEIDE Dienste (Web + Worker).
-#   Web:    npm run start --workspace apps/web   (Standard-CMD, hört auf $PORT)
-#   Worker: npm run start --workspace apps/worker (Start-Command überschreiben)
+# Die Rolle kommt aus E2R_ROLE (docker-entrypoint.sh), da Railway pro Dienst
+# keinen Start-Befehl setzen kann:
+#   E2R_ROLE=web    (Standard) → prisma migrate deploy + Next-Server auf $PORT
+#   E2R_ROLE=worker           → BullMQ-Worker (tsx)
 #
 # Dev-Dependencies bleiben im Image: der Worker läuft über `tsx` und die
 # Migrationen über die `prisma`-CLI — beides sind Root-devDependencies.
@@ -77,9 +79,13 @@ COPY --from=build --chown=node:node /app/apps/web/.next apps/web/.next
 # Python-Bridge (Propstack-Import) — wird zur Laufzeit gespawnt.
 COPY services/propstack services/propstack
 
-ENV PORT=3000
+# Rollen-Einstiegspunkt: E2R_ROLE=web (Standard, inkl. Migrationen) | worker.
+COPY --chmod=0755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+ENV PORT=3000 \
+    E2R_ROLE=web
 EXPOSE 3000
 USER node
 
-# Standard: Web. Next hört auf $PORT (Railway injiziert die Variable).
-CMD ["sh", "-c", "exec npm run start --workspace apps/web -- -p ${PORT:-3000}"]
+# Railway kann pro Dienst keinen Start-Befehl setzen — die Rolle steuert E2R_ROLE.
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

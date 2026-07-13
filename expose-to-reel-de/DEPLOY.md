@@ -6,28 +6,59 @@ und Worker unterscheiden sich nur im Start-Command.
 
 ## 1. Dienste
 
-| Dienst | Quelle | Start-Command |
+| Dienst | Quelle | Rolle |
 |---|---|---|
-| **web** | Dockerfile (Root: `expose-to-reel-de`) | Standard-`CMD` (`npm run start --workspace apps/web -- -p $PORT`) |
-| **worker** | dasselbe Dockerfile/Image | `npm run start --workspace apps/worker` |
+| **web** | `expose-to-reel-de/Dockerfile` | `E2R_ROLE=web` (Standard) |
+| **worker** | dasselbe Dockerfile/Image | `E2R_ROLE=worker` |
+| **minio** | `expose-to-reel-de/deploy/minio/Dockerfile` | — |
 | **Postgres** | Railway-Plugin | — |
 | **Redis** | Railway-Plugin | — |
-| **Objektspeicher** | AWS S3, Cloudflare R2 oder MinIO | — |
+
+**Railway kann per CLI weder einen Start-Befehl noch ein Pre-Deploy-Command pro
+Dienst setzen.** Beides steckt deshalb im Image: `docker-entrypoint.sh` wählt die
+Rolle über `E2R_ROLE` und der Web-Dienst wendet die Migrationen beim Start selbst an.
+
+| `E2R_ROLE` | Verhalten |
+|---|---|
+| `web` (Standard) | `prisma migrate deploy` → danach `next start -p $PORT`. Schlägt die Migration fehl, startet der Container **nicht** (kein stiller Fehler). |
+| `worker` | `tsx src/index.ts` (BullMQ-Worker), **keine** Migrationen. |
+| alles andere | Abbruch mit Exit-Code 1 und deutscher Fehlermeldung. |
 
 - Railway injiziert `PORT`; die Web-App hört darauf (`next start -p $PORT`).
-- Der Worker öffnet **keinen** Port (kein Healthcheck auf HTTP konfigurieren).
+- Der Worker öffnet **keinen** Port (kein HTTP-Healthcheck konfigurieren).
 - **Der S3-Bucket muss vorab existieren** — die App legt ihn nicht an.
 - Web und Worker brauchen **denselben** Env-Satz (beide reden mit DB, Redis,
-  Objektspeicher; der Worker rendert zusätzlich mit ffmpeg).
+  Objektspeicher; der Worker rendert zusätzlich mit ffmpeg). Einziger
+  Unterschied: `E2R_ROLE`.
+- Da beide Dienste dieselben Migrationen sehen: den Worker erst nach dem
+  ersten erfolgreichen Web-Deploy hochfahren (oder einfach neu deployen).
+
+## 1a. MinIO-Dienst (Objektspeicher)
+
+Wer kein AWS S3/R2 nutzt, betreibt MinIO als eigenen Railway-Dienst:
+
+- **Build**: Root-Verzeichnis `expose-to-reel-de/deploy/minio` (das Image setzt
+  den Start-Befehl `server /data --console-address :9001` fest, weil Railway
+  keinen Command setzen kann).
+- **Volume**: auf `/data` mounten (sonst sind alle Medien nach dem Redeploy weg).
+- **Env**: `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD` (werden zu `S3_ACCESS_KEY_ID` /
+  `S3_SECRET_ACCESS_KEY` der App).
+- **Domain**: öffentliche Domain auf **Port 9000** (S3-API). Port 9001 ist nur die
+  Konsole — nicht öffentlich machen.
+- **Bucket einmalig anlegen**: über die Konsole oder `mc`:
+  ```bash
+  mc alias set railway https://<minio-domain> "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
+  mc mb railway/expose-to-reel
+  ```
+- In der App: `S3_ENDPOINT=https://<minio-domain>`, `S3_FORCE_PATH_STYLE=true`.
 
 ## 2. Migrationen & erstes Konto
 
-1. **Pre-Deploy-Command des Web-Dienstes** (läuft vor jedem Deploy):
-
-   ```
-   npm run db:migrate
-   ```
-   (`prisma migrate deploy` — wendet `packages/shared/prisma/migrations/` an.)
+1. **Migrationen laufen automatisch** beim Start des Web-Dienstes
+   (`docker-entrypoint.sh` → `prisma migrate deploy`, wendet
+   `packages/shared/prisma/migrations/` an). Nichts zu konfigurieren; ein
+   Redeploy des Web-Dienstes ist die Migration. Manuell geht auch
+   `npm run db:migrate` (One-off-Command).
 
 2. **Einmalig** ein Produktivkonto anlegen (One-off-Command / `railway run`):
 
@@ -61,6 +92,7 @@ und Worker unterscheiden sich nur im Start-Command.
 | `S3_ACCESS_KEY_ID` | Zugangsschlüssel |
 | `S3_SECRET_ACCESS_KEY` | Secret |
 | `WEB_BASE_URL` | öffentliche URL des Web-Dienstes, z. B. `https://app.example.de` |
+| `E2R_ROLE` | `web` (Default im Image) bzw. `worker` — **nur** beim Worker-Dienst setzen |
 
 ### S3-Feinheiten
 
@@ -127,11 +159,16 @@ und Worker unterscheiden sich nur im Start-Command.
   findet die Web-App `services/propstack/fetch_property.py` nicht.
 - Rendering läuft im Worker über `os.tmpdir()`; kein persistentes Volume nötig,
   alle Ergebnisse landen im Objektspeicher.
+- `docker-entrypoint.sh` ist ENTRYPOINT (POSIX sh, läuft als `node`-User) und
+  verzweigt über `E2R_ROLE`.
 
 ## 5. Rauchtest nach dem Deploy
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" "$WEB_BASE_URL/login"   # 200
 ```
-Worker-Log muss zeigen: `[worker] Bereit — Queue "video-generation" auf …`.
+Web-Log muss zeigen: `[entrypoint] Starte Rolle: web` → `prisma migrate deploy`
+→ `✓ Ready`.
+Worker-Log muss zeigen: `[entrypoint] Starte Rolle: worker` →
+`[worker] Bereit — Queue "video-generation" auf …`.
 Danach: einloggen, Projekt anlegen, Fotos hochladen, Video generieren.
