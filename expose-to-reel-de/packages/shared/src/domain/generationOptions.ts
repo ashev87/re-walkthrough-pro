@@ -10,6 +10,12 @@ export const generationOptionsSchema = z.object({
   withMusic: z.boolean().default(false),
   /** Raum-Label als dezentes Text-Overlay in jede Szene rendern. */
   withTextOverlays: z.boolean().default(false),
+  /**
+   * Stil der Text-Overlays: „klein“ = dezente Zeile unten links (Standard),
+   * „gross“ = großer zentrierter Szenentext für Ton-aus-Wiedergabe.
+   * Unbekannte/fehlende Werte fallen tolerant auf „klein“ zurück.
+   */
+  overlayStyle: z.enum(["klein", "gross"]).catch("klein").default("klein"),
   /** Abschluss-Karte mit freigegebenen Fakten anhängen. */
   withEndCard: z.boolean().default(false),
   /** Gespeichertes Voiceover-Skript per TTS einsprechen und einmischen. */
@@ -21,6 +27,7 @@ export type GenerationOptions = z.infer<typeof generationOptionsSchema>;
 export const DEFAULT_GENERATION_OPTIONS: GenerationOptions = {
   withMusic: false,
   withTextOverlays: false,
+  overlayStyle: "klein",
   withEndCard: false,
   withVoiceover: false,
 };

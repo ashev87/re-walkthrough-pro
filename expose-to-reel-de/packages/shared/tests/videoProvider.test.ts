@@ -141,6 +141,32 @@ describe("buildSceneFilters", () => {
     expect(graph).toContain("Highlight\\: Kamin im '\\''Herzstück'\\''");
   });
 
+  test("narrationStyle=gross zeichnet den Szenentext groß, zentriert im unteren Drittel", () => {
+    const graph = buildSceneFilters(
+      {
+        ...baseSpec,
+        width: 1080,
+        height: 1920,
+        sceneLabel: "Wohnzimmer",
+        narrationText:
+          "Großzügiger Wohnbereich mit offener Küche, Kamin und direktem Zugang zur Terrasse",
+        narrationStyle: "gross",
+      },
+      { font: "C:/Windows/Fonts/arial.ttf" }
+    ).join(",");
+    const bigSize = Math.round(1920 * 0.045);
+    // Große, horizontal zentrierte Textbox …
+    expect(graph).toContain(`fontsize=${bigSize}`);
+    expect(graph).toContain("x=(w-text_w)/2");
+    expect(graph).toContain("boxcolor=black@0.45");
+    // … zusätzlich zum kleinen Raum-Label-Chip: exakt 2 drawtext.
+    const drawtextCount = (graph.match(/drawtext=/g) ?? []).length;
+    expect(drawtextCount).toBe(2);
+    // Die kleine Szenentext-Zeile entfällt im Gross-Modus.
+    const smallNarrSize = Math.round(1920 * 0.026);
+    expect(graph).not.toContain(`fontsize=${smallNarrSize}`);
+  });
+
   test("narrationText wird als zusätzliche drawtext-Zeile gezeichnet", () => {
     const graph = buildSceneFilters(
       {
@@ -196,6 +222,22 @@ describe("FotoMotion 9:16-Rendering (ffmpeg)", () => {
       narrationText: "Hier lässt sich's leben",
     });
     expect(result.videoBytes.length).toBeGreaterThan(1000);
+  }, 60_000);
+
+  test("Gross-Overlay (Szenentext) rendert real in 1080x1920", async () => {
+    const provider = new FotoMotionVideoProvider();
+    const img = await makeLandscapeTestImage();
+    const result = await provider.renderScene({
+      imageBytes: img, prompt: "", cameraMoveKey: "still",
+      durationSec: 1, width: 1080, height: 1920, fps: 25,
+      sourceAspect: 1600 / 900, sweepDirection: 1,
+      sceneLabel: "Wohnzimmer",
+      narrationText:
+        "Großzügiger Wohnbereich mit offener Küche, Kamin und direktem Zugang zur Terrasse",
+      narrationStyle: "gross",
+    });
+    expect(result.videoBytes.length).toBeGreaterThan(1000);
+    await expectPortraitClip(result.videoBytes);
   }, 60_000);
 
   test("Sweep-Szene rendert real in 1080x1920", async () => {

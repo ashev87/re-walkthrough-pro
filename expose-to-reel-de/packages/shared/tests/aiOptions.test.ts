@@ -57,9 +57,26 @@ describe("Generierungs-Optionen", () => {
     expect(parsed).toEqual({
       withMusic: true,
       withTextOverlays: false,
+      overlayStyle: "klein",
       withEndCard: false,
       withVoiceover: false,
     });
+  });
+
+  test("overlayStyle: „gross“ wird übernommen, Junk fällt tolerant auf „klein“", () => {
+    expect(
+      parseGenerationOptions({ withTextOverlays: true, overlayStyle: "gross" })
+        .overlayStyle
+    ).toBe("gross");
+    // Unbekannter Wert kippt nicht die restlichen Optionen (catch → klein).
+    const junk = parseGenerationOptions({
+      withTextOverlays: true,
+      overlayStyle: "riesig",
+    });
+    expect(junk.overlayStyle).toBe("klein");
+    expect(junk.withTextOverlays).toBe(true);
+    // Alt-Daten ohne overlayStyle → Standard „klein“.
+    expect(parseGenerationOptions({}).overlayStyle).toBe("klein");
   });
 });
 

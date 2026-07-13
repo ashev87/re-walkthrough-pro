@@ -172,7 +172,25 @@ export function buildSceneFilters(
         `:box=1:boxcolor=black@0.35:boxborderw=${Math.round(size * 0.45)}` +
         `:x=${margin}:y=h-${margin + size}`
     );
-    if (spec.narrationText) {
+    if (spec.narrationText && spec.narrationStyle === "gross") {
+      // „Groß“: zentrierter Textblock im unteren Drittel — gut lesbar ohne
+      // Ton (Social Media). Ersetzt die kleine Szenentext-Zeile komplett.
+      const bigSize = Math.round(spec.height * 0.045);
+      const maxChars = Math.floor((spec.width * 0.86) / (bigSize * 0.55));
+      const wrapped = wrapText(spec.narrationText, maxChars, 3);
+      const lineCount = wrapped.split("\n").length;
+      const y = Math.round(
+        spec.height * 0.7 - (lineCount * bigSize * 1.3) / 2
+      );
+      filters.push(
+        `drawtext=fontfile='${escapeFilterValue(font)}'` +
+          `:text='${escapeFilterValue(wrapped)}'` +
+          `:fontcolor=white:fontsize=${bigSize}` +
+          `:line_spacing=${Math.round(bigSize * 0.3)}` +
+          `:box=1:boxcolor=black@0.45:boxborderw=${Math.round(bigSize * 0.5)}` +
+          `:x=(w-text_w)/2:y=${y}`
+      );
+    } else if (spec.narrationText) {
       // Szenentext oberhalb des Raum-Labels, kleiner, gleiche Box-Optik.
       const narrSize = Math.round(spec.height * 0.026);
       const maxChars = isPortraitTarget ? 34 : 60;

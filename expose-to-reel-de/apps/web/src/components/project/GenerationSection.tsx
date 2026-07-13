@@ -44,6 +44,8 @@ export interface GenerationCapabilities {
 interface GenerationOptionsState {
   withMusic: boolean;
   withTextOverlays: boolean;
+  /** Stil der Text-Overlays: dezent (klein) oder groß für Ton-aus-Wiedergabe. */
+  overlayStyle: "klein" | "gross";
   withEndCard: boolean;
   withVoiceover: boolean;
 }
@@ -61,6 +63,7 @@ interface Props {
 const OPTION_DEFAULTS: GenerationOptionsState = {
   withMusic: false,
   withTextOverlays: false,
+  overlayStyle: "klein",
   withEndCard: false,
   withVoiceover: false,
 };
@@ -138,7 +141,13 @@ export function GenerationSection({
           "idempotency-key": idempotencyKey.current,
           "content-type": "application/json",
         },
-        body: JSON.stringify({ options }),
+        // overlayStyle nur mitschicken, wenn Text-Overlays aktiv sind —
+        // server-seitig gilt sonst ohnehin der Standard „klein“.
+        body: JSON.stringify({
+          options: options.withTextOverlays
+            ? options
+            : { ...options, overlayStyle: undefined },
+        }),
       }
     );
     setBusy(false);
@@ -193,6 +202,26 @@ export function GenerationSection({
           <label htmlFor="opt-overlays" className="small">
             <strong>Text-Overlays</strong> — Raum-Name dezent in jeder Szene einblenden.
           </label>
+          {options.withTextOverlays && (
+            <label className="small" style={{ marginLeft: "0.5rem" }}>
+              Stil{" "}
+              <select
+                value={options.overlayStyle}
+                onChange={(e) =>
+                  setOptions((prev) => ({
+                    ...prev,
+                    overlayStyle: e.target.value as "klein" | "gross",
+                  }))
+                }
+              >
+                <option value="klein">Dezent</option>
+                <option value="gross">Groß</option>
+              </select>{" "}
+              <span className="muted">
+                Groß: gut lesbar ohne Ton (Social Media).
+              </span>
+            </label>
+          )}
         </div>
         <div className="checkbox-row">
           <input
