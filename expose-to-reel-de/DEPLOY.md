@@ -4,6 +4,34 @@ Kurzes Runbook für den Produktivbetrieb von **Exposé-to-Reel DE**. Ein einzige
 Docker-Image (`expose-to-reel-de/Dockerfile`) bedient **beide** Dienste — Web
 und Worker unterscheiden sich nur im Start-Command.
 
+## Aktueller Stand (produktiv)
+
+| | |
+|---|---|
+| Web-App | https://web-production-e34cc.up.railway.app |
+| Objektspeicher (MinIO, S3-API) | https://storage-production-b843.up.railway.app |
+| Railway-Projekt | `expose-to-reel-de` (Dienste: web, worker, storage, Postgres, Redis) |
+
+Neu ausrollen nach einem Merge auf `main`:
+
+```bash
+cd expose-to-reel-de
+railway up --service web      # migriert beim Start automatisch
+railway up --service worker
+```
+
+Hinweise aus der Ersteinrichtung (Railway-CLI-Eigenheiten):
+
+- Der Dienst **storage** baut nicht das Haupt-Dockerfile, sondern
+  `deploy/minio/Dockerfile` — gesetzt über die Variable
+  `RAILWAY_DOCKERFILE_PATH=deploy/minio/Dockerfile`.
+- Öffentliche Domains brauchen einen **expliziten Ziel-Port**
+  (`web` → 3000, `storage` → 9000). Ohne Port-Angabe rät Railway falsch
+  (bei MinIO die Konsole auf 9001) und die Domain liefert 502.
+- `S3_ENDPOINT` muss die **öffentliche** MinIO-Domain sein: Die signierten
+  URLs werden im Browser geöffnet; ein interner `*.railway.internal`-Endpunkt
+  wäre von dort nicht erreichbar.
+
 ## 1. Dienste
 
 | Dienst | Quelle | Rolle |
