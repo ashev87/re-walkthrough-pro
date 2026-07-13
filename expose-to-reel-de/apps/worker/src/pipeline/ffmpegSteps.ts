@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
-import { resolveFontPath } from "@e2r/shared";
+import { resolveFontPath, wrapText } from "@e2r/shared";
 
 /**
  * ffmpeg-Bausteine der Generierungs-Pipeline: Bildnormalisierung,
@@ -155,6 +155,72 @@ export interface EndCardLine {
   scale: number;
 }
 
+/** Fertiges Layout eines Endkarten-Blocks (ggf. mehrzeilig via \n). */
+export interface EndCardBlockLayout {
+  text: string;
+  fontSize: number;
+  y: number;
+}
+
+/** Zeilenhöhe innerhalb eines mehrzeiligen Blocks (≈ 1,25 × Schriftgröße). */
+const END_CARD_LINE_HEIGHT = 1.25;
+/** Untergrenze beim Nachschrumpfen: nie unter 60 % der Wunschgröße. */
+const END_CARD_MIN_SHRINK = 0.6;
+
+/**
+ * Layout der Endkarten-Zeilen (pur, testbar): Zu lange Zeilen werden
+ * umbrochen (max. 2 Zeilen) statt auf Mini-Schrift geschrumpft; nur wenn die
+ * längste umbrochene Zeile immer noch überliefe, wird moderat nachgeschrumpft
+ * — nie unter 60 % der Wunschgröße. Der Gesamtblock bleibt vertikal zentriert.
+ * Näherung der Zeichenbreite: ≈ 0,55 × Schriftgröße.
+ */
+export function layoutEndCardLines(
+  lines: EndCardLine[],
+  width: number,
+  height: number
+): EndCardBlockLayout[] {
+  const gap = height * 0.035;
+  const maxTextWidth = width * 0.92;
+
+  const blocks = lines.map((line) => {
+    const desired = Math.max(12, Math.round(line.scale * height));
+    const maxChars = Math.floor(maxTextWidth / (desired * 0.55));
+    if (line.text.length <= maxChars) {
+      return { text: line.text, fontSize: desired };
+    }
+    const wrapped = wrapText(line.text, maxChars, 2);
+    const longest = Math.max(
+      ...wrapped.split("\n").map((wrappedLine) => wrappedLine.length)
+    );
+    const fontSize =
+      longest * desired * 0.55 > maxTextWidth
+        ? Math.max(
+            Math.round(desired * END_CARD_MIN_SHRINK),
+            Math.floor(maxTextWidth / (longest * 0.55))
+          )
+        : desired;
+    return { text: wrapped, fontSize: Math.max(12, fontSize) };
+  });
+
+  const blockHeight = (block: { text: string; fontSize: number }) => {
+    const lineCount = block.text.split("\n").length;
+    return (
+      block.fontSize +
+      (lineCount - 1) * Math.round(block.fontSize * END_CARD_LINE_HEIGHT)
+    );
+  };
+  const totalHeight =
+    blocks.reduce((sum, block) => sum + blockHeight(block), 0) +
+    gap * Math.max(0, blocks.length - 1);
+
+  let cursor = (height - totalHeight) / 2;
+  return blocks.map((block) => {
+    const y = Math.round(cursor);
+    cursor += blockHeight(block) + gap;
+    return { ...block, y };
+  });
+}
+
 /**
  * Abschluss-Karte (Opt-in „Endkarte“): dunkler Hintergrund mit den
  * freigegebenen Fakten. Liefert false, wenn keine Schrift verfügbar ist —
@@ -169,28 +235,17 @@ export async function renderEndCard(
   if (!font) return false;
 
   const { width, height, durationSec, fps } = options;
-  const gap = height * 0.035;
-  // Schrift schrumpfen, wenn eine Zeile sonst über den Rand liefe
-  // (Näherung: mittlere Zeichenbreite ≈ 0,55 × Schriftgröße).
-  const fittedSize = (line: EndCardLine) =>
-    Math.max(
-      12,
-      Math.round(
-        Math.min(line.scale * height, (width * 0.92) / (line.text.length * 0.55))
-      )
-    );
-  const totalTextHeight = lines.reduce((sum, line) => sum + fittedSize(line), 0);
-  let cursor = (height - (totalTextHeight + gap * (lines.length - 1))) / 2;
+  const layout = layoutEndCardLines(lines, width, height);
 
-  const drawFilters = lines.map((line) => {
-    const size = fittedSize(line);
-    const y = Math.round(cursor);
-    cursor += size + gap;
+  const drawFilters = layout.map((block) => {
+    // Zusätzlicher Zeilenabstand für mehrzeilige Blöcke (drawtext rendert \n).
+    const lineSpacing = Math.round(block.fontSize * (END_CARD_LINE_HEIGHT - 1));
     return (
       `drawtext=fontfile='${escapeFilterValue(font)}'` +
-      `:text='${escapeFilterValue(line.text)}'` +
-      `:fontcolor=0xF2F0EA:fontsize=${size}` +
-      `:x=(w-text_w)/2:y=${y}` +
+      `:text='${escapeFilterValue(block.text)}'` +
+      `:fontcolor=0xF2F0EA:fontsize=${block.fontSize}` +
+      `:line_spacing=${lineSpacing}` +
+      `:x=(w-text_w)/2:y=${block.y}` +
       `:alpha='min(1,t/0.8)'`
     );
   });

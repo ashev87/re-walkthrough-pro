@@ -7,6 +7,7 @@ import {
   audioDurationSec,
   buildSegmentedVoiceover,
   buildSrt,
+  layoutEndCardLines,
   mixAudio,
   renderEndCard,
   totalDurationWithCrossfade,
@@ -45,6 +46,58 @@ describe("Crossfade-Timing", () => {
   });
 });
 
+describe("layoutEndCardLines", () => {
+  const LONG_TITLE =
+    "Exklusive Villa mit Panoramablick und großzügigem Garten am Stadtrand";
+
+  test("lange Zeile wird umbrochen statt unleserlich geschrumpft (1080×1920)", () => {
+    const layout = layoutEndCardLines(
+      [
+        { text: LONG_TITLE, scale: 0.055 },
+        { text: "04155 Leipzig", scale: 0.035 },
+      ],
+      1080,
+      1920
+    );
+    const desired = Math.round(0.055 * 1920);
+    // Umbruch in zwei Zeilen statt Mini-Schrift …
+    expect(layout[0]!.text).toContain("\n");
+    expect(layout[0]!.text.split("\n")).toHaveLength(2);
+    // … und die Schrift bleibt lesbar (nie unter 60 % der Wunschgröße).
+    expect(layout[0]!.fontSize).toBeGreaterThanOrEqual(
+      Math.round(0.6 * desired)
+    );
+    // Kurze Zeilen bleiben unangetastet (Text + volle Wunschgröße).
+    expect(layout[1]!.text).toBe("04155 Leipzig");
+    expect(layout[1]!.text).not.toContain("\n");
+    expect(layout[1]!.fontSize).toBe(Math.round(0.035 * 1920));
+  });
+
+  test("Blöcke bleiben vertikal zentriert und überlappungsfrei", () => {
+    const layout = layoutEndCardLines(
+      [
+        { text: LONG_TITLE, scale: 0.055 },
+        { text: "04155 Leipzig", scale: 0.035 },
+        { text: "Demo Immobilien GmbH", scale: 0.027 },
+      ],
+      1080,
+      1920
+    );
+    // y-Positionen streng aufsteigend, jeder Block unter dem vorherigen.
+    for (let i = 1; i < layout.length; i++) {
+      const prev = layout[i - 1]!;
+      const prevLines = prev.text.split("\n").length;
+      const prevBottom =
+        prev.y + prev.fontSize + (prevLines - 1) * Math.round(prev.fontSize * 1.25);
+      expect(layout[i]!.y).toBeGreaterThan(prevBottom);
+    }
+    // Gesamter Block innerhalb der Karte.
+    expect(layout[0]!.y).toBeGreaterThan(0);
+    const last = layout[layout.length - 1]!;
+    expect(last.y + last.fontSize).toBeLessThan(1920);
+  });
+});
+
 describe("Endkarte & Audio-Mix (ffmpeg)", () => {
   test("rendert eine Endkarte mit korrekter Auflösung und Dauer", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
@@ -70,6 +123,33 @@ describe("Endkarte & Audio-Mix (ffmpeg)", () => {
       await rm(tempDir, { recursive: true, force: true });
     }
   });
+
+  test("rendert eine 9:16-Endkarte mit langem Titel (umbrochen, lesbar)", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
+    try {
+      const outputPath = path.join(tempDir, "endcard-reel.mp4");
+      const rendered = await renderEndCard(
+        [
+          {
+            text: "Exklusive Villa mit Panoramablick und großzügigem Garten am Stadtrand",
+            scale: 0.055,
+          },
+          { text: "04155 Leipzig", scale: 0.035 },
+          { text: "Demo Immobilien GmbH", scale: 0.027 },
+        ],
+        outputPath,
+        { width: 1080, height: 1920, durationSec: 2, fps: 25 }
+      );
+      expect(rendered).toBe(true);
+      const probe = await ffprobe(outputPath);
+      const video = probe.streams.find((s) => s.codec_type === "video");
+      expect(video?.codec_name).toBe("h264");
+      expect(video?.width).toBe(1080);
+      expect(video?.height).toBe(1920);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  }, 60_000);
 
   test("mischt einen Musik-Track unter ein Video (Audio-Stream vorhanden)", async () => {
     const tempDir = await mkdtemp(path.join(os.tmpdir(), "e2r-test-"));
