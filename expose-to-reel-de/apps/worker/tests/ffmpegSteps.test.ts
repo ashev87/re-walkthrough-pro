@@ -48,7 +48,7 @@ describe("Crossfade-Timing", () => {
 
 describe("layoutEndCardLines", () => {
   const LONG_TITLE =
-    "Exklusive Villa mit Panoramablick und großzügigem Garten am Stadtrand";
+    "Exklusive Stadtvilla mit großzügigem Sonnengarten und Pool in Berlin-Marienfelde";
 
   test("lange Zeile wird umbrochen statt unleserlich geschrumpft (1080×1920)", () => {
     const layout = layoutEndCardLines(
@@ -60,10 +60,13 @@ describe("layoutEndCardLines", () => {
       1920
     );
     const desired = Math.round(0.055 * 1920);
-    // Umbruch in zwei Zeilen statt Mini-Schrift …
+    // Umbruch in bis zu drei Zeilen statt Mini-Schrift …
     expect(layout[0]!.text).toContain("\n");
-    expect(layout[0]!.text.split("\n")).toHaveLength(2);
-    // … und die Schrift bleibt lesbar (nie unter 60 % der Wunschgröße).
+    expect(layout[0]!.text.split("\n").length).toBeLessThanOrEqual(3);
+    // … der Titel passt KOMPLETT — inkl. letztem Wort, keine „…“-Kappung.
+    expect(layout[0]!.text).toContain("Berlin-Marienfelde");
+    expect(layout[0]!.text).not.toContain("…");
+    // Die Schrift bleibt lesbar (nie unter 60 % der Wunschgröße).
     expect(layout[0]!.fontSize).toBeGreaterThanOrEqual(
       Math.round(0.6 * desired)
     );
@@ -131,7 +134,7 @@ describe("Endkarte & Audio-Mix (ffmpeg)", () => {
       const rendered = await renderEndCard(
         [
           {
-            text: "Exklusive Villa mit Panoramablick und großzügigem Garten am Stadtrand",
+            text: "Exklusive Stadtvilla mit großzügigem Sonnengarten und Pool in Berlin-Marienfelde",
             scale: 0.055,
           },
           { text: "04155 Leipzig", scale: 0.035 },

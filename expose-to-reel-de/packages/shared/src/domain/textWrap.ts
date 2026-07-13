@@ -43,3 +43,20 @@ export function wrapText(
   }
   return lines.join("\n");
 }
+
+/**
+ * Meldet, ob wrapText den kompletten Text unterbringt (keine „…“-Kappung).
+ * Vergleich über die normalisierte Wortfolge — robust auch bei Texten, die
+ * selbst mit „…“ enden, und bei Mehrfach-Leerzeichen im Eingabetext.
+ */
+export function wrapTextFits(
+  text: string,
+  maxCharsPerLine: number,
+  maxLines = 2
+): boolean {
+  const normalized = text.trim().split(/\s+/).filter(Boolean).join(" ");
+  const wrapped = wrapText(text, maxCharsPerLine, maxLines)
+    .split("\n")
+    .join(" ");
+  return wrapped === normalized;
+}

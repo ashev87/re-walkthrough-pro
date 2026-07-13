@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { ffprobe, runFfmpeg } from "@e2r/shared/ffmpeg";
-import { resolveFontPath, wrapText } from "@e2r/shared";
+import { resolveFontPath, wrapText, wrapTextFits } from "@e2r/shared";
 
 /**
  * ffmpeg-Bausteine der Generierungs-Pipeline: Bildnormalisierung,
@@ -166,12 +166,16 @@ export interface EndCardBlockLayout {
 const END_CARD_LINE_HEIGHT = 1.25;
 /** Untergrenze beim Nachschrumpfen: nie unter 60 % der Wunschgröße. */
 const END_CARD_MIN_SHRINK = 0.6;
+/** Maximale Zeilen pro Endkarten-Block, bevor die Ellipse greift. */
+const END_CARD_MAX_LINES = 3;
 
 /**
  * Layout der Endkarten-Zeilen (pur, testbar): Zu lange Zeilen werden
- * umbrochen (max. 2 Zeilen) statt auf Mini-Schrift geschrumpft; nur wenn die
- * längste umbrochene Zeile immer noch überliefe, wird moderat nachgeschrumpft
- * — nie unter 60 % der Wunschgröße. Der Gesamtblock bleibt vertikal zentriert.
+ * umbrochen (max. 3 Zeilen) statt auf Mini-Schrift geschrumpft. Passt der
+ * komplette Text bei der Wunschgröße nicht, wird die Schrift schrittweise
+ * verkleinert (mehr Zeichen pro Zeile), bis er vollständig unterkommt —
+ * nie unter 60 % der Wunschgröße; erst darunter greift die „…“-Kappung.
+ * Der Gesamtblock bleibt vertikal zentriert.
  * Näherung der Zeichenbreite: ≈ 0,55 × Schriftgröße.
  */
 export function layoutEndCardLines(
@@ -181,25 +185,36 @@ export function layoutEndCardLines(
 ): EndCardBlockLayout[] {
   const gap = height * 0.035;
   const maxTextWidth = width * 0.92;
+  const maxCharsAt = (size: number) => Math.floor(maxTextWidth / (size * 0.55));
 
   const blocks = lines.map((line) => {
     const desired = Math.max(12, Math.round(line.scale * height));
-    const maxChars = Math.floor(maxTextWidth / (desired * 0.55));
-    if (line.text.length <= maxChars) {
+    if (line.text.length <= maxCharsAt(desired)) {
       return { text: line.text, fontSize: desired };
     }
-    const wrapped = wrapText(line.text, maxChars, 2);
+    // Größte Schrift ≥ 60 %-Untergrenze suchen, bei der der komplette Text
+    // in max. 3 Zeilen passt; sonst Untergrenze mit Ellipsen-Fallback.
+    const minSize = Math.max(12, Math.round(desired * END_CARD_MIN_SHRINK));
+    let fontSize = minSize;
+    for (let size = desired; size >= minSize; size--) {
+      if (wrapTextFits(line.text, maxCharsAt(size), END_CARD_MAX_LINES)) {
+        fontSize = size;
+        break;
+      }
+    }
+    const wrapped = wrapText(line.text, maxCharsAt(fontSize), END_CARD_MAX_LINES);
+    // Sicherung gegen einzelne überlange Wörter (wrapText zerschneidet nie):
+    // notfalls unter die Schätzbreite schrumpfen, aber nie unter die Untergrenze.
     const longest = Math.max(
       ...wrapped.split("\n").map((wrappedLine) => wrappedLine.length)
     );
-    const fontSize =
-      longest * desired * 0.55 > maxTextWidth
-        ? Math.max(
-            Math.round(desired * END_CARD_MIN_SHRINK),
-            Math.floor(maxTextWidth / (longest * 0.55))
-          )
-        : desired;
-    return { text: wrapped, fontSize: Math.max(12, fontSize) };
+    if (longest * fontSize * 0.55 > maxTextWidth) {
+      fontSize = Math.max(
+        minSize,
+        Math.floor(maxTextWidth / (longest * 0.55))
+      );
+    }
+    return { text: wrapped, fontSize };
   });
 
   const blockHeight = (block: { text: string; fontSize: number }) => {

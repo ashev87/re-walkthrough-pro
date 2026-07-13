@@ -141,7 +141,27 @@ describe("buildSceneFilters", () => {
     expect(graph).toContain("Highlight\\: Kamin im '\\''Herzstück'\\''");
   });
 
-  test("narrationStyle=gross zeichnet den Szenentext groß, zentriert im unteren Drittel", () => {
+  test("narrationStyle=gross: kurzer Text nutzt die größte Schriftstufe", () => {
+    const graph = buildSceneFilters(
+      {
+        ...baseSpec,
+        width: 1080,
+        height: 1920,
+        sceneLabel: "Küche",
+        narrationText: "Offene Wohnküche mit Kochinsel",
+        narrationStyle: "gross",
+      },
+      { font: "C:/Windows/Fonts/arial.ttf" }
+    ).join(",");
+    // Kurzer Text passt in die größte Stufe (0,045 × Höhe).
+    expect(graph).toContain(`fontsize=${Math.round(1920 * 0.045)}`);
+    expect(graph).toContain("x=(w-text_w)/2");
+    expect(graph).toContain("boxcolor=black@0.45");
+    expect(graph).toContain("Kochinsel");
+    expect(graph).not.toContain("…");
+  });
+
+  test("narrationStyle=gross zeichnet den Szenentext groß, zentriert, VOLLSTÄNDIG", () => {
     const graph = buildSceneFilters(
       {
         ...baseSpec,
@@ -154,17 +174,44 @@ describe("buildSceneFilters", () => {
       },
       { font: "C:/Windows/Fonts/arial.ttf" }
     ).join(",");
-    const bigSize = Math.round(1920 * 0.045);
-    // Große, horizontal zentrierte Textbox …
-    expect(graph).toContain(`fontsize=${bigSize}`);
+    // 82 Zeichen: adaptive Stufe 2 (0,038 × Höhe, bis 4 Zeilen) statt Ellipse.
+    expect(graph).toContain(`fontsize=${Math.round(1920 * 0.038)}`);
     expect(graph).toContain("x=(w-text_w)/2");
     expect(graph).toContain("boxcolor=black@0.45");
+    // Der komplette Text inkl. letztem Wort — keine „…“-Kappung.
+    expect(graph).toContain("Terrasse");
+    expect(graph).not.toContain("…");
     // … zusätzlich zum kleinen Raum-Label-Chip: exakt 2 drawtext.
     const drawtextCount = (graph.match(/drawtext=/g) ?? []).length;
     expect(drawtextCount).toBe(2);
     // Die kleine Szenentext-Zeile entfällt im Gross-Modus.
     const smallNarrSize = Math.round(1920 * 0.026);
     expect(graph).not.toContain(`fontsize=${smallNarrSize}`);
+  });
+
+  test("narrationStyle=gross: ~105 Zeichen passen komplett (kleinste Stufe, 4 Zeilen)", () => {
+    const narration =
+      "Großzügiger Wohnbereich mit offener Küche, hochwertigem Parkett, Kamin und direktem Zugang zur Terrasse";
+    const graph = buildSceneFilters(
+      {
+        ...baseSpec,
+        width: 1080,
+        height: 1920,
+        sceneLabel: "Wohnzimmer",
+        narrationText: narration,
+        narrationStyle: "gross",
+      },
+      { font: "C:/Windows/Fonts/arial.ttf" }
+    ).join(",");
+    const smallStepSize = Math.round(1920 * 0.032);
+    expect(graph).toContain(`fontsize=${smallStepSize}`);
+    // Volles letztes Wort statt „von poliertem …“-Kappung.
+    expect(graph).toContain("Terrasse");
+    expect(graph).not.toContain("…");
+    // Unteres Drittel, 4 Zeilen: Block zentriert um 0,70 × Höhe —
+    // bleibt auf dem Bild und über dem Raum-Label-Chip (y ≈ 1185).
+    const y = Math.round(1920 * 0.7 - (4 * smallStepSize * 1.3) / 2);
+    expect(graph).toContain(`:y=${y}`);
   });
 
   test("narrationText wird als zusätzliche drawtext-Zeile gezeichnet", () => {

@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { CAMERA_MOVES } from "../../domain/cameraMoves";
-import { wrapText } from "../../domain/textWrap";
+import { wrapText, wrapTextFits } from "../../domain/textWrap";
 import { env } from "../../env";
 import { runFfmpeg } from "../../ffmpeg";
 import type {
@@ -81,6 +81,16 @@ export interface FotoMotionOptions {
 
 /** Schwelle, ab der eine Quelle als Querformat gilt (Sweep statt Blur-Pad). */
 const SWEEP_MIN_SOURCE_ASPECT = 1.2;
+
+/**
+ * Schriftstufen des „Groß“-Overlays (Anteil der Videohöhe + max. Zeilen),
+ * absteigend: Die erste Stufe, in die der komplette Szenentext passt, gewinnt.
+ */
+const GROSS_TEXT_STEPS = [
+  { scale: 0.045, maxLines: 3 },
+  { scale: 0.038, maxLines: 4 },
+  { scale: 0.032, maxLines: 4 },
+] as const;
 
 /** Smoothstep-Fortschritt 0→1 über die Szenendauer, in Sekunden (crop-Filter, t-basiert). */
 function easedProgressT(durationSec: number): string {
@@ -175,10 +185,22 @@ export function buildSceneFilters(
     if (spec.narrationText && spec.narrationStyle === "gross") {
       // „Groß“: zentrierter Textblock im unteren Drittel — gut lesbar ohne
       // Ton (Social Media). Ersetzt die kleine Szenentext-Zeile komplett.
-      const bigSize = Math.round(spec.height * 0.045);
-      const maxChars = Math.floor((spec.width * 0.86) / (bigSize * 0.55));
-      const wrapped = wrapText(spec.narrationText, maxChars, 3);
+      // Adaptive Größe: erst die größte Schriftstufe probieren; passt der
+      // komplette Text nicht, kleinere Stufen mit mehr Zeilen — die Ellipse
+      // bleibt der letzte Ausweg, nie der Normalfall.
+      const narration = spec.narrationText;
+      const layouts = GROSS_TEXT_STEPS.map(({ scale, maxLines }) => {
+        const fontSize = Math.round(spec.height * scale);
+        const maxChars = Math.floor((spec.width * 0.86) / (fontSize * 0.55));
+        return { fontSize, maxChars, maxLines };
+      });
+      const chosen =
+        layouts.find((layout) =>
+          wrapTextFits(narration, layout.maxChars, layout.maxLines)
+        ) ?? layouts[layouts.length - 1]!;
+      const wrapped = wrapText(narration, chosen.maxChars, chosen.maxLines);
       const lineCount = wrapped.split("\n").length;
+      const bigSize = chosen.fontSize;
       const y = Math.round(
         spec.height * 0.7 - (lineCount * bigSize * 1.3) / 2
       );
