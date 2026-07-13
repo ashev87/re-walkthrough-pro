@@ -1,5 +1,6 @@
 import {
   buildShotPrompt,
+  CAMERA_MOVES,
   cameraMoveForRoom,
   prisma,
   recordAudit,
@@ -108,13 +109,19 @@ export interface ShotUpdate {
   id: string;
   selected?: boolean;
   roomLabel?: RoomLabel;
+  /** Explizite Kamerabewegung (überschreibt den Raum-Standard). */
+  cameraMove?: string;
   /** Hybrid-Modus: Szene über den externen KI-Video-Provider rendern. */
   preferAiVideo?: boolean;
   /** Szenentext (null/leer = entfernen). */
   narration?: string | null;
 }
 
-/** Einzel-Updates (Auswahl, Raum-Label → Prompt/Kamera neu). */
+/**
+ * Einzel-Updates. Explizite Kamerabewegung gewinnt (Prompt mit der gewählten
+ * Instruktion); ein reiner Raum-Label-Wechsel setzt Bewegung + Prompt auf den
+ * Raum-Standard zurück (bewusst so — das Label bestimmt die Default-Fahrt).
+ */
 export async function updateShots(
   user: SessionUser,
   projectId: string,
@@ -122,12 +129,30 @@ export async function updateShots(
 ) {
   await requireEditableProject(user, projectId);
   const shots = await prisma.shot.findMany({ where: { projectId } });
-  const known = new Set(shots.map((s) => s.id));
+  const shotById = new Map(shots.map((s) => [s.id, s]));
   for (const update of updates) {
-    if (!known.has(update.id)) {
+    if (!shotById.has(update.id)) {
       throw new ApiError(404, "Shot nicht gefunden.");
     }
+    if (update.cameraMove && !CAMERA_MOVES[update.cameraMove]) {
+      throw new ApiError(422, "Unbekannte Kamerabewegung.");
+    }
   }
+  const moveAndPromptFields = (update: ShotUpdate) => {
+    if (update.cameraMove) {
+      const effectiveRoom =
+        update.roomLabel ?? shotById.get(update.id)!.roomLabel;
+      return {
+        cameraMove: update.cameraMove,
+        prompt: buildShotPrompt({
+          roomLabel: effectiveRoom,
+          roomName: ROOM_LABEL_NAMES[effectiveRoom],
+          moveInstruction: CAMERA_MOVES[update.cameraMove]!.instruction,
+        }),
+      };
+    }
+    return update.roomLabel ? shotFieldsForRoom(update.roomLabel) : {};
+  };
   await prisma.$transaction(
     updates.map((update) =>
       prisma.shot.update({
@@ -135,13 +160,12 @@ export async function updateShots(
         data: {
           selected: update.selected,
           preferAiVideo: update.preferAiVideo,
+          roomLabel: update.roomLabel,
           narration:
             update.narration === undefined
               ? undefined
               : update.narration?.trim() || null,
-          ...(update.roomLabel
-            ? { roomLabel: update.roomLabel, ...shotFieldsForRoom(update.roomLabel) }
-            : {}),
+          ...moveAndPromptFields(update),
         },
       })
     )

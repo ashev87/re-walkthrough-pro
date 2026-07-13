@@ -3,7 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ProjectStatusDto, ShotDto } from "@/lib/dto";
-import { apiRequest, jsonInit, ROOM_LABEL_OPTIONS } from "@/lib/clientApi";
+import {
+  apiRequest,
+  CAMERA_MOVE_OPTIONS,
+  jsonInit,
+  ROOM_LABEL_OPTIONS,
+} from "@/lib/clientApi";
 
 const EDITABLE: ProjectStatusDto[] = ["DRAFT", "NEEDS_REVIEW", "READY", "FAILED"];
 
@@ -50,6 +55,7 @@ export function ShotsSection({
       id: string;
       selected?: boolean;
       roomLabel?: string;
+      cameraMove?: string;
       preferAiVideo?: boolean;
       narration?: string | null;
     }>
@@ -126,7 +132,7 @@ export function ShotsSection({
                 <th>Bild</th>
                 <th>Raum</th>
                 <th>Kamerabewegung</th>
-                <th>Szenentext</th>
+                <th style={{ width: "30%" }}>Szenentext</th>
                 <th>Dauer</th>
                 <th>Im Video</th>
                 {externalVideoEnabled && <th title="Szene über den externen KI-Video-Provider rendern">KI-Video</th>}
@@ -164,19 +170,35 @@ export function ShotsSection({
                       ROOM_LABEL_OPTIONS.find((o) => o.value === shot.roomLabel)?.label
                     )}
                   </td>
-                  <td className="muted small" title={shot.prompt}>
-                    {shot.cameraMoveLabel}
+                  <td title={shot.prompt}>
+                    {editable ? (
+                      <select
+                        value={shot.cameraMove}
+                        onChange={(e) =>
+                          patch([{ id: shot.id, cameraMove: e.target.value }])
+                        }
+                      >
+                        {CAMERA_MOVE_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span className="muted small">{shot.cameraMoveLabel}</span>
+                    )}
                   </td>
                   <td>
                     {editable ? (
-                      <input
+                      <textarea
                         // Remount bei Server-Änderung (z. B. „Mit KI vorschlagen“),
                         // sonst zeigt das unkontrollierte Feld den alten Wert.
                         key={`${shot.id}:${shot.narration ?? ""}`}
                         defaultValue={shot.narration ?? ""}
                         placeholder="z. B. Die offene Küche mit Kochinsel."
                         maxLength={160}
-                        style={{ minWidth: 220 }}
+                        rows={2}
+                        style={{ width: "100%", minWidth: 240, resize: "vertical" }}
                         onBlur={(e) => {
                           if ((shot.narration ?? "") !== e.target.value) {
                             patch([{ id: shot.id, narration: e.target.value || null }]);

@@ -72,6 +72,7 @@ export interface ShotDto {
   sortIndex: number;
   selected: boolean;
   preferAiVideo: boolean;
+  cameraMove: string;
   cameraMoveLabel: string;
   prompt: string;
   narration: string | null;
